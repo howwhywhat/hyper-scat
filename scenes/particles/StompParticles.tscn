@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=2]
+
+[sub_resource type="Gradient" id=1]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[node name="StompParticles" type="CPUParticles2D"]
+position = Vector2( 0, -2 )
+emitting = false
+amount = 5
+lifetime = 0.5
+one_shot = true
+speed_scale = 0.65
+emission_shape = 2
+emission_rect_extents = Vector2( 5, 0 )
+flag_align_y = true
+direction = Vector2( 0, -35 )
+spread = 32.59
+gravity = Vector2( 0, 35 )
+initial_velocity = 35.0
+initial_velocity_random = 1.0
+angular_velocity = 35.0
+angular_velocity_random = 1.0
+linear_accel = -12.9
+radial_accel = 25.0
+radial_accel_random = 1.0
+damping = 1.0
+color_ramp = SubResource( 1 )

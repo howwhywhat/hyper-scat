@@ -1,0 +1,223 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://assets/textures/ass_man/spritesheet.png" type="Texture" id=1]
+[ext_resource path="res://scripts/player/Player.gd" type="Script" id=2]
+[ext_resource path="res://scripts/player/PlayerFSM.gd" type="Script" id=3]
+[ext_resource path="res://assets/textures/ass_man/light.png" type="Texture" id=4]
+[ext_resource path="res://assets/shaders/outline/Outline.tres" type="Material" id=5]
+[ext_resource path="res://scenes/particles/StompParticles.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/PlayerCameraJuice.gd" type="Script" id=7]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+render_mode unshaded;
+ 
+uniform float width : hint_range(0.0, 16.0);
+uniform vec4 outline_color : hint_color;
+ 
+void fragment()
+{
+    vec2 size = vec2(width) / vec2(textureSize(TEXTURE, 0));
+   
+    vec4 sprite_color = texture(TEXTURE, UV);
+   
+    float alpha = sprite_color.a;
+    alpha += texture(TEXTURE, UV + vec2(0.0, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, 0.0)).a;
+    alpha += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(0.0, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, 0.0)).a;
+    alpha += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
+   
+    vec3 final_color = mix(outline_color.rgb, sprite_color.rgb, sprite_color.a);
+    COLOR = vec4(final_color, clamp(alpha, 0.0, 1.0));
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/width = 1.0
+shader_param/outline_color = Color( 0, 0, 0, 1 )
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 5.2141
+height = 9.76912
+
+[sub_resource type="Animation" id=4]
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 12, 13, 14, 15, 16 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=6]
+length = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 10, 11 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "special_attack"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 14, 15, 16, 17 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("StompParticles:emitting")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ false, true ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath("Camera")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ 0.3 ],
+"method": "add_trauma"
+}, {
+"args": [ 0.3 ],
+"method": "add_trauma"
+} ]
+}
+
+[sub_resource type="Animation" id=8]
+length = 0.6
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5, 6, 7 ]
+}
+
+[sub_resource type="OpenSimplexNoise" id=9]
+
+[node name="Player" type="KinematicBody2D"]
+material = SubResource( 2 )
+collision_mask = 2147483650
+script = ExtResource( 2 )
+
+[node name="StateMachine" type="Node2D" parent="."]
+script = ExtResource( 3 )
+
+[node name="CharacterSprite" type="Sprite" parent="."]
+material = ExtResource( 5 )
+texture = ExtResource( 1 )
+hframes = 18
+frame = 17
+
+[node name="EnvironmentHitbox" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 1.025 )
+shape = SubResource( 3 )
+
+[node name="BulletDetection" type="Area2D" parent="."]
+collision_mask = 24
+
+[node name="BulletHitbox" type="CollisionShape2D" parent="BulletDetection"]
+position = Vector2( 0, 1.025 )
+shape = SubResource( 3 )
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+anims/fall = SubResource( 4 )
+anims/idle = SubResource( 5 )
+anims/jump = SubResource( 6 )
+anims/special_attack = SubResource( 7 )
+anims/walk = SubResource( 8 )
+
+[node name="State" type="Label" parent="."]
+margin_left = -17.0
+margin_top = -24.0
+margin_right = 23.0
+margin_bottom = -10.0
+text = "state"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Camera" type="Camera2D" parent="."]
+rotating = true
+current = true
+zoom = Vector2( 0.5, 0.5 )
+smoothing_enabled = true
+script = ExtResource( 7 )
+noise = SubResource( 9 )
+max_y = 60
+max_r = 15
+
+[node name="LightingEffects" type="Light2D" parent="."]
+texture = ExtResource( 4 )
+energy = 1.2
+mode = 2
+shadow_enabled = true
+
+[node name="StompParticles" parent="." instance=ExtResource( 6 )]
+position = Vector2( 3, 11 )
+lifetime = 2.0
+speed_scale = 1.5
+explosiveness = 1.0
+emission_rect_extents = Vector2( 3, 0 )
+flag_align_y = false
+spread = 5.0
+initial_velocity = 10.0
+initial_velocity_random = 0.0
