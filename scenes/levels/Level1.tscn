@@ -1,0 +1,393 @@
+[gd_scene load_steps=24 format=2]
+
+[ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
+[ext_resource path="res://assets/textures/foreground_decor/vines.png" type="Texture" id=2]
+[ext_resource path="res://assets/textures/wall_decor/3.png" type="Texture" id=3]
+[ext_resource path="res://assets/textures/normal_maps/controls/spritesheet.png" type="Texture" id=4]
+[ext_resource path="res://assets/textures/foreground_decor/bars.png" type="Texture" id=5]
+[ext_resource path="res://assets/textures/wall_decor/1.png" type="Texture" id=6]
+[ext_resource path="res://assets/textures/wall_decor/2.png" type="Texture" id=7]
+[ext_resource path="res://assets/textures/tutorial/spritesheet.png" type="Texture" id=8]
+[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_3.png" type="Texture" id=9]
+[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_1.png" type="Texture" id=10]
+[ext_resource path="res://scripts/LiquidSimulationSpawner.gd" type="Script" id=11]
+[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/UI.tscn" type="PackedScene" id=13]
+[ext_resource path="res://liquidsim/liquidsim.gdns" type="Script" id=14]
+[ext_resource path="res://assets/textures/normal_maps/walls/variation_1/spritesheet.png" type="Texture" id=15]
+[ext_resource path="res://assets/textures/walls/variation_1/spritesheet.png" type="Texture" id=16]
+[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_2.png" type="Texture" id=17]
+[ext_resource path="res://assets/textures/wall_decor/4.png" type="Texture" id=18]
+[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_4.png" type="Texture" id=19]
+[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_5.png" type="Texture" id=20]
+[ext_resource path="res://assets/textures/wall_decor/5.png" type="Texture" id=21]
+[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_6.png" type="Texture" id=22]
+[ext_resource path="res://assets/textures/wall_decor/6.png" type="Texture" id=23]
+
+[node name="Level1" type="Node2D"]
+
+[node name="NullTiles" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+collision_layer = 32
+collision_mask = 29
+format = 1
+tile_data = PoolIntArray( 196607, 4, 0, 131072, 4, 0, 131073, 4, 0, 131074, 4, 0, 131075, 4, 0, 131076, 4, 0, 131077, 4, 0, 131078, 4, 0, 131079, 4, 0, 131080, 4, 0, 131081, 4, 0, 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262153, 4, 0 )
+
+[node name="FloorTiles" type="TileMap" parent="."]
+tile_set = ExtResource( 1 )
+collision_layer = 2
+collision_mask = 13
+format = 1
+tile_data = PoolIntArray( 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262144, 3, 0, 262145, 3, 0, 262146, 3, 0, 262147, 3, 0, 262148, 3, 0, 262149, 3, 0, 262150, 3, 0, 262151, 3, 0, 262152, 3, 0, 262153, 4, 0 )
+script = ExtResource( 11 )
+WATER_SPAWN = NodePath("../../Level1/SewerPipes/WaterSpawn")
+
+[node name="LiquidSim" type="Node" parent="FloorTiles"]
+script = ExtResource( 14 )
+
+[node name="Walls" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="corner1" type="Sprite" parent="Walls"]
+position = Vector2( 544, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+frame = 1
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="corner2" type="Sprite" parent="Walls"]
+position = Vector2( 32, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="straightWall" type="Sprite" parent="Walls"]
+position = Vector2( 160, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+frame = 5
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="straightWall2" type="Sprite" parent="Walls"]
+position = Vector2( 224, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+frame = 6
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="straightWall3" type="Sprite" parent="Walls"]
+position = Vector2( 288, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+frame = 5
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="straightWall4" type="Sprite" parent="Walls"]
+position = Vector2( 416, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+frame = 6
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="straightWall5" type="Sprite" parent="Walls"]
+position = Vector2( 352, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+frame = 3
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="straightWall7" type="Sprite" parent="Walls"]
+position = Vector2( 480, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+frame = 5
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="straightWall8" type="Sprite" parent="Walls"]
+position = Vector2( 96, 224 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 7
+frame = 4
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SewerPipes" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SewerPipeShadow" type="Sprite" parent="SewerPipes"]
+modulate = Color( 0, 0, 0, 0.878431 )
+position = Vector2( 359, 222 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 7 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="SewerPipe" type="Sprite" parent="SewerPipes"]
+modulate = Color( 0.631373, 0.631373, 0.631373, 1 )
+position = Vector2( 359, 226 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 7 )
+normal_map = ExtResource( 17 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="IfVisible" type="VisibilityNotifier2D" parent="SewerPipes/SewerPipe"]
+position = Vector2( -3.05176e-05, -6.10352e-05 )
+scale = Vector2( 0.25, 0.25 )
+
+[node name="WaterSpawn" type="Position2D" parent="SewerPipes"]
+position = Vector2( 359, 226 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="WallDecor" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="HelpGrafitti" type="Node2D" parent="WallDecor"]
+position = Vector2( -107.629, -1.50081 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Grafitti1" type="Sprite" parent="WallDecor/HelpGrafitti"]
+modulate = Color( 1, 1, 1, 0.592157 )
+position = Vector2( 224.473, 221.651 )
+texture = ExtResource( 6 )
+normal_map = ExtResource( 10 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Cobwebs" type="Node2D" parent="WallDecor"]
+
+[node name="Cobweb1" type="Sprite" parent="WallDecor/Cobwebs"]
+position = Vector2( 7, 198 )
+rotation = 0.00114955
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 9 )
+
+[node name="Cobweb2" type="Sprite" parent="WallDecor/Cobwebs"]
+position = Vector2( 7, 251 )
+rotation = 3.13951
+scale = Vector2( -0.5, 0.5 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 9 )
+
+[node name="ToiletRolls" type="Node2D" parent="WallDecor"]
+
+[node name="ToiletRoll1" type="Sprite" parent="WallDecor/ToiletRolls"]
+position = Vector2( 278, 252 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 18 )
+normal_map = ExtResource( 19 )
+
+[node name="ToiletRoll2" type="Sprite" parent="WallDecor/ToiletRolls"]
+position = Vector2( 206, 252 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 18 )
+normal_map = ExtResource( 19 )
+
+[node name="ToiletRoll3" type="Sprite" parent="WallDecor/ToiletRolls"]
+position = Vector2( 458, 252 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 18 )
+normal_map = ExtResource( 19 )
+
+[node name="SeveredHeads" type="Node2D" parent="WallDecor"]
+
+[node name="SeveredHead1" type="Sprite" parent="WallDecor/SeveredHeads"]
+position = Vector2( 243, 255 )
+rotation = 1.57128
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 21 )
+normal_map = ExtResource( 20 )
+
+[node name="SeveredHead2" type="Sprite" parent="WallDecor/SeveredHeads"]
+position = Vector2( 374, 255 )
+rotation = 1.57128
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 21 )
+normal_map = ExtResource( 20 )
+
+[node name="SeveredHead3" type="Sprite" parent="WallDecor/SeveredHeads"]
+position = Vector2( 483, 255 )
+rotation = 1.57128
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 21 )
+normal_map = ExtResource( 20 )
+
+[node name="SeveredHead4" type="Sprite" parent="WallDecor/SeveredHeads"]
+position = Vector2( 119, 255 )
+rotation = 1.57128
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 21 )
+normal_map = ExtResource( 20 )
+
+[node name="ShitLogs" type="Node2D" parent="WallDecor"]
+
+[node name="ShitLogs1" type="Sprite" parent="WallDecor/ShitLogs"]
+position = Vector2( 178, 250 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 23 )
+normal_map = ExtResource( 22 )
+
+[node name="ShitLogs2" type="Sprite" parent="WallDecor/ShitLogs"]
+position = Vector2( 317, 250 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 23 )
+normal_map = ExtResource( 22 )
+
+[node name="ShitLogs3" type="Sprite" parent="WallDecor/ShitLogs"]
+position = Vector2( 419, 250 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 23 )
+normal_map = ExtResource( 22 )
+
+[node name="ShitLogs4" type="Sprite" parent="WallDecor/ShitLogs"]
+position = Vector2( 103, 250 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 23 )
+normal_map = ExtResource( 22 )
+
+[node name="TutorialText" type="Node2D" parent="."]
+
+[node name="MovementDirections" type="Node2D" parent="TutorialText"]
+position = Vector2( -188.361, -3.36359 )
+
+[node name="W" type="Sprite" parent="TutorialText/MovementDirections"]
+position = Vector2( 229.848, 215.98 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 7
+
+[node name="A" type="Sprite" parent="TutorialText/MovementDirections"]
+position = Vector2( 215.98, 230.215 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 7
+frame = 1
+
+[node name="S" type="Sprite" parent="TutorialText/MovementDirections"]
+position = Vector2( 233.355, 231.84 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 7
+frame = 2
+
+[node name="D" type="Sprite" parent="TutorialText/MovementDirections"]
+position = Vector2( 251.355, 232.84 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 7
+frame = 3
+
+[node name="Figure" type="Sprite" parent="TutorialText/MovementDirections"]
+position = Vector2( 247.647, 212.842 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 7
+frame = 5
+
+[node name="SpecialAttackDirections" type="Node2D" parent="TutorialText"]
+
+[node name="CTRL" type="Sprite" parent="TutorialText/SpecialAttackDirections"]
+position = Vector2( 205.427, 226.097 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 7
+frame = 4
+
+[node name="Figure" type="Sprite" parent="TutorialText/SpecialAttackDirections"]
+position = Vector2( 207.113, 237.709 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 7
+frame = 6
+
+[node name="Player" parent="." instance=ExtResource( 12 )]
+position = Vector2( 53, 245 )
+collision_mask = 2
+
+[node name="WaterPositions" type="Node" parent="."]
+
+[node name="Position1" type="Position2D" parent="WaterPositions" groups=[
+"WaterPosition",
+]]
+position = Vector2( 303, 166 )
+
+[node name="DarkenLayer" type="CanvasModulate" parent="."]
+color = Color( 0.341176, 0.341176, 0.341176, 1 )
+
+[node name="ForegroundParallax" type="ParallaxBackground" parent="."]
+layer = 1
+
+[node name="Vines" type="ParallaxLayer" parent="ForegroundParallax"]
+
+[node name="VineTexture" type="Sprite" parent="ForegroundParallax/Vines"]
+modulate = Color( 0.254902, 0.254902, 0.254902, 1 )
+position = Vector2( -46.9377, -14.9408 )
+scale = Vector2( 15, 15 )
+texture = ExtResource( 2 )
+centered = false
+offset = Vector2( -2.377, 9.69 )
+
+[node name="Bars" type="ParallaxLayer" parent="ForegroundParallax"]
+motion_offset = Vector2( 0, 175 )
+motion_mirroring = Vector2( 336, 0 )
+
+[node name="BarTexture" type="TextureRect" parent="ForegroundParallax/Bars"]
+modulate = Color( 0.286275, 0.286275, 0.286275, 1 )
+margin_left = 3.0
+margin_top = 1.0
+margin_right = 51.0
+margin_bottom = 25.0
+rect_scale = Vector2( 14, 14 )
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="UI" parent="." instance=ExtResource( 13 )]
+[connection signal="screen_entered" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_entered"]
+[connection signal="screen_exited" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_exited"]

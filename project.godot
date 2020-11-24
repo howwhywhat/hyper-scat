@@ -21,7 +21,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Hyper Scat"
-run/main_scene="res://scenes/TestBox.tscn"
+run/main_scene="res://scenes/levels/Level1.tscn"
 config/icon="res://icon.png"
 
 [display]
@@ -88,10 +88,11 @@ special_attack={
 [layer_names]
 
 2d_physics/layer_1="Player"
-2d_physics/layer_2="Environment"
+2d_physics/layer_2="Floor"
 2d_physics/layer_3="PlayerWeaponry"
 2d_physics/layer_4="EnemyWeaponry"
 2d_physics/layer_5="ForeignEntities"
+2d_physics/layer_6="TileWall"
 
 [rendering]
 

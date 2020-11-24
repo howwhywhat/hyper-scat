@@ -13,7 +13,7 @@ func _ready():
 func _on_IfVisible_screen_entered():
 	var waterSpawn = get_node(WATER_SPAWN)
 	finalPos = world_to_map(waterSpawn.position)
-	liquidSim.add_liquid(finalPos.x, finalPos.y, 0.25)
+	liquidSim.add_liquid(finalPos.x, finalPos.y, 0.1)
 
 func _on_IfVisible_screen_exited():
 	get_tree().current_scene.get_node("SewerPipes").get_node("SewerPipe").get_node("IfVisible").disconnect("screen_entered", self, "_on_IfVisible_screen_entered")

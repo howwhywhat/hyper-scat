@@ -17,3 +17,11 @@ func _on_Animations_animation_finished(anim_name):
 
 	if anim_name == "exit":
 		queue_free()
+
+func _on_ShitWave_body_entered(body):
+	match body.get_collision_layer():
+		6:
+			$Animations.play("exit")
+		5:
+			$Animations.play("exit")
+			body.apply_damage()
