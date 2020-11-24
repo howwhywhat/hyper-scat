@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/foreground_decor/vines.png" type="Texture" id=2]
@@ -23,6 +23,9 @@
 [ext_resource path="res://assets/textures/wall_decor/5.png" type="Texture" id=21]
 [ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_6.png" type="Texture" id=22]
 [ext_resource path="res://assets/textures/wall_decor/6.png" type="Texture" id=23]
+[ext_resource path="res://scenes/UpsideDownAnt.tscn" type="PackedScene" id=24]
+[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_7.png" type="Texture" id=25]
+[ext_resource path="res://assets/textures/wall_decor/7.png" type="Texture" id=26]
 
 [node name="Level1" type="Node2D"]
 
@@ -285,7 +288,46 @@ scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 23 )
 normal_map = ExtResource( 22 )
 
+[node name="Arrows" type="Node2D" parent="WallDecor"]
+
+[node name="Arrow1" type="Sprite" parent="WallDecor/Arrows"]
+position = Vector2( 280, 221 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 26 )
+normal_map = ExtResource( 25 )
+
+[node name="AntEntities" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="UpsideDownAnt" parent="AntEntities" instance=ExtResource( 24 )]
+position = Vector2( 188, 253 )
+
+[node name="UpsideDownAnt2" parent="AntEntities" instance=ExtResource( 24 )]
+position = Vector2( 120, 253 )
+frame = 0
+
+[node name="UpsideDownAnt3" parent="AntEntities" instance=ExtResource( 24 )]
+position = Vector2( 62, 253 )
+frame = 0
+
+[node name="UpsideDownAnt4" parent="AntEntities" instance=ExtResource( 24 )]
+position = Vector2( 207, 248 )
+frame = 0
+
+[node name="UpsideDownAnt5" parent="AntEntities" instance=ExtResource( 24 )]
+position = Vector2( 382, 253 )
+frame = 0
+
+[node name="UpsideDownAnt6" parent="AntEntities" instance=ExtResource( 24 )]
+position = Vector2( 425, 253 )
+frame = 0
+
 [node name="TutorialText" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="MovementDirections" type="Node2D" parent="TutorialText"]
 position = Vector2( -188.361, -3.36359 )
@@ -355,9 +397,15 @@ collision_mask = 2
 "WaterPosition",
 ]]
 position = Vector2( 303, 166 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="DarkenLayer" type="CanvasModulate" parent="."]
 color = Color( 0.341176, 0.341176, 0.341176, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="ForegroundParallax" type="ParallaxBackground" parent="."]
 layer = 1
@@ -371,6 +419,9 @@ scale = Vector2( 15, 15 )
 texture = ExtResource( 2 )
 centered = false
 offset = Vector2( -2.377, 9.69 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Bars" type="ParallaxLayer" parent="ForegroundParallax"]
 motion_offset = Vector2( 0, 175 )
@@ -385,6 +436,7 @@ margin_bottom = 25.0
 rect_scale = Vector2( 14, 14 )
 texture = ExtResource( 5 )
 __meta__ = {
+"_edit_lock_": true,
 "_edit_use_anchors_": false
 }
 
