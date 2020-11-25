@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/foreground_decor/vines.png" type="Texture" id=2]
@@ -12,7 +12,7 @@
 [ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_1.png" type="Texture" id=10]
 [ext_resource path="res://scripts/LiquidSimulationSpawner.gd" type="Script" id=11]
 [ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/UI.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/interface/UI.tscn" type="PackedScene" id=13]
 [ext_resource path="res://liquidsim/liquidsim.gdns" type="Script" id=14]
 [ext_resource path="res://assets/textures/normal_maps/walls/variation_1/spritesheet.png" type="Texture" id=15]
 [ext_resource path="res://assets/textures/walls/variation_1/spritesheet.png" type="Texture" id=16]
@@ -26,22 +26,39 @@
 [ext_resource path="res://scenes/UpsideDownAnt.tscn" type="PackedScene" id=24]
 [ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_7.png" type="Texture" id=25]
 [ext_resource path="res://assets/textures/wall_decor/7.png" type="Texture" id=26]
+[ext_resource path="res://assets/textures/wall_decor/8.png" type="Texture" id=27]
+[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_8.png" type="Texture" id=28]
+[ext_resource path="res://scenes/particles/SewerParticles.tscn" type="PackedScene" id=29]
 
 [node name="Level1" type="Node2D"]
 
-[node name="NullTiles" type="TileMap" parent="."]
+[node name="RoofCollision" type="StaticBody2D" parent="." groups=[
+"WallTiles",
+]]
+collision_layer = 32
+collision_mask = 29
+
+[node name="Hitbox" type="CollisionPolygon2D" parent="RoofCollision"]
+polygon = PoolVector2Array( 64, 181, 64, 192, 576, 192, 576, 181, 576, 181 )
+
+[node name="NullTiles" type="TileMap" parent="." groups=[
+"WallTiles",
+]]
+z_index = 2
 tile_set = ExtResource( 1 )
 collision_layer = 32
 collision_mask = 29
 format = 1
-tile_data = PoolIntArray( 196607, 4, 0, 131072, 4, 0, 131073, 4, 0, 131074, 4, 0, 131075, 4, 0, 131076, 4, 0, 131077, 4, 0, 131078, 4, 0, 131079, 4, 0, 131080, 4, 0, 131081, 4, 0, 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262153, 4, 0 )
+tile_data = PoolIntArray( 131073, -1610612732, 0, 131074, -1073741820, 0, 131075, -1073741820, 0, 131076, -1073741820, 0, 131077, -1073741820, 0, 131078, -1073741820, 0, 131079, -1073741820, 0, 131080, -1073741820, 0, 131081, 4, 0, 327679, 4, 0, 262153, 4, 0 )
 
-[node name="FloorTiles" type="TileMap" parent="."]
+[node name="FloorTiles" type="TileMap" parent="." groups=[
+"FloorTiles",
+]]
 tile_set = ExtResource( 1 )
 collision_layer = 2
 collision_mask = 13
 format = 1
-tile_data = PoolIntArray( 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262144, 3, 0, 262145, 3, 0, 262146, 3, 0, 262147, 3, 0, 262148, 3, 0, 262149, 3, 0, 262150, 3, 0, 262151, 3, 0, 262152, 3, 0, 262153, 4, 0 )
+tile_data = PoolIntArray( 0, 1610612740, 0, 131071, 1610612740, 0, 65537, 1610612740, 0, 196607, 1610612740, 0, 131073, 1610612740, 0, 262143, 1610612740, 0, 196617, -1610612732, 0, 327679, 4, 0, 262144, 3, 0, 262145, 3, 0, 262146, 3, 0, 262147, 3, 0, 262148, 3, 0, 262149, 3, 0, 262150, 3, 0, 262151, 3, 0, 262152, 3, 0, 262153, -1610612732, 0 )
 script = ExtResource( 11 )
 WATER_SPAWN = NodePath("../../Level1/SewerPipes/WaterSpawn")
 
@@ -57,7 +74,7 @@ __meta__ = {
 position = Vector2( 544, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
 frame = 1
 __meta__ = {
 "_edit_lock_": true
@@ -67,7 +84,28 @@ __meta__ = {
 position = Vector2( 32, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
+frame = 9
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="topLeft1" type="Sprite" parent="Walls"]
+position = Vector2( 32, 160 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 10
+frame = 8
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="topLeft2" type="Sprite" parent="Walls"]
+position = Vector2( 32, 96 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 10
+frame = 7
 __meta__ = {
 "_edit_lock_": true
 }
@@ -76,7 +114,7 @@ __meta__ = {
 position = Vector2( 160, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -86,7 +124,7 @@ __meta__ = {
 position = Vector2( 224, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
 frame = 6
 __meta__ = {
 "_edit_lock_": true
@@ -96,7 +134,7 @@ __meta__ = {
 position = Vector2( 288, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -106,7 +144,7 @@ __meta__ = {
 position = Vector2( 416, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
 frame = 6
 __meta__ = {
 "_edit_lock_": true
@@ -116,7 +154,7 @@ __meta__ = {
 position = Vector2( 352, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
 frame = 3
 __meta__ = {
 "_edit_lock_": true
@@ -126,7 +164,7 @@ __meta__ = {
 position = Vector2( 480, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -136,7 +174,7 @@ __meta__ = {
 position = Vector2( 96, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 7
+hframes = 10
 frame = 4
 __meta__ = {
 "_edit_lock_": true
@@ -296,31 +334,86 @@ scale = Vector2( 2, 2 )
 texture = ExtResource( 26 )
 normal_map = ExtResource( 25 )
 
+[node name="Ladder" type="Node2D" parent="WallDecor"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder1" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
+position = Vector2( 33, 159 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 28 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder2" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
+position = Vector2( 33, 169 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 28 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder3" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
+position = Vector2( 33, 179 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 28 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder5" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
+position = Vector2( 33, 189 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 28 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder4" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
+position = Vector2( 33, 147 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 28 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="AntEntities" type="Node2D" parent="."]
 __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="UpsideDownAnt" parent="AntEntities" instance=ExtResource( 24 )]
+[node name="UpsideDown" type="Node2D" parent="AntEntities"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="UpsideDownAnt" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 188, 253 )
 
-[node name="UpsideDownAnt2" parent="AntEntities" instance=ExtResource( 24 )]
+[node name="UpsideDownAnt2" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 120, 253 )
 frame = 0
 
-[node name="UpsideDownAnt3" parent="AntEntities" instance=ExtResource( 24 )]
+[node name="UpsideDownAnt3" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 62, 253 )
 frame = 0
 
-[node name="UpsideDownAnt4" parent="AntEntities" instance=ExtResource( 24 )]
+[node name="UpsideDownAnt4" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 207, 248 )
 frame = 0
 
-[node name="UpsideDownAnt5" parent="AntEntities" instance=ExtResource( 24 )]
+[node name="UpsideDownAnt5" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 382, 253 )
 frame = 0
 
-[node name="UpsideDownAnt6" parent="AntEntities" instance=ExtResource( 24 )]
+[node name="UpsideDownAnt6" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 425, 253 )
 frame = 0
 
@@ -387,9 +480,24 @@ normal_map = ExtResource( 4 )
 hframes = 7
 frame = 6
 
+[node name="SewerParticles" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Particles1" parent="SewerParticles" instance=ExtResource( 29 )]
+position = Vector2( 93, 194 )
+
+[node name="Particles2" parent="SewerParticles" instance=ExtResource( 29 )]
+position = Vector2( 262, 194 )
+
+[node name="Particles3" parent="SewerParticles" instance=ExtResource( 29 )]
+position = Vector2( 437, 194 )
+
 [node name="Player" parent="." instance=ExtResource( 12 )]
-position = Vector2( 53, 245 )
+position = Vector2( 34, 94 )
 collision_mask = 2
+camera_in_level = NodePath("../IniitalCamera")
 
 [node name="WaterPositions" type="Node" parent="."]
 
@@ -441,5 +549,10 @@ __meta__ = {
 }
 
 [node name="UI" parent="." instance=ExtResource( 13 )]
+
+[node name="IniitalCamera" type="Camera2D" parent="."]
+position = Vector2( 38, 225 )
+current = true
+zoom = Vector2( 0.5, 0.5 )
 [connection signal="screen_entered" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_entered"]
 [connection signal="screen_exited" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_exited"]

@@ -1,0 +1,147 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/fonts/PixelRPG.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://scripts/ui/DeathUI.gd" type="Script" id=2]
+[ext_resource path="res://assets/interface/card.png" type="Texture" id=3]
+[ext_resource path="res://assets/interface/ass_man_portrait.png" type="Texture" id=4]
+
+[sub_resource type="DynamicFont" id=1]
+size = 6
+outline_size = 1
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=2]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="DynamicFont" id=3]
+outline_size = 2
+outline_color = Color( 0, 0, 0, 1 )
+font_data = ExtResource( 1 )
+
+[sub_resource type="Animation" id=4]
+resource_name = "load"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray(  ),
+"transitions": PoolRealArray(  ),
+"update": 0,
+"values": [  ]
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath(".:offset:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -600, -0.25, 0, 3.06719, 3.53369, 0, -0.351857, -2.05958, 0.608458, 10.3239 ),
+"times": PoolRealArray( 0, 3 )
+}
+tracks/2/type = "bezier"
+tracks/2/path = NodePath(".:offset:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
+}
+
+[node name="DeathUI" type="CanvasLayer"]
+script = ExtResource( 2 )
+
+[node name="Portrait" type="TextureRect" parent="."]
+anchor_top = 0.5
+anchor_bottom = 0.5
+margin_left = 89.0
+margin_top = -103.0
+margin_right = 113.0
+margin_bottom = 12.0
+rect_scale = Vector2( 5, 5 )
+texture = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DeathCard" type="TextureRect" parent="."]
+margin_left = -22.0
+margin_right = 48.0
+margin_bottom = 24.0
+rect_scale = Vector2( 15, 15 )
+texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Information" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -105.0
+margin_top = -89.0
+margin_right = 27.0
+margin_bottom = -38.0
+rect_scale = Vector2( 2, 2 )
+custom_fonts/font = SubResource( 1 )
+text = "NAME: Ass Man
+HEIGHT: 6'0\"
+BLOOD TYPE: Shit
+OCCUPATION: Sewer God
+STATUS: Dead
+PRE-EXISTING CONDITIONS: Ass face"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Retry" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -36.0
+margin_top = 25.0
+margin_right = 36.0
+margin_bottom = 48.0
+focus_mode = 0
+custom_fonts/font = SubResource( 2 )
+enabled_focus_mode = 0
+text = "Retry?"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exit" type="Button" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -25.5
+margin_top = 52.0
+margin_right = 25.5
+margin_bottom = 75.0
+focus_mode = 0
+custom_fonts/font = SubResource( 3 )
+enabled_focus_mode = 0
+text = "Exit"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "load"
+anims/load = SubResource( 4 )
+[connection signal="pressed" from="Retry" to="." method="_on_Retry_pressed"]
+[connection signal="pressed" from="Exit" to="." method="_on_Exit_pressed"]

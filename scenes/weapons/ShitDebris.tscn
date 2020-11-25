@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/textures/normal_maps/bullet/debris/spritesheet.png" type="Texture" id=1]
+[ext_resource path="res://assets/textures/bullet/debris/spritesheet.png" type="Texture" id=2]
+[ext_resource path="res://scenes/weapons/debris/ShitDebris.gd" type="Script" id=3]
+
+[sub_resource type="Animation" id=1]
+resource_name = "autoload"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 2, 4, 5 ]
+}
+
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 0.210938, 0.098877, 0, 1, 0.133333, 0.0588235, 0, 0 )
+
+[node name="ShitDebris" type="Sprite"]
+texture = ExtResource( 2 )
+normal_map = ExtResource( 1 )
+hframes = 6
+script = ExtResource( 3 )
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "autoload"
+anims/autoload = SubResource( 1 )
+
+[node name="IfVisible" type="VisibilityNotifier2D" parent="."]
+position = Vector2( 5.96046e-08, -4.625 )
+scale = Vector2( 1.1, 0.6625 )
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+position = Vector2( 0, -6 )
+emission_shape = 2
+emission_rect_extents = Vector2( 9.087, 1 )
+color_ramp = SubResource( 2 )
+[connection signal="screen_exited" from="IfVisible" to="." method="_on_IfVisible_screen_exited"]
