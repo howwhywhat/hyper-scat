@@ -3,6 +3,8 @@
 [ext_resource path="res://assets/textures/shit_wave/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/ShitWave.gd" type="Script" id=2]
 
+
+
 [sub_resource type="Animation" id=1]
 resource_name = "exit"
 length = 0.3

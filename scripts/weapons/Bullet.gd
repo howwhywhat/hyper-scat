@@ -31,9 +31,11 @@ func _on_Bullet_body_entered(body):
 		queue_free()
 
 func _on_Animation_animation_finished(anim_name):
+	if anim_name == "autoload":
+		$Animation.play("in_air")
+	
 	if anim_name == "fall_in":
 		queue_free()
-
 
 func _on_Animation_animation_started(anim_name):
 	print(anim_name)
