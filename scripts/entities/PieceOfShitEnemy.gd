@@ -4,6 +4,7 @@ extends "res://scripts/entities/Enemy.gd"
 onready var collider = $Collider
 onready var animation = $Animation
 onready var sprite = $Texture
+onready var stateMachine = $StateMachine
 var woke_up = false
 var been_bounced = false
 
@@ -30,6 +31,16 @@ func _ready():
 	pass
 
 func _process(_delta):
+	if player != null:
+		if global_position.x < player.global_position.x:
+			if stateMachine.mouthAttack != null:
+				stateMachine.mouthAttack.position.x = mouthPosition.position.x
+			sprite.flip_h = false
+		else:
+			if stateMachine.mouthAttack != null:
+				stateMachine.mouthAttack.position.x = mouthPosition.position.x
+			sprite.flip_h = true
+	
 	if sprite.flip_h == true:
 		mouthPosition.position.x = -24
 	else:
@@ -68,3 +79,4 @@ func _on_PlayerDetectionChase_body_exited(body):
 
 func pounced(bouncer):
 	damage(9999)
+	bouncer.bounce()

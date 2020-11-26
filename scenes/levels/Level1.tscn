@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=37 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -34,6 +34,8 @@
 [ext_resource path="res://assets/textures/decor/wall_decor/normal_map_10.png" type="Texture" id=32]
 [ext_resource path="res://assets/textures/decor/wall_decor/10.png" type="Texture" id=33]
 [ext_resource path="res://scenes/entities/PieceOfShitEnemy.tscn" type="PackedScene" id=34]
+[ext_resource path="res://scenes/entities/HangingSpider.tscn" type="PackedScene" id=35]
+[ext_resource path="res://assets/textures/decor/foreground_decor/spider.png" type="Texture" id=36]
 
 [node name="Level1" type="Node2D"]
 
@@ -423,23 +425,29 @@ position = Vector2( 188, 253 )
 
 [node name="UpsideDownAnt2" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 120, 253 )
-frame = 0
 
 [node name="UpsideDownAnt3" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 62, 253 )
-frame = 0
 
 [node name="UpsideDownAnt4" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 207, 248 )
-frame = 0
 
 [node name="UpsideDownAnt5" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 382, 253 )
-frame = 0
 
 [node name="UpsideDownAnt6" parent="AntEntities/UpsideDown" instance=ExtResource( 24 )]
 position = Vector2( 425, 253 )
-frame = 0
+
+[node name="Hanging" type="Node2D" parent="AntEntities"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="HangingSpider" parent="AntEntities/Hanging" instance=ExtResource( 35 )]
+position = Vector2( 152, 205 )
+
+[node name="HangingSpider2" parent="AntEntities/Hanging" instance=ExtResource( 35 )]
+position = Vector2( 466, 205 )
 
 [node name="TutorialText" type="Node2D" parent="."]
 __meta__ = {
@@ -612,6 +620,19 @@ rect_scale = Vector2( 14, 14 )
 texture = ExtResource( 5 )
 __meta__ = {
 "_edit_lock_": true,
+"_edit_use_anchors_": false
+}
+
+[node name="Spider" type="ParallaxLayer" parent="ForegroundParallax"]
+motion_offset = Vector2( 320, 135 )
+
+[node name="SpiderTexture" type="TextureRect" parent="ForegroundParallax/Spider"]
+modulate = Color( 0.368627, 0.368627, 0.368627, 1 )
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 4, 4 )
+texture = ExtResource( 36 )
+__meta__ = {
 "_edit_use_anchors_": false
 }
 

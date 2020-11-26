@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/upside_down_spritesheet.png-1f6efe4495ede5ba1a56a308c602b182.stex"
+path="res://.import/blank_splash.png-bc0950fed7110b64c1a2b5aa3d28d8f9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/entities/ant/upside_down_spritesheet.png"
-dest_files=[ "res://.import/upside_down_spritesheet.png-1f6efe4495ede5ba1a56a308c602b182.stex" ]
+source_file="res://assets/interface/blank_splash.png"
+dest_files=[ "res://.import/blank_splash.png-bc0950fed7110b64c1a2b5aa3d28d8f9.stex" ]
 
 [params]
 

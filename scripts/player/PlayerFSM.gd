@@ -16,12 +16,13 @@ func _ready():
 	call_deferred("set_state", states.idle)
 
 func _state_logic(delta):
+	parent.apply_gravity(delta)
 	if state_logic_enabled == true:
 		parent.loop_damage_checker()
 		parent.apply_jumping()
 		parent.apply_movement(delta)
 		parent.apply_special_attack_controls()
-		parent.apply_gravity(delta)
+
 	else:
 		parent.apply_empty_movement(delta)
 
@@ -154,13 +155,11 @@ func _enter_state(new_state, old_state):
 			state_logic_enabled = false
 			parent.animation.play("death")
 		states.stunned:
-			if parent.sprite.flip_h:
-				parent.FRICTION = 0.1
-				parent.apply_knockback(Vector2(35, 0))
-			else:
-				parent.FRICTION = 0.1
-				parent.apply_knockback(Vector2(-35, 0))
-
+			parent.FRICTION = 0.1
+			var direction = parent.transform.origin - parent.enemyOrigin
+			direction.y = 0
+			parent.apply_knockback(-direction)
+			
 			parent.animation.play("stunned")
 			state_logic_enabled = false
 			yield(get_tree().create_timer(1.25), "timeout")

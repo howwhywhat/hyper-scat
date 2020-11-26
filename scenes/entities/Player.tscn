@@ -436,6 +436,7 @@ position = Vector2( -5, -3 )
 position = Vector2( -5, -3 )
 
 [node name="BounceRaycasts" type="Node2D" parent="."]
+visible = false
 
 [node name="Raycast" type="RayCast2D" parent="BounceRaycasts"]
 position = Vector2( 0, 11 )

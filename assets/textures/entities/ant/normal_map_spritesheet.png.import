@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/spritesheet.png-21c671040d0d354bb010a15816659c8b.stex"
+path="res://.import/normal_map_spritesheet.png-c670aa7f19bf7fec82c0b3061af25c0f.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/entities/ass_man/spritesheet.png"
-dest_files=[ "res://.import/spritesheet.png-21c671040d0d354bb010a15816659c8b.stex" ]
+source_file="res://assets/textures/entities/ant/normal_map_spritesheet.png"
+dest_files=[ "res://.import/normal_map_spritesheet.png-c670aa7f19bf7fec82c0b3061af25c0f.stex" ]
 
 [params]
 
@@ -23,7 +23,7 @@ flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
-flags/srgb=1
+flags/srgb=2
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false

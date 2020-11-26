@@ -5,6 +5,7 @@ var health = 100
 var stunned = false
 onready var DEATH_ID_SCENE = preload("res://scenes/interface/DeathUI.tscn")
 onready var SHOOTING_PARTICLES = preload("res://scenes/particles/ShootingParticles.tscn")
+var enemyOrigin = Vector2.ZERO
 
 # bullet type/weaponry
 export (PackedScene) var bullet_type
@@ -121,6 +122,7 @@ func apply_empty_movement(delta):
 func loop_damage_checker():
 	for body in $BulletDetection.get_overlapping_bodies():
 		apply_damage(body.damage)
+		enemyOrigin = body.transform.origin
 
 func stunned():
 	stunned = true
@@ -179,3 +181,6 @@ func _on_IfVisible_screen_entered():
 	camera.current = true
 	oldCamera.queue_free()
 	ifVisible.queue_free()
+
+func bounce():
+	motion.y -= 200
