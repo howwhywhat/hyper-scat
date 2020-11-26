@@ -1,34 +1,39 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
-[ext_resource path="res://assets/textures/foreground_decor/vines.png" type="Texture" id=2]
-[ext_resource path="res://assets/textures/wall_decor/3.png" type="Texture" id=3]
-[ext_resource path="res://assets/textures/normal_maps/controls/spritesheet.png" type="Texture" id=4]
-[ext_resource path="res://assets/textures/foreground_decor/bars.png" type="Texture" id=5]
-[ext_resource path="res://assets/textures/wall_decor/1.png" type="Texture" id=6]
-[ext_resource path="res://assets/textures/wall_decor/2.png" type="Texture" id=7]
-[ext_resource path="res://assets/textures/tutorial/spritesheet.png" type="Texture" id=8]
-[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_3.png" type="Texture" id=9]
-[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_1.png" type="Texture" id=10]
+[ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
+[ext_resource path="res://assets/textures/decor/wall_decor/3.png" type="Texture" id=3]
+[ext_resource path="res://assets/textures/controls/normal_map_spritesheet.png" type="Texture" id=4]
+[ext_resource path="res://assets/textures/decor/foreground_decor/bars.png" type="Texture" id=5]
+[ext_resource path="res://assets/textures/decor/wall_decor/1.png" type="Texture" id=6]
+[ext_resource path="res://assets/textures/decor/wall_decor/2.png" type="Texture" id=7]
+[ext_resource path="res://assets/textures/controls/spritesheet.png" type="Texture" id=8]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_3.png" type="Texture" id=9]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_1.png" type="Texture" id=10]
 [ext_resource path="res://scripts/LiquidSimulationSpawner.gd" type="Script" id=11]
-[ext_resource path="res://scenes/Player.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/entities/Player.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/interface/UI.tscn" type="PackedScene" id=13]
 [ext_resource path="res://liquidsim/liquidsim.gdns" type="Script" id=14]
-[ext_resource path="res://assets/textures/normal_maps/walls/variation_1/spritesheet.png" type="Texture" id=15]
+[ext_resource path="res://assets/textures/walls/variation_1/normal_map_spritesheet.png" type="Texture" id=15]
 [ext_resource path="res://assets/textures/walls/variation_1/spritesheet.png" type="Texture" id=16]
-[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_2.png" type="Texture" id=17]
-[ext_resource path="res://assets/textures/wall_decor/4.png" type="Texture" id=18]
-[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_4.png" type="Texture" id=19]
-[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_5.png" type="Texture" id=20]
-[ext_resource path="res://assets/textures/wall_decor/5.png" type="Texture" id=21]
-[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_6.png" type="Texture" id=22]
-[ext_resource path="res://assets/textures/wall_decor/6.png" type="Texture" id=23]
-[ext_resource path="res://scenes/UpsideDownAnt.tscn" type="PackedScene" id=24]
-[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_7.png" type="Texture" id=25]
-[ext_resource path="res://assets/textures/wall_decor/7.png" type="Texture" id=26]
-[ext_resource path="res://assets/textures/wall_decor/8.png" type="Texture" id=27]
-[ext_resource path="res://assets/textures/normal_maps/wall_decor/normal_map_8.png" type="Texture" id=28]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_2.png" type="Texture" id=17]
+[ext_resource path="res://assets/textures/decor/wall_decor/4.png" type="Texture" id=18]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_4.png" type="Texture" id=19]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_5.png" type="Texture" id=20]
+[ext_resource path="res://assets/textures/decor/wall_decor/5.png" type="Texture" id=21]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_6.png" type="Texture" id=22]
+[ext_resource path="res://assets/textures/decor/wall_decor/6.png" type="Texture" id=23]
+[ext_resource path="res://scenes/entities/UpsideDownAnt.tscn" type="PackedScene" id=24]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_7.png" type="Texture" id=25]
+[ext_resource path="res://assets/textures/decor/wall_decor/7.png" type="Texture" id=26]
+[ext_resource path="res://assets/textures/decor/wall_decor/8.png" type="Texture" id=27]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_8.png" type="Texture" id=28]
 [ext_resource path="res://scenes/particles/SewerParticles.tscn" type="PackedScene" id=29]
+[ext_resource path="res://assets/textures/decor/wall_decor/9.png" type="Texture" id=30]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_9.png" type="Texture" id=31]
+[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_10.png" type="Texture" id=32]
+[ext_resource path="res://assets/textures/decor/wall_decor/10.png" type="Texture" id=33]
+[ext_resource path="res://scenes/entities/PieceOfShitEnemy.tscn" type="PackedScene" id=34]
 
 [node name="Level1" type="Node2D"]
 
@@ -49,16 +54,16 @@ tile_set = ExtResource( 1 )
 collision_layer = 32
 collision_mask = 29
 format = 1
-tile_data = PoolIntArray( 131073, -1610612732, 0, 131074, -1073741820, 0, 131075, -1073741820, 0, 131076, -1073741820, 0, 131077, -1073741820, 0, 131078, -1073741820, 0, 131079, -1073741820, 0, 131080, -1073741820, 0, 131081, 4, 0, 327679, 4, 0, 262153, 4, 0 )
+tile_data = PoolIntArray( 0, 4, 0, 131071, 4, 0, 65537, 4, 0, 196607, 4, 0, 131073, 4, 0, 131074, 4, 0, 131075, 4, 0, 131076, 4, 0, 131077, 4, 0, 131078, 4, 0, 131079, 4, 0, 131080, 4, 0, 131081, 4, 0, 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262153, 4, 0 )
 
 [node name="FloorTiles" type="TileMap" parent="." groups=[
 "FloorTiles",
 ]]
 tile_set = ExtResource( 1 )
 collision_layer = 2
-collision_mask = 13
+collision_mask = 29
 format = 1
-tile_data = PoolIntArray( 0, 1610612740, 0, 131071, 1610612740, 0, 65537, 1610612740, 0, 196607, 1610612740, 0, 131073, 1610612740, 0, 262143, 1610612740, 0, 196617, -1610612732, 0, 327679, 4, 0, 262144, 3, 0, 262145, 3, 0, 262146, 3, 0, 262147, 3, 0, 262148, 3, 0, 262149, 3, 0, 262150, 3, 0, 262151, 3, 0, 262152, 3, 0, 262153, -1610612732, 0 )
+tile_data = PoolIntArray( 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262144, 3, 0, 262145, 3, 0, 262146, 3, 0, 262147, 3, 0, 262148, 3, 0, 262149, 3, 0, 262150, 3, 0, 262151, 3, 0, 262152, 3, 0, 262153, -1610612732, 0 )
 script = ExtResource( 11 )
 WATER_SPAWN = NodePath("../../Level1/SewerPipes/WaterSpawn")
 
@@ -219,6 +224,24 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="WallStain" type="Node2D" parent="WallDecor"]
+modulate = Color( 1, 1, 1, 0.686275 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Red1" type="Sprite" parent="WallDecor/WallStain"]
+position = Vector2( 409, 232 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 30 )
+normal_map = ExtResource( 31 )
+
+[node name="Green2" type="Sprite" parent="WallDecor/WallStain"]
+position = Vector2( 494, 216 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 33 )
+normal_map = ExtResource( 32 )
+
 [node name="HelpGrafitti" type="Node2D" parent="WallDecor"]
 position = Vector2( -107.629, -1.50081 )
 __meta__ = {
@@ -301,6 +324,7 @@ texture = ExtResource( 21 )
 normal_map = ExtResource( 20 )
 
 [node name="ShitLogs" type="Node2D" parent="WallDecor"]
+position = Vector2( 0, 1 )
 
 [node name="ShitLogs1" type="Sprite" parent="WallDecor/ShitLogs"]
 position = Vector2( 178, 250 )
@@ -430,14 +454,14 @@ position = Vector2( 229.848, 215.98 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 7
+hframes = 9
 
 [node name="A" type="Sprite" parent="TutorialText/MovementDirections"]
 position = Vector2( 215.98, 230.215 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 7
+hframes = 9
 frame = 1
 
 [node name="S" type="Sprite" parent="TutorialText/MovementDirections"]
@@ -445,7 +469,7 @@ position = Vector2( 233.355, 231.84 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 7
+hframes = 9
 frame = 2
 
 [node name="D" type="Sprite" parent="TutorialText/MovementDirections"]
@@ -453,14 +477,14 @@ position = Vector2( 251.355, 232.84 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 7
+hframes = 9
 frame = 3
 
 [node name="Figure" type="Sprite" parent="TutorialText/MovementDirections"]
 position = Vector2( 247.647, 212.842 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 7
+hframes = 9
 frame = 5
 
 [node name="SpecialAttackDirections" type="Node2D" parent="TutorialText"]
@@ -470,15 +494,33 @@ position = Vector2( 205.427, 226.097 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 7
+hframes = 9
 frame = 4
 
 [node name="Figure" type="Sprite" parent="TutorialText/SpecialAttackDirections"]
 position = Vector2( 207.113, 237.709 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 7
+hframes = 9
 frame = 6
+
+[node name="ShootAttackDirections" type="Node2D" parent="TutorialText"]
+position = Vector2( 2, -1 )
+
+[node name="LMB" type="Sprite" parent="TutorialText/ShootAttackDirections"]
+position = Vector2( 409, 222 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 9
+frame = 7
+
+[node name="Figure" type="Sprite" parent="TutorialText/ShootAttackDirections"]
+position = Vector2( 437, 217 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 9
+frame = 8
 
 [node name="SewerParticles" type="Node2D" parent="."]
 __meta__ = {
@@ -493,6 +535,31 @@ position = Vector2( 262, 194 )
 
 [node name="Particles3" parent="SewerParticles" instance=ExtResource( 29 )]
 position = Vector2( 437, 194 )
+
+[node name="Enemies" type="Node2D" parent="."]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="PieceOfShit" type="Node2D" parent="Enemies"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Enemy1" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
+position = Vector2( 338, 250 )
+
+[node name="Enemy2" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
+position = Vector2( 355, 250 )
+
+[node name="Enemy3" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
+position = Vector2( 392, 250 )
+
+[node name="Enemy4" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
+position = Vector2( 439, 250 )
+
+[node name="Enemy5" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
+position = Vector2( 462, 250 )
 
 [node name="Player" parent="." instance=ExtResource( 12 )]
 position = Vector2( 34, 94 )
@@ -551,7 +618,7 @@ __meta__ = {
 [node name="UI" parent="." instance=ExtResource( 13 )]
 
 [node name="IniitalCamera" type="Camera2D" parent="."]
-position = Vector2( 38, 225 )
+position = Vector2( 36, 225 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
 [connection signal="screen_entered" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_entered"]

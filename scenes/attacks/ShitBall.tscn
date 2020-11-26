@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://assets/textures/attacks/shitball/spritesheet.png" type="Texture" id=1]
+[ext_resource path="res://scenes/attacks/Bullet.tscn" type="PackedScene" id=2]
+[ext_resource path="res://assets/textures/attacks/shitball/normal_map_spritesheet.png" type="Texture" id=3]
+[ext_resource path="res://scripts/attacks/ShitBall.gd" type="Script" id=4]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 0.500898, 3.14903 )
+
+[sub_resource type="Animation" id=2]
+resource_name = "fall_in"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 7, 8, 9, 10, 11, 12, 13, 14 ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.3
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2 ]
+}
+
+[node name="ShitBall" instance=ExtResource( 2 )]
+collision_layer = 2147483652
+collision_mask = 58
+script = ExtResource( 4 )
+bullet_name = "ShitBall"
+recoil = 15
+damage = 10
+amount_of_screen_shake = 0.2
+projectile_speed = 350
+
+[node name="Texture" parent="." index="0"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 1 )
+normal_map = ExtResource( 3 )
+hframes = 18
+frame = 7
+
+[node name="Hitbox" parent="." index="1"]
+position = Vector2( 4.569, 0 )
+shape = SubResource( 1 )
+
+[node name="IfVisible" parent="." index="2"]
+visible = false
+position = Vector2( -0.5, 1.19209e-07 )
+scale = Vector2( 1.05, 0.6 )
+
+[node name="Animation" parent="." index="3"]
+autoplay = "in_air"
+anims/fall_in = SubResource( 2 )
+anims/in_air = SubResource( 3 )
+[connection signal="body_entered" from="." to="." method="_on_ShitBall_body_entered"]
+[connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
