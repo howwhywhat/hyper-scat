@@ -14,7 +14,8 @@ func _process(_delta):
 
 func _on_MouthAttack_body_entered(body):
 	if body.is_in_group("Player"):
-		body.apply_damage(damage)
+		if body.health > 0:
+			body.apply_damage(damage)
 
 func _on_Animation_animation_finished(anim_name):
 	attack_completed = true

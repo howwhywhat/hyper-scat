@@ -22,7 +22,6 @@ func _state_logic(delta):
 		parent.apply_jumping()
 		parent.apply_movement(delta)
 		parent.apply_special_attack_controls()
-
 	else:
 		parent.apply_empty_movement(delta)
 
@@ -31,9 +30,9 @@ func _get_transition(delta):
 		states.idle:
 			parent.state.text = "idle"
 			if !parent.is_on_floor():
-				if parent.motion.y < 0:
+				if parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
 					return states.jump
-				elif parent.motion.y > 0:
+				elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
 					return states.fall
 			elif parent.x_input != 0:
 				return states.walk
@@ -48,9 +47,9 @@ func _get_transition(delta):
 		states.walk:
 			parent.state.text = "walk"
 			if !parent.is_on_floor():
-				if parent.motion.y < 0:
+				if parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
 					return states.jump
-				elif parent.motion.y > 0:
+				elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
 					return states.fall
 			elif parent.x_input == 0:
 				return states.idle
@@ -64,7 +63,7 @@ func _get_transition(delta):
 			parent.state.text = "jump"
 			if parent.is_on_floor():
 				return states.idle
-			elif parent.motion.y >= 0:
+			elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
 				return states.fall
 			if parent.stunned == true:
 				return states.stunned
@@ -76,7 +75,7 @@ func _get_transition(delta):
 				get_parent().get_node("Camera").add_trauma(0.2)
 				get_parent().get_node("Camera").add_trauma(0.2)
 				return states.idle
-			elif parent.motion.y < 0:
+			elif parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
 				return states.jump
 			if parent.health <= 0:
 				return states.death
@@ -87,10 +86,10 @@ func _get_transition(delta):
 		states.special_attack:
 			parent.state.text = "special attack"
 			if !parent.is_on_floor():
-				if parent.motion.y < 0:
+				if parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
 					parent.power_value = 0
 					return states.jump
-				elif parent.motion.y > 0:
+				elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
 					parent.power_value = 0
 					return states.fall
 			elif parent.x_input != 0:
@@ -113,10 +112,10 @@ func _get_transition(delta):
 		states.shoot:
 			parent.state.text = "shoot"
 			if !parent.is_on_floor():
-				if parent.motion.y < 0:
+				if parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
 					parent.power_value = 0
 					return states.jump
-				elif parent.motion.y > 0:
+				elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
 					parent.power_value = 0
 					return states.fall
 			elif parent.x_input != 0:
@@ -146,13 +145,17 @@ func _enter_state(new_state, old_state):
 				get_tree().current_scene.add_child(dustParticles)
 				dustParticles.emitting = true
 				dustParticles.get_process_material().initial_velocity = get_parent().x_input * 32
+			parent.jumpBuffer.stop()
 			parent.animation.play("jump")
 		states.fall:
+			parent.coyoteTimer.start()
+			parent.motion.y = 0
 			parent.animation.play("fall")
 		states.special_attack:
 			parent.animation.play("special_attack")
 		states.death:
 			state_logic_enabled = false
+			parent.animation.stop()
 			parent.animation.play("death")
 		states.stunned:
 			parent.FRICTION = 0.1

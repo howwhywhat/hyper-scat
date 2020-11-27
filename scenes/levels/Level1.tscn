@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=35 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -25,14 +25,12 @@
 [ext_resource path="res://assets/textures/decor/wall_decor/6.png" type="Texture" id=23]
 [ext_resource path="res://scenes/entities/UpsideDownAnt.tscn" type="PackedScene" id=24]
 [ext_resource path="res://assets/textures/decor/wall_decor/normal_map_7.png" type="Texture" id=25]
-[ext_resource path="res://assets/textures/decor/wall_decor/7.png" type="Texture" id=26]
-[ext_resource path="res://assets/textures/decor/wall_decor/8.png" type="Texture" id=27]
+[ext_resource path="res://assets/textures/decor/wall_decor/8.png" type="Texture" id=26]
+[ext_resource path="res://assets/textures/decor/wall_decor/7.png" type="Texture" id=27]
 [ext_resource path="res://assets/textures/decor/wall_decor/normal_map_8.png" type="Texture" id=28]
 [ext_resource path="res://scenes/particles/SewerParticles.tscn" type="PackedScene" id=29]
 [ext_resource path="res://assets/textures/decor/wall_decor/9.png" type="Texture" id=30]
 [ext_resource path="res://assets/textures/decor/wall_decor/normal_map_9.png" type="Texture" id=31]
-[ext_resource path="res://assets/textures/decor/wall_decor/normal_map_10.png" type="Texture" id=32]
-[ext_resource path="res://assets/textures/decor/wall_decor/10.png" type="Texture" id=33]
 [ext_resource path="res://scenes/entities/PieceOfShitEnemy.tscn" type="PackedScene" id=34]
 [ext_resource path="res://scenes/entities/HangingSpider.tscn" type="PackedScene" id=35]
 [ext_resource path="res://assets/textures/decor/foreground_decor/spider.png" type="Texture" id=36]
@@ -235,14 +233,14 @@ __meta__ = {
 [node name="Red1" type="Sprite" parent="WallDecor/WallStain"]
 position = Vector2( 409, 232 )
 scale = Vector2( 0.75, 0.75 )
-texture = ExtResource( 30 )
-normal_map = ExtResource( 31 )
+texture = ExtResource( 26 )
+normal_map = ExtResource( 28 )
 
 [node name="Green2" type="Sprite" parent="WallDecor/WallStain"]
 position = Vector2( 494, 216 )
 scale = Vector2( 0.75, 0.75 )
-texture = ExtResource( 33 )
-normal_map = ExtResource( 32 )
+texture = ExtResource( 30 )
+normal_map = ExtResource( 31 )
 
 [node name="HelpGrafitti" type="Node2D" parent="WallDecor"]
 position = Vector2( -107.629, -1.50081 )
@@ -352,14 +350,6 @@ scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 23 )
 normal_map = ExtResource( 22 )
 
-[node name="Arrows" type="Node2D" parent="WallDecor"]
-
-[node name="Arrow1" type="Sprite" parent="WallDecor/Arrows"]
-position = Vector2( 280, 221 )
-scale = Vector2( 2, 2 )
-texture = ExtResource( 26 )
-normal_map = ExtResource( 25 )
-
 [node name="Ladder" type="Node2D" parent="WallDecor"]
 __meta__ = {
 "_edit_lock_": true
@@ -369,7 +359,7 @@ __meta__ = {
 modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
 position = Vector2( 33, 159 )
 texture = ExtResource( 27 )
-normal_map = ExtResource( 28 )
+normal_map = ExtResource( 25 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -378,7 +368,7 @@ __meta__ = {
 modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
 position = Vector2( 33, 169 )
 texture = ExtResource( 27 )
-normal_map = ExtResource( 28 )
+normal_map = ExtResource( 25 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -387,7 +377,7 @@ __meta__ = {
 modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
 position = Vector2( 33, 179 )
 texture = ExtResource( 27 )
-normal_map = ExtResource( 28 )
+normal_map = ExtResource( 25 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -396,7 +386,7 @@ __meta__ = {
 modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
 position = Vector2( 33, 189 )
 texture = ExtResource( 27 )
-normal_map = ExtResource( 28 )
+normal_map = ExtResource( 25 )
 __meta__ = {
 "_edit_lock_": true
 }
@@ -405,7 +395,7 @@ __meta__ = {
 modulate = Color( 0.388235, 0.388235, 0.388235, 1 )
 position = Vector2( 33, 147 )
 texture = ExtResource( 27 )
-normal_map = ExtResource( 28 )
+normal_map = ExtResource( 25 )
 __meta__ = {
 "_edit_lock_": true
 }

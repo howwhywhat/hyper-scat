@@ -161,7 +161,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=9]
-length = 0.1
+length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
 tracks/0/interp = 1
@@ -169,10 +169,10 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 10, 11 ]
+"values": [ 8, 9, 10, 11 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("HalfAss:frame")
@@ -181,14 +181,13 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.1 ),
-"transitions": PoolRealArray( 1, 1 ),
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 12, 13 ]
+"values": [ 10, 11, 12, 13 ]
 }
 
 [sub_resource type="Animation" id=10]
-resource_name = "recoil"
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -200,7 +199,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 2 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 25, 25 ]
+"values": [ 27, 27 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("HalfAss:frame")
@@ -282,7 +281,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ 24, 24 ]
+"values": [ 26, 26 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("CharacterSprite:modulate")
@@ -353,8 +352,8 @@ script = ExtResource( 3 )
 [node name="CharacterSprite" type="Sprite" parent="."]
 material = ExtResource( 5 )
 texture = ExtResource( 1 )
-hframes = 26
-frame = 18
+hframes = 28
+frame = 14
 
 [node name="HalfAss" type="Sprite" parent="."]
 light_mask = -2147483647
@@ -362,7 +361,7 @@ material = SubResource( 4 )
 z_index = 1
 texture = ExtResource( 9 )
 hframes = 19
-frame = 8
+frame = 16
 
 [node name="EnvironmentHitbox" type="CollisionShape2D" parent="."]
 visible = false
@@ -458,4 +457,12 @@ enabled = true
 cast_to = Vector2( 0, 4 )
 collision_mask = 64
 collide_with_areas = true
+
+[node name="CoyoteTime" type="Timer" parent="."]
+wait_time = 0.2
+one_shot = true
+
+[node name="JumpBuffer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
 [connection signal="screen_entered" from="IfVisible" to="." method="_on_IfVisible_screen_entered"]

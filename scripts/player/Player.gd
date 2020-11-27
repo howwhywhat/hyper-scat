@@ -43,7 +43,13 @@ onready var ifVisible = $IfVisible
 onready var bulletPosition = $BulletPosition
 onready var shootParticlesPos = $ShootingParticlesPosition
 onready var bounceRaycasts = $BounceRaycasts
+
 onready var uiHearts = get_tree().current_scene.get_node("UI").get_node("Hearts")
+
+# jump handling
+onready var coyoteTimer = $CoyoteTime
+onready var jumpBuffer = $JumpBuffer
+var was_on_floor
 
 func _ready():
 	uiHearts.initialize(100, 100)
@@ -60,8 +66,9 @@ func _process(_delta):
 		shootParticlesPos.position.x = 2
 
 func apply_gravity(delta):
-	motion.y += GRAVITY * delta
-	motion.y += GRAVITY * delta
+	if coyoteTimer.is_stopped():
+		motion.y += GRAVITY * delta
+		motion.y += GRAVITY * delta
 
 func execute_special_attack():
 	var shitWave = shit_wave.instance()
@@ -92,13 +99,16 @@ func apply_special_attack_controls():
 			can_fire = true
 
 func apply_jumping():
-	if is_on_floor():
+	if is_on_floor() || !coyoteTimer.is_stopped():
 		if x_input == 0:
 			motion.x = lerp(motion.x, 0, FRICTION)
 		if Input.is_action_just_pressed("w"):
+			coyoteTimer.stop()
 			motion.y = -JUMP_FORCE
 	else:
+		jumpBuffer.start()
 		if Input.is_action_just_released("w") and motion.y < -JUMP_FORCE / 2:
+			coyoteTimer.stop()
 			motion.y = -JUMP_FORCE / 2
 		
 		if x_input == 0:
@@ -107,6 +117,7 @@ func apply_jumping():
 func apply_movement(delta):
 	x_input = Input.get_action_strength("d") - Input.get_action_strength("a")
 	
+	was_on_floor = is_on_floor()
 	if x_input != 0:
 		motion.x += x_input * ACCELERATION * delta
 		motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
@@ -130,16 +141,14 @@ func stunned():
 	stunned = false
 
 func apply_damage(damage):
-	if stunned == false:
-		health -= damage
-		camera.add_trauma(0.5)
-		emit_signal("player_damaged", health)
-	
-	if health <= 0 and stunned == false:
+	if health <= 0.999 and stunned == false:
 		var deathId = DEATH_ID_SCENE.instance()
 		get_tree().current_scene.add_child(deathId)
-	elif health > 0 and stunned == false:
-		stunned()
+		return
+	health -= damage
+	stunned()
+	camera.add_trauma(0.5)
+	emit_signal("player_damaged", health)
 
 func shoot():
 	if can_fire_bullet == true:

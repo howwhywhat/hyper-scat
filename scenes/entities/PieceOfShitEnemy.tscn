@@ -30,7 +30,7 @@ tracks/0/keys = {
 "values": [ 0, 0 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=5]
 resource_name = "death"
 length = 1.4
 tracks/0/type = "value"
@@ -58,7 +58,7 @@ tracks/1/keys = {
 "values": [ Color( 255, 255, 255, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="Animation" id=5]
+[sub_resource type="Animation" id=6]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:frame")
 tracks/0/interp = 1
@@ -72,7 +72,7 @@ tracks/0/keys = {
 "values": [ 6, 6 ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:frame")
@@ -87,7 +87,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=8]
 length = 0.8
 loop = true
 tracks/0/type = "value"
@@ -148,10 +148,10 @@ cast_to = Vector2( -26, 0 )
 
 [node name="Animation" parent="." index="6"]
 anims/asleep = SubResource( 4 )
-anims/death = SubResource( 8 )
-anims/idle = SubResource( 5 )
-anims/wake_up = SubResource( 6 )
-anims/walk = SubResource( 7 )
+anims/death = SubResource( 5 )
+anims/idle = SubResource( 6 )
+anims/wake_up = SubResource( 7 )
+anims/walk = SubResource( 8 )
 
 [node name="StateMachine" type="Node2D" parent="." index="7"]
 script = ExtResource( 5 )

@@ -1,41 +1,84 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=32 format=2]
 
-[ext_resource path="res://assets/textures/entities/ass_man/spritesheet.png" type="Texture" id=1]
+[ext_resource path="res://assets/interface/player/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scenes/interface/Player3D.gd" type="Script" id=2]
+[ext_resource path="res://assets/interface/walls/normal_map_1.png" type="Texture" id=3]
+[ext_resource path="res://assets/interface/walls/1.png" type="Texture" id=4]
+[ext_resource path="res://assets/interface/walls/3.png" type="Texture" id=5]
+[ext_resource path="res://assets/interface/walls/normal_map_3.png" type="Texture" id=6]
+[ext_resource path="res://assets/interface/walls/5.png" type="Texture" id=7]
+[ext_resource path="res://assets/interface/walls/normal_map_5.png" type="Texture" id=8]
+[ext_resource path="res://assets/interface/walls/6.png" type="Texture" id=9]
+[ext_resource path="res://assets/interface/walls/normal_map_6.png" type="Texture" id=10]
+[ext_resource path="res://assets/interface/walls/normal_map_2.png" type="Texture" id=11]
+[ext_resource path="res://assets/interface/walls/2.png" type="Texture" id=12]
+[ext_resource path="res://scripts/ui/MainMenu.gd" type="Script" id=13]
+[ext_resource path="res://assets/interface/arrow.png" type="Texture" id=14]
+[ext_resource path="res://assets/interface/play.png" type="Texture" id=15]
+[ext_resource path="res://scenes/interface/MainMenuEnvironment.tres" type="Environment" id=16]
+
+[sub_resource type="QuadMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 4 )
+metallic = 0.35
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 5 )
+metallic = 0.35
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 6 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_texture = ExtResource( 7 )
+metallic = 0.35
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 8 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_texture = ExtResource( 9 )
+metallic = 0.35
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 10 )
+
+[sub_resource type="SpatialMaterial" id=6]
+albedo_texture = ExtResource( 12 )
+metallic = 0.35
+normal_enabled = true
+normal_scale = 1.0
+normal_texture = ExtResource( 11 )
 
 [sub_resource type="CylinderShape" id=7]
+radius = 0.241084
+height = 0.650694
+
+[sub_resource type="CylinderShape" id=8]
+radius = 0.518569
+height = 1.8594
+
+[sub_resource type="CylinderShape" id=9]
+radius = 0.679203
+
+[sub_resource type="SpatialMaterial" id=10]
+
+[sub_resource type="PlaneMesh" id=11]
+material = SubResource( 10 )
+size = Vector2( 15, 15 )
+
+[sub_resource type="CylinderShape" id=12]
 radius = 49.4408
 height = 0.61517
 
-[sub_resource type="Environment" id=5]
-ssao_radius = 128.0
-ssao_intensity = 48.84
-dof_blur_far_enabled = true
-dof_blur_far_distance = 135.0
-dof_blur_far_transition = 20.0
-dof_blur_far_amount = 0.5
-dof_blur_far_quality = 2
-dof_blur_near_enabled = true
-dof_blur_near_distance = 7.25
-dof_blur_near_transition = 20.0
-dof_blur_near_amount = 0.5
-dof_blur_near_quality = 2
-glow_intensity = 2.42
-glow_blend_mode = 1
-adjustment_enabled = true
-adjustment_contrast = 1.32
-
-[sub_resource type="SpatialMaterial" id=4]
-
-[sub_resource type="PlaneMesh" id=3]
-material = SubResource( 4 )
-size = Vector2( 15, 15 )
-
-[sub_resource type="Animation" id=8]
-resource_name = "idle"
+[sub_resource type="Animation" id=13]
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("KinematicBody/Sprite3D:frame")
+tracks/0/path = NodePath("Player3D/Texture:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -47,12 +90,11 @@ tracks/0/keys = {
 "values": [ 0, 0 ]
 }
 
-[sub_resource type="Animation" id=1]
-resource_name = "player_walking"
+[sub_resource type="Animation" id=14]
 length = 0.6
 loop = true
 tracks/0/type = "value"
-tracks/0/path = NodePath("KinematicBody/Sprite3D:frame")
+tracks/0/path = NodePath("Player3D/Texture:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
@@ -64,8 +106,7 @@ tracks/0/keys = {
 "values": [ 1, 2, 3, 4, 5, 6 ]
 }
 
-[sub_resource type="Animation" id=6]
-resource_name = "autoload"
+[sub_resource type="Animation" id=15]
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("Camera:translation:x")
 tracks/0/interp = 1
@@ -73,7 +114,7 @@ tracks/0/loop_wrap = true
 tracks/0/imported = false
 tracks/0/enabled = true
 tracks/0/keys = {
-"points": PoolRealArray( -6, -0.25, 0, 0.25, 0, -0.86, -1.01492, 0.260461, 0.25, 0 ),
+"points": PoolRealArray( -6, -0.25, 0, 0.25, 0, -0.860508, -1.07, -0.00098002, 0.25, 0 ),
 "times": PoolRealArray( 0, 1 )
 }
 tracks/1/type = "bezier"
@@ -96,57 +137,148 @@ tracks/2/keys = {
 "points": PoolRealArray(  ),
 "times": PoolRealArray(  )
 }
+tracks/3/type = "value"
+tracks/3/path = NodePath("Light:light_energy")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 0.3, 0.9 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 0.0, 0.0, 2.0 ]
+}
+tracks/4/type = "method"
+tracks/4/path = NodePath("Player3D")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"values": [ {
+"args": [ false ],
+"method": "set_able_to_walk"
+}, {
+"args": [ true ],
+"method": "set_able_to_walk"
+} ]
+}
 
 [node name="MainMenu" type="Spatial"]
+script = ExtResource( 13 )
 
-[node name="KinematicBody" type="KinematicBody" parent="."]
+[node name="Walls" type="Spatial" parent="."]
+
+[node name="Wall1" type="MeshInstance" parent="Walls"]
+transform = Transform( 0.822243, 0, -0.569136, 0, 1, 0, 0.569136, 0, 0.822243, -0.971398, 0.172685, -0.415697 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="Wall2" type="MeshInstance" parent="Walls"]
+transform = Transform( 0.822243, 0, -0.569136, 0, 1, 0, 0.569136, 0, 0.822243, -0.152342, 0.172685, 0.152572 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 3 )
+
+[node name="Wall3" type="MeshInstance" parent="Walls"]
+transform = Transform( 0.822243, 0, -0.569136, 0, 1, 0, 0.569136, 0, 0.822243, 0.669441, 0.172685, 0.718131 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 4 )
+
+[node name="Wall4" type="MeshInstance" parent="Walls"]
+transform = Transform( 0.822243, 0, -0.569136, 0, 1, 0, 0.569136, 0, 0.822243, 1.21552, 0.172685, 1.10379 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 5 )
+
+[node name="Wall5" type="MeshInstance" parent="Walls"]
+transform = Transform( 0.822243, 0, -0.569136, 0, 1, 0, 0.569136, 0, 0.822243, 1.82895, 0.172685, 1.53288 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 6 )
+
+[node name="Arrow" type="Sprite3D" parent="."]
+transform = Transform( 1.20215, -0.0429306, -0.8961, 0.0372827, 1.49938, -0.0218166, 0.896353, -0.00478821, 1.20272, 0.217934, 0.163464, 0.458114 )
+modulate = Color( 1, 1, 1, 0.784314 )
+shaded = true
+alpha_cut = 2
+texture = ExtResource( 14 )
+
+[node name="PlayText" type="Sprite3D" parent="."]
+transform = Transform( 0.801433, -0.0286204, -0.2987, 0.0248552, 0.999585, -0.00727219, 0.597569, -0.00319214, 0.400906, 0.110652, 0.429995, 0.357435 )
+modulate = Color( 1, 1, 1, 0.784314 )
+shaded = true
+alpha_cut = 2
+texture = ExtResource( 15 )
+
+[node name="Player3D" type="KinematicBody" parent="." groups=[
+"Player",
+]]
+collision_mask = 6
 script = ExtResource( 2 )
 
-[node name="Sprite3D" type="Sprite3D" parent="KinematicBody"]
+[node name="Texture" type="Sprite3D" parent="Player3D"]
 transform = Transform( 3, 0, 0, 0, 3, 0, 0, 0, 3, -0.502655, 0.00280684, 0.381895 )
 shaded = true
 alpha_cut = 2
 texture = ExtResource( 1 )
 hframes = 26
-frame = 6
 
-[node name="CollisionShape" type="CollisionShape" parent="KinematicBody"]
+[node name="Collider" type="CollisionShape" parent="Player3D"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.487234, 0, 0.373252 )
 shape = SubResource( 7 )
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.838347, 0, -0.545137, 0, 1, 0, 0.545137, 0, 0.838347, -1.13185, 0.0221256, 1.52325 )
-environment = SubResource( 5 )
-current = true
-fov = 50.5
-far = 4.3
+[node name="Play" type="Area" parent="."]
+collision_layer = 4
 
-[node name="StaticBody" type="StaticBody" parent="."]
+[node name="Collider" type="CollisionShape" parent="Play"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.9655, 0.141773, 2.14609 )
+shape = SubResource( 8 )
 
-[node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
+[node name="Exit" type="Area" parent="."]
+collision_layer = 4
+
+[node name="Collider" type="CollisionShape" parent="Exit"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.98983, 0.141773, -0.644107 )
+shape = SubResource( 9 )
+
+[node name="Ground" type="StaticBody" parent="."]
+collision_layer = 2
+
+[node name="MeshInstance" type="MeshInstance" parent="Ground"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.218183, -0.321912, 0 )
 cast_shadow = 0
-mesh = SubResource( 3 )
+mesh = SubResource( 11 )
 material/0 = null
 
-[node name="CollisionShape2" type="CollisionShape" parent="StaticBody"]
+[node name="Collider" type="CollisionShape" parent="Ground"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.487234, -0.620507, 0.373252 )
-shape = SubResource( 7 )
+shape = SubResource( 12 )
 
-[node name="SpotLight" type="SpotLight" parent="."]
+[node name="Light" type="SpotLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.1959 )
 light_color = Color( 0.556863, 0.678431, 0.992157, 1 )
+light_energy = 2.0
 shadow_enabled = true
 spot_range = 11.4
 spot_attenuation = 2.14355
 spot_angle = 75.0
 spot_angle_attenuation = 0.329877
 
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 0.838347, 0, -0.545137, 0, 1, 0, 0.545137, 0, 0.838347, -0.860508, 0.0221256, 1.52325 )
+environment = ExtResource( 16 )
+current = true
+fov = 50.5
+far = 4.3
+
 [node name="PlayerAnimation" type="AnimationPlayer" parent="."]
 autoplay = "idle"
-anims/idle = SubResource( 8 )
-anims/player_walking = SubResource( 1 )
+anims/idle = SubResource( 13 )
+anims/player_walking = SubResource( 14 )
 
 [node name="CameraAnimation" type="AnimationPlayer" parent="."]
 autoplay = "autoload"
-anims/autoload = SubResource( 6 )
+anims/autoload = SubResource( 15 )
+[connection signal="body_entered" from="Play" to="." method="_on_Play_body_entered"]
+[connection signal="body_entered" from="Exit" to="." method="_on_Exit_body_entered"]

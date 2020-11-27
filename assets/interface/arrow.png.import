@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/normal_map_10.png-d4c5ce9abaa15d1f1ffa80c23072f031.stex"
+path="res://.import/arrow.png-73c4e856088ef3ed9b6c08fc7743ed22.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/textures/decor/wall_decor/normal_map_10.png"
-dest_files=[ "res://.import/normal_map_10.png-d4c5ce9abaa15d1f1ffa80c23072f031.stex" ]
+source_file="res://assets/interface/arrow.png"
+dest_files=[ "res://.import/arrow.png-73c4e856088ef3ed9b6c08fc7743ed22.stex" ]
 
 [params]
 
@@ -23,7 +23,7 @@ flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
-flags/srgb=2
+flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
