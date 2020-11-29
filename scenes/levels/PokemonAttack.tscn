@@ -1,5 +1,7 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=25 format=2]
 
+[ext_resource path="res://scripts/PokemonAttack.gd" type="Script" id=1]
+[ext_resource path="res://scenes/interface/TransitionLayer.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/interface/walls/normal_map_1.png" type="Texture" id=3]
 [ext_resource path="res://assets/interface/walls/1.png" type="Texture" id=4]
 [ext_resource path="res://assets/interface/walls/3.png" type="Texture" id=5]
@@ -10,6 +12,7 @@
 [ext_resource path="res://assets/interface/walls/normal_map_6.png" type="Texture" id=10]
 [ext_resource path="res://assets/interface/walls/normal_map_2.png" type="Texture" id=11]
 [ext_resource path="res://assets/interface/walls/2.png" type="Texture" id=12]
+[ext_resource path="res://assets/textures/entities/slug_enemy/spritesheet.png" type="Texture" id=13]
 [ext_resource path="res://assets/interface/player/spritesheet.png" type="Texture" id=14]
 
 [sub_resource type="QuadMesh" id=1]
@@ -89,6 +92,7 @@ adjustment_brightness = 5.35
 adjustment_contrast = 1.09
 
 [node name="PokemonAttack" type="Spatial"]
+script = ExtResource( 1 )
 
 [node name="Walls" type="Spatial" parent="."]
 transform = Transform( 0.953507, 0, 0.301372, 0, 1, 0, -0.301372, 0, 0.953507, -0.35, 0, 0.23 )
@@ -140,16 +144,23 @@ material/0 = null
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.487234, -0.620507, 0.373252 )
 
 [node name="PlayerSprite" type="Sprite3D" parent="."]
-transform = Transform( 2.24641, 0, 0.0141166, 0, 2.25, 0, -0.127049, 0, 0.249601, -0.731, -0.078, 0.899 )
+transform = Transform( 1.84377, 0, 0.143287, 0, 2.25, 0, -1.28958, 0, 0.204863, -0.731, -0.078, 0.899 )
 modulate = Color( 0.305882, 0.305882, 0.305882, 1 )
 opacity = 0.99
+billboard = 1
 shaded = true
 alpha_cut = 2
 texture = ExtResource( 14 )
 hframes = 26
 
 [node name="EnemySprite" type="Sprite3D" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.16, 0, 0 )
+transform = Transform( 0.424078, 0, -1.85207, 0, 1.9, 0, 1.85207, 0, 0.424078, 0.612, 0.115, 0.583 )
+modulate = Color( 0.384314, 0.286275, 0.286275, 1 )
+billboard = 1
+shaded = true
+alpha_cut = 2
+texture = ExtResource( 13 )
+hframes = 35
 
 [node name="Light" type="SpotLight" parent="."]
 transform = Transform( 0.842342, -0.000232229, -0.538943, 0.000287577, 1, 1.85727e-05, 0.538943, -0.000170632, 0.842342, -0.801456, 0.239388, 2.2209 )
@@ -176,3 +187,6 @@ box_projection = true
 enable_shadows = true
 cull_mask = 2148532223
 interior_ambient_energy = 2.04
+
+[node name="TransitionLayer" parent="." instance=ExtResource( 2 )]
+fill = 1.0

@@ -121,6 +121,24 @@ func _enter_state(new_state, old_state):
 			state_logic_enabled = false
 			if parent.collider != null:
 				parent.collider.queue_free()
+			if parent.floorLeft != null:
+				parent.floorLeft.queue_free()
+			if parent.floorRight != null:
+				parent.floorRight.queue_free()
+			if parent.wallRight != null:
+				parent.wallRight.queue_free()
+			if parent.wallLeft != null:
+				parent.wallLeft.queue_free()
+			if parent.leftAttackDetection != null:
+				parent.leftAttackDetection.queue_free()
+			if parent.rightAttackDetection != null:
+				parent.rightAttackDetection.queue_free()
+			if parent.chaseHitbox != null:
+				parent.chaseHitbox.queue_free()
+			if parent.playerDetection != null:
+				parent.playerDetection.queue_free()
+			if parent.hurtbox != null:
+				parent.hurtbox.queue_free()
 			parent.stop_movement()
 			if mouthAttack != null:
 				mouthAttack.animation.play("mouth_close")

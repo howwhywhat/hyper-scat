@@ -1,16 +1,15 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://assets/textures/entities/ass_man/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player/Player.gd" type="Script" id=2]
 [ext_resource path="res://scripts/player/PlayerFSM.gd" type="Script" id=3]
 [ext_resource path="res://assets/textures/entities/ass_man/light.png" type="Texture" id=4]
-[ext_resource path="res://assets/shaders/outline/Outline.tres" type="Material" id=5]
 [ext_resource path="res://scenes/particles/StompParticles.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/player/PlayerCameraJuice.gd" type="Script" id=7]
 [ext_resource path="res://scenes/attacks/ShitBall.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/textures/entities/ass_man/half_ass_spritesheet.png" type="Texture" id=9]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=15]
 code = "shader_type canvas_item;
 render_mode unshaded;
  
@@ -37,12 +36,12 @@ void fragment()
     COLOR = vec4(final_color, clamp(alpha, 0.0, 1.0));
 }"
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id=16]
+shader = SubResource( 15 )
 shader_param/width = 1.0
 shader_param/outline_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="Shader" id=3]
+[sub_resource type="Shader" id=17]
 code = "shader_type canvas_item;
 render_mode unshaded;
  
@@ -69,8 +68,9 @@ void fragment()
     COLOR = vec4(final_color, clamp(alpha, 0.0, 1.0));
 }"
 
-[sub_resource type="ShaderMaterial" id=4]
-shader = SubResource( 3 )
+[sub_resource type="ShaderMaterial" id=18]
+render_priority = 1
+shader = SubResource( 17 )
 shader_param/width = 0.0
 shader_param/outline_color = Color( 0, 0, 0, 1 )
 
@@ -341,8 +341,7 @@ tracks/1/keys = {
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
 ]]
-material = SubResource( 2 )
-collision_mask = 2147483706
+collision_mask = 2147483682
 script = ExtResource( 2 )
 bullet_type = ExtResource( 8 )
 
@@ -350,18 +349,18 @@ bullet_type = ExtResource( 8 )
 script = ExtResource( 3 )
 
 [node name="CharacterSprite" type="Sprite" parent="."]
-material = ExtResource( 5 )
+material = SubResource( 16 )
 texture = ExtResource( 1 )
 hframes = 28
-frame = 14
+frame = 18
 
 [node name="HalfAss" type="Sprite" parent="."]
 light_mask = -2147483647
-material = SubResource( 4 )
+material = SubResource( 18 )
 z_index = 1
 texture = ExtResource( 9 )
 hframes = 19
-frame = 16
+frame = 8
 
 [node name="EnvironmentHitbox" type="CollisionShape2D" parent="."]
 visible = false

@@ -36,6 +36,7 @@ onready var shit_wave = preload("res://scenes/attacks/ShitWave.tscn")
 # variables
 onready var animation = $Animation
 onready var state = $State
+onready var stateMachine = $StateMachine
 onready var halfAss = $HalfAss
 onready var sprite = $CharacterSprite
 onready var camera = $Camera
@@ -43,6 +44,7 @@ onready var ifVisible = $IfVisible
 onready var bulletPosition = $BulletPosition
 onready var shootParticlesPos = $ShootingParticlesPosition
 onready var bounceRaycasts = $BounceRaycasts
+onready var hurtbox = $BulletDetection/BulletHitbox
 
 onready var uiHearts = get_tree().current_scene.get_node("UI").get_node("Hearts")
 
@@ -50,12 +52,13 @@ onready var uiHearts = get_tree().current_scene.get_node("UI").get_node("Hearts"
 onready var coyoteTimer = $CoyoteTime
 onready var jumpBuffer = $JumpBuffer
 var was_on_floor
+var yCoordinateBeforeJump = global_position.y
 
 func _ready():
 	uiHearts.initialize(100, 100)
 	connect("player_damaged", uiHearts, "_on_Player_damage")
 
-func _process(_delta):
+func _process(delta):
 	if sprite.flip_h == false:
 		bulletPosition.position.x = -5
 		bulletPosition.rotation = -0.23
@@ -98,16 +101,18 @@ func apply_special_attack_controls():
 			yield(get_tree().create_timer(15), "timeout")
 			can_fire = true
 
-func apply_jumping():
+func apply_jumping(delta):
 	if is_on_floor() || !coyoteTimer.is_stopped():
 		if x_input == 0:
 			motion.x = lerp(motion.x, 0, FRICTION)
 		if Input.is_action_just_pressed("w"):
+			yCoordinateBeforeJump = global_position.y
 			coyoteTimer.stop()
 			motion.y = -JUMP_FORCE
 	else:
 		jumpBuffer.start()
 		if Input.is_action_just_released("w") and motion.y < -JUMP_FORCE / 2:
+			yCoordinateBeforeJump = global_position.y
 			coyoteTimer.stop()
 			motion.y = -JUMP_FORCE / 2
 		
@@ -136,12 +141,14 @@ func loop_damage_checker():
 		enemyOrigin = body.transform.origin
 
 func stunned():
+	hurtbox.disabled = true
 	stunned = true
 	yield(get_tree().create_timer(1.25), "timeout")
+	hurtbox.disabled = false
 	stunned = false
 
 func apply_damage(damage):
-	if health <= 0.999 and stunned == false:
+	if health <= 0:
 		var deathId = DEATH_ID_SCENE.instance()
 		get_tree().current_scene.add_child(deathId)
 		return

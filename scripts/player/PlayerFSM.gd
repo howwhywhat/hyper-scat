@@ -19,7 +19,7 @@ func _state_logic(delta):
 	parent.apply_gravity(delta)
 	if state_logic_enabled == true:
 		parent.loop_damage_checker()
-		parent.apply_jumping()
+		parent.apply_jumping(delta)
 		parent.apply_movement(delta)
 		parent.apply_special_attack_controls()
 	else:

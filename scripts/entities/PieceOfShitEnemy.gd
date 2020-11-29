@@ -2,6 +2,7 @@ extends "res://scripts/entities/Enemy.gd"
 
 # general functionality
 onready var collider = $Collider
+onready var hurtbox = $PlayerDamage/Hurtbox
 onready var animation = $Animation
 onready var sprite = $Texture
 onready var stateMachine = $StateMachine
@@ -26,9 +27,6 @@ onready var chaseHitbox = $PlayerDetectionChase/Collider
 onready var stateLabel = $Label
 
 var player = null setget set_player
-
-func _ready():
-	pass
 
 func _process(_delta):
 	if player != null:
@@ -74,7 +72,7 @@ func _on_PlayerDetectionWakeup_body_entered(body):
 		player = body
 
 func _on_PlayerDetectionChase_body_exited(body):
-	$StateMachine.call_deferred("set_state", $StateMachine.states.asleep)
+	stateMachine.call_deferred("set_state", stateMachine.states.asleep)
 	stop_movement()
 
 func pounced(bouncer):

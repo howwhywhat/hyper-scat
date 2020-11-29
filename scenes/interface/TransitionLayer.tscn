@@ -1,0 +1,38 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://scripts/ShaderLayer.gd" type="Script" id=1]
+[ext_resource path="res://scripts/TransitionLayer.gd" type="Script" id=2]
+[ext_resource path="res://assets/textures/transitions/transition-pixel.png" type="Texture" id=3]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform float fill : hint_range(0., 1.) = 0.5;
+
+void fragment() {
+	float mask = texture(TEXTURE, UV).r;
+	vec3 black = vec3(0.);
+	COLOR = vec4(black, step(mask, fill));
+}"
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = SubResource( 1 )
+shader_param/fill = 1.0
+
+[node name="TransitionLayer" type="CanvasLayer"]
+layer = 2
+script = ExtResource( 2 )
+mask = 8
+
+[node name="ShaderLayer" type="TextureRect" parent="."]
+material = SubResource( 2 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource( 3 )
+expand = true
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="ShaderLayer"]

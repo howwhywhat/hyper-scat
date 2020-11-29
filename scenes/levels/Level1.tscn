@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -31,11 +31,17 @@
 [ext_resource path="res://scenes/particles/SewerParticles.tscn" type="PackedScene" id=29]
 [ext_resource path="res://assets/textures/decor/wall_decor/9.png" type="Texture" id=30]
 [ext_resource path="res://assets/textures/decor/wall_decor/normal_map_9.png" type="Texture" id=31]
+[ext_resource path="res://scenes/entities/SlugEnemy.tscn" type="PackedScene" id=32]
+[ext_resource path="res://scenes/interface/TransitionLayer.tscn" type="PackedScene" id=33]
 [ext_resource path="res://scenes/entities/PieceOfShitEnemy.tscn" type="PackedScene" id=34]
 [ext_resource path="res://scenes/entities/HangingSpider.tscn" type="PackedScene" id=35]
 [ext_resource path="res://assets/textures/decor/foreground_decor/spider.png" type="Texture" id=36]
+[ext_resource path="res://scripts/levels/Level1.gd" type="Script" id=37]
+[ext_resource path="res://scenes/attacks/Trajectory.tscn" type="PackedScene" id=38]
+[ext_resource path="res://scenes/attacks/Spike.tscn" type="PackedScene" id=39]
 
 [node name="Level1" type="Node2D"]
+script = ExtResource( 37 )
 
 [node name="RoofCollision" type="StaticBody2D" parent="." groups=[
 "WallTiles",
@@ -503,7 +509,7 @@ hframes = 9
 frame = 6
 
 [node name="ShootAttackDirections" type="Node2D" parent="TutorialText"]
-position = Vector2( 2, -1 )
+position = Vector2( -130, 4 )
 
 [node name="LMB" type="Sprite" parent="TutorialText/ShootAttackDirections"]
 position = Vector2( 409, 222 )
@@ -558,6 +564,15 @@ position = Vector2( 439, 250 )
 
 [node name="Enemy5" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
 position = Vector2( 462, 250 )
+
+[node name="Garbage" type="Node2D" parent="Enemies"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Enemy" parent="Enemies/Garbage" instance=ExtResource( 32 )]
+position = Vector2( 506, 236 )
+scale = Vector2( 0.95, 0.95 )
 
 [node name="Player" parent="." instance=ExtResource( 12 )]
 position = Vector2( 34, 94 )
@@ -632,5 +647,12 @@ __meta__ = {
 position = Vector2( 36, 225 )
 current = true
 zoom = Vector2( 0.5, 0.5 )
+
+[node name="TransitionLayer" parent="." instance=ExtResource( 33 )]
+
+[node name="Trajectory" parent="." instance=ExtResource( 38 )]
+visible = false
+SPIKE_TYPE = ExtResource( 39 )
+PLAYER = NodePath("../Player")
 [connection signal="screen_entered" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_entered"]
 [connection signal="screen_exited" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_exited"]

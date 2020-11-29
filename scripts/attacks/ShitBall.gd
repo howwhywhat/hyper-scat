@@ -1,7 +1,7 @@
 extends "res://scripts/attacks/Bullet.gd"
 
 func _on_ShitBall_body_entered(body):
-	if body.is_in_group("ForeignEntities"):
+	if body.is_in_group("ForeignEntities") and body.hurtbox.disabled == false:
 		body.damage(damage)
 		queue_free()
 	elif body.is_in_group("WallTiles"):
