@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scripts/entities/SlugEnemy.gd" type="Script" id=1]
 [ext_resource path="res://scenes/entities/Enemy.tscn" type="PackedScene" id=2]
@@ -151,17 +151,14 @@ height = 2.0
 [sub_resource type="CircleShape2D" id=8]
 radius = 98.0204
 
-[sub_resource type="CircleShape2D" id=9]
-radius = 116.155
-
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 25, 4.193 )
 
 [node name="Enemy" groups=[
 "ForeignEntities",
 ] instance=ExtResource( 2 )]
 collision_layer = 16
-collision_mask = 35
+collision_mask = 2147483683
 script = ExtResource( 1 )
 MAX_SPEED = 25
 HEALTH = 35
@@ -171,7 +168,6 @@ material = ExtResource( 6 )
 texture = ExtResource( 4 )
 normal_map = ExtResource( 5 )
 hframes = 35
-frame = 9
 
 [node name="Collider" parent="." index="1"]
 visible = false
@@ -214,20 +210,19 @@ collision_layer = 16
 [node name="Collider" type="CollisionShape2D" parent="PlayerDetectionWakeup" index="0"]
 shape = SubResource( 8 )
 
-[node name="PlayerChaseDetection" type="Area2D" parent="." index="7"]
-visible = false
-collision_layer = 2147483664
-
-[node name="Collider" type="CollisionShape2D" parent="PlayerChaseDetection" index="0"]
-shape = SubResource( 9 )
-
-[node name="PlayerHitDetection" type="Area2D" parent="." index="8"]
+[node name="PlayerHitDetection" type="Area2D" parent="." index="7"]
 visible = false
 collision_layer = 16
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerHitDetection" index="0"]
 position = Vector2( 0, 500 )
-shape = SubResource( 10 )
+shape = SubResource( 9 )
+
+[node name="PlayerChaseCast" type="RayCast2D" parent="." index="8"]
+scale = Vector2( 2, 3 )
+enabled = true
+cast_to = Vector2( 0, 0 )
+collision_mask = 3
 
 [node name="FloorLeft" type="RayCast2D" parent="." index="9"]
 visible = false
@@ -267,8 +262,21 @@ visible = false
 position = Vector2( -10.03, 10.38 )
 cast_to = Vector2( -12, 0 )
 
-[node name="StunTween" type="Tween" parent="." index="15"]
+[node name="JumpTop" type="RayCast2D" parent="." index="15"]
+position = Vector2( 0, -5.466 )
+enabled = true
+cast_to = Vector2( -12, 0 )
+collision_mask = 128
+collide_with_areas = true
+
+[node name="JumpBottom" type="RayCast2D" parent="." index="16"]
+position = Vector2( 0, 18.884 )
+enabled = true
+cast_to = Vector2( -12, 0 )
+collision_mask = 128
+collide_with_areas = true
+
+[node name="StunTween" type="Tween" parent="." index="17"]
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="PlayerDetectionWakeup" to="." method="_on_PlayerDetectionWakeup_body_entered"]
-[connection signal="body_exited" from="PlayerChaseDetection" to="." method="_on_PlayerChaseDetection_body_exited"]
 [connection signal="body_entered" from="PlayerHitDetection" to="." method="_on_PlayerHitDetection_body_entered"]

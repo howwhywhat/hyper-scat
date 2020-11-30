@@ -15,11 +15,14 @@ func _ready():
 	add_state("wake_up")
 	add_state("left")
 	add_state("right")
+	add_state("jump")
+	add_state("fall")
 	call_deferred("set_state", states.asleep)
 
 func _state_logic(delta):
 	if state_logic_enabled == true:
 		parent.move()
+		parent._apply_gravity(delta)
 		if chase == true:
 			parent.move_towards_player(delta)
 
@@ -43,13 +46,15 @@ func _get_transition(delta):
 		states.left:
 			if state_enabled:
 				parent.stateLabel.text = "left"
-				if not parent.floorLeft.is_colliding() or parent.wallLeft.is_colliding():
-					return states.right
-				if parent.leftAttackDetection.is_colliding() or parent.rightAttackDetection.is_colliding():
-					return states.mouth_attack
-				for bodies in parent.playerChaseDetection.get_overlapping_bodies():
-					if bodies.is_in_group("Player"):
+				if parent.is_on_floor():
+					if not parent.floorLeft.is_colliding() or parent.wallLeft.is_colliding():
+						return states.right
+					if parent.can_see() and parent.leftAttackDetection.is_colliding() or parent.rightAttackDetection.is_colliding():
+						return states.mouth_attack
+					if parent.can_see():
 						return states.chase
+				if parent.can_jump():
+					return states.jump
 				if parent.HEALTH <= 0:
 					return states.death
 			else:
@@ -57,13 +62,15 @@ func _get_transition(delta):
 		states.right:
 			if state_enabled:
 				parent.stateLabel.text = "right"
-				if not parent.floorRight.is_colliding() or parent.wallRight.is_colliding():
-					return states.left
-				if parent.rightAttackDetection.is_colliding() or parent.rightAttackDetection.is_colliding():
-					return states.mouth_attack
-				for bodies in parent.playerChaseDetection.get_overlapping_bodies():
-					if bodies.is_in_group("Player"):
+				if parent.is_on_floor():
+					if not parent.floorRight.is_colliding() or parent.wallRight.is_colliding():
+						return states.left
+					if parent.can_see() and parent.rightAttackDetection.is_colliding() or parent.rightAttackDetection.is_colliding():
+						return states.mouth_attack
+					if parent.can_see():
 						return states.chase
+				if parent.can_jump():
+					return states.jump
 				if parent.HEALTH <= 0:
 					return states.death
 			else:
@@ -71,8 +78,34 @@ func _get_transition(delta):
 		states.chase:
 			if state_enabled:
 				parent.stateLabel.text = "chase"
-				if parent.position.distance_to(parent.player.position) < 35:
-					return states.mouth_attack
+				if parent.is_on_floor():
+					if not parent.in_sight():
+						return states.left
+					if parent.can_see() and parent.position.distance_to(parent.player.position) < 35:
+						return states.mouth_attack
+				if parent.can_jump():
+					return states.jump
+				if parent.HEALTH <= 0:
+					return states.death
+			else:
+				return states.death
+		states.jump:
+			if state_enabled:
+				parent.stateLabel.text = "jump"
+				if parent.is_on_floor():
+					return states.left
+				elif parent.motion.y > 0:
+					return states.fall
+				if parent.HEALTH <= 0:
+					return states.death
+			else:
+				return states.death
+		states.fall:
+			if state_enabled:
+				if parent.is_on_floor():
+					return states.left
+				elif parent.motion.y < 0:
+					return states.jump
 				if parent.HEALTH <= 0:
 					return states.death
 			else:
@@ -86,7 +119,6 @@ func _get_transition(delta):
 				return states.death
 		states.death:
 			parent.stateLabel.text = "death"
-
 	return null
 
 func _enter_state(new_state, old_state):
@@ -98,6 +130,14 @@ func _enter_state(new_state, old_state):
 			get_parent().add_child(mouthAttack)
 			parent.stop_movement()
 			parent.animation.play("idle")
+		states.jump:
+			chase = false
+			parent.jump()
+			parent.animation.play("idle")
+		states.fall:
+			chase = false
+			parent.motion.y = 0
+			parent.animation.play("fall")
 		states.asleep:
 			chase = false
 			parent.animation.play("asleep")

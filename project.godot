@@ -101,6 +101,7 @@ shoot={
 2d_physics/layer_5="ForeignEntities"
 2d_physics/layer_6="TileWall"
 2d_physics/layer_7="Bounceable"
+2d_physics/layer_8="InvisiblePhysics"
 
 [rendering]
 

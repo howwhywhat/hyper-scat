@@ -261,6 +261,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.1959 )
 light_color = Color( 0.556863, 0.678431, 0.992157, 1 )
 light_energy = 2.0
 shadow_enabled = true
+shadow_bias = 0.02
 spot_range = 11.4
 spot_attenuation = 2.14355
 spot_angle = 75.0

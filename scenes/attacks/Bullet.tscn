@@ -16,5 +16,4 @@ hframes = 5
 [node name="IfVisible" type="VisibilityNotifier2D" parent="."]
 
 [node name="Animation" type="AnimationPlayer" parent="."]
-[connection signal="body_entered" from="." to="." method="_on_Bullet_body_entered"]
 [connection signal="screen_exited" from="IfVisible" to="." method="_on_IfVisible_screen_exited"]
