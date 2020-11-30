@@ -6,3 +6,6 @@ func _ready():
 	transitionLayer._set_mask(transitionLayer.Transitions.grid)
 	transitionLayer._set_fill(1.0)
 	transitionLayer.shaderLayer.show_screen()
+
+func comeFromPokemonAttack():
+	transitionLayer.shaderLayer.show_screen()

@@ -177,8 +177,6 @@ func _enter_state(new_state, old_state):
 				parent.chaseHitbox.queue_free()
 			if parent.playerDetection != null:
 				parent.playerDetection.queue_free()
-			if parent.hurtbox != null:
-				parent.hurtbox.queue_free()
 			parent.stop_movement()
 			if mouthAttack != null:
 				mouthAttack.animation.play("mouth_close")

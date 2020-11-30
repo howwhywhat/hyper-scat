@@ -28,7 +28,8 @@ onready var leftAttackDetection = $LeftPlayerAttackDetection
 onready var rightAttackDetection = $RightPlayerAttackDetection
 onready var chaseHitbox = $PlayerChaseCast
 
-var player = null setget set_player
+export (NodePath) var PLAYER_SCENE
+onready var player = get_node(PLAYER_SCENE)
 
 # jumping
 onready var jumpTop = $JumpTop
@@ -41,7 +42,7 @@ onready var POKEMON_SCENE = preload("res://scenes/levels/PokemonAttack.tscn")
 onready var state = $State
 
 func _process(_delta):
-	if player != null:
+	if can_see() and player != null:
 		if global_position.x < player.global_position.x:
 			sprite.flip_h = true
 		else:
@@ -90,12 +91,13 @@ func in_sight():
 		return true
 
 func can_see():
-	if playerDetection.overlaps_body(player):
-		if in_sight():
-			return true
-	else:
-		chaseHitbox.cast_to = Vector2.ZERO
-		return false
+	if playerDetection != null:
+		if playerDetection.overlaps_body(player):
+			if in_sight():
+				return true
+		else:
+			chaseHitbox.cast_to = Vector2.ZERO
+			return false
 
 func stunned():
 	if hurtbox != null:
@@ -113,10 +115,6 @@ func apply_knockback(amount : Vector2):
 func set_player(new_value):
 	player = new_value
 
-func _on_PlayerDetectionWakeup_body_entered(body):
-	if body.is_in_group("Player"):
-		player = body
-
 func _on_Animation_animation_finished(anim_name):
 	if anim_name == "idle":
 		woke_up = true
@@ -125,6 +123,7 @@ func _on_Animation_animation_finished(anim_name):
 
 func _start_pokemon_fight_scene():
 	var pokemonScene = POKEMON_SCENE.instance()
+	pokemonScene.garbageEntity = self
 	get_tree().current_scene.get_node("TransitionLayer")._set_mask(get_tree().current_scene.get_node("TransitionLayer").Transitions.pixel_swirl)
 	get_tree().current_scene.get_node("TransitionLayer")._set_fill(0.0)
 	get_tree().current_scene.get_node("TransitionLayer").shaderLayer.hide_screen()
@@ -153,3 +152,7 @@ func _on_PlayerHitDetection_body_entered(body):
 		yield(get_tree().create_timer(0.20), "timeout")
 		if body.health > 0:
 			_start_pokemon_fight_scene() 
+
+func pounced(bouncer):
+	damage(5)
+	bouncer.bounce()

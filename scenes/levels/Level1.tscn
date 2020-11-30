@@ -599,11 +599,13 @@ __meta__ = {
 [node name="Enemy" parent="Enemies/Garbage" instance=ExtResource( 32 )]
 position = Vector2( 506, 243 )
 scale = Vector2( 0.65, 0.65 )
+PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="Player" parent="." instance=ExtResource( 12 )]
 position = Vector2( 34, 94 )
 collision_mask = 2
 camera_in_level = NodePath("../IniitalCamera")
+UI_NODE = NodePath("../UI")
 
 [node name="WaterPositions" type="Node" parent="."]
 

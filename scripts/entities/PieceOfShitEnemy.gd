@@ -2,7 +2,6 @@ extends "res://scripts/entities/Enemy.gd"
 
 # general functionality
 onready var collider = $Collider
-onready var hurtbox = $PlayerDamage/Hurtbox
 onready var animation = $Animation
 onready var sprite = $Texture
 onready var stateMachine = $StateMachine
@@ -35,7 +34,7 @@ export (NodePath) var PLAYER_SCENE
 onready var player = get_node(PLAYER_SCENE)
 
 func _process(_delta):
-	if player != null:
+	if can_see() and player != null:
 		if global_position.x < player.global_position.x:
 			if stateMachine.mouthAttack != null:
 				stateMachine.mouthAttack.position.x = mouthPosition.position.x
@@ -67,12 +66,13 @@ func in_sight():
 		return true
 
 func can_see():
-	if playerDetection.overlaps_body(player):
-		if in_sight():
-			return true
-	else:
-		chaseHitbox.cast_to = Vector2.ZERO
-		return false
+	if not playerDetection == null:
+		if playerDetection.overlaps_body(player):
+			if in_sight():
+				return true
+		else:
+			chaseHitbox.cast_to = Vector2.ZERO
+			return false
 
 func jump():
 	motion.y -= JUMP

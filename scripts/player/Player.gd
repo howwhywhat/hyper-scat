@@ -46,7 +46,9 @@ onready var shootParticlesPos = $ShootingParticlesPosition
 onready var bounceRaycasts = $BounceRaycasts
 onready var hurtbox = $BulletDetection/BulletHitbox
 
-onready var uiHearts = get_tree().current_scene.get_node("UI").get_node("Hearts")
+export (NodePath) var UI_NODE
+onready var ui = get_node(UI_NODE)
+onready var uiHearts = ui.get_node("Hearts")
 
 # jump handling
 onready var coyoteTimer = $CoyoteTime
@@ -199,4 +201,4 @@ func _on_IfVisible_screen_entered():
 	ifVisible.queue_free()
 
 func bounce():
-	motion.y -= 200
+	motion.y = -100

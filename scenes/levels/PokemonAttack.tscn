@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=36 format=2]
 
 [ext_resource path="res://scripts/PokemonAttack.gd" type="Script" id=1]
 [ext_resource path="res://scenes/interface/TransitionLayer.tscn" type="PackedScene" id=2]
@@ -14,6 +14,8 @@
 [ext_resource path="res://assets/interface/walls/2.png" type="Texture" id=12]
 [ext_resource path="res://assets/textures/entities/slug_enemy/spritesheet.png" type="Texture" id=13]
 [ext_resource path="res://assets/interface/player/spritesheet.png" type="Texture" id=14]
+[ext_resource path="res://assets/fonts/PixelRPG.ttf" type="DynamicFontData" id=16]
+[ext_resource path="res://assets/interface/nine_patch_rect.png" type="Texture" id=17]
 
 [sub_resource type="QuadMesh" id=1]
 
@@ -91,6 +93,153 @@ adjustment_enabled = true
 adjustment_brightness = 5.35
 adjustment_contrast = 1.09
 
+[sub_resource type="Animation" id=18]
+resource_name = "death"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 25, 26, 27, 28, 29, 30, 31, 32, 33 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "idle"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("PlayerSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.9, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 40, 40, 50, 50 ]
+}
+
+[sub_resource type="Animation" id=19]
+resource_name = "death"
+tracks/0/type = "value"
+tracks/0/path = NodePath("EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ]
+}
+
+[sub_resource type="Animation" id=12]
+resource_name = "idle"
+length = 2.0
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("EnemySprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.9, 1, 2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 36, 36, 44, 44 ]
+}
+
+[sub_resource type="Animation" id=17]
+resource_name = "enemy_attack"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("EnemySprite:translation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 0.612, -0.25, 0, 0.25, 0, -0.359989, -0.25, 0, 0.25, 0, -0.672, -0.25, 0, 0.25, 0, 0.612, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4, 0.7, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("PlayerSprite:translation:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( -0.731, -0.25, 0, 0.25, 0, -0.988, -0.25, 0, 0.25, 0, -0.731, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.4, 0.7, 1 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("PlayerSprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.4, 0.5, 0.7, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.305882, 0.305882, 0.305882, 1 ), Color( 1, 0, 0, 1 ), Color( 0.722353, 0.722353, 0.722353, 1 ), Color( 0.305882, 0.305882, 0.305882, 1 ) ]
+}
+
+[sub_resource type="Animation" id=16]
+resource_name = "player_attack"
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("PlayerSprite:translation:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -0.731, -0.25, 0, 0.0174103, 0.553235, 0.0969385, -0.25, 0, 0.25, 0, -0.731, -0.405873, 1.5495, 0.25, 0 ),
+"times": PoolRealArray( 0, 0.4, 1 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("EnemySprite:translation:x")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray( 0.612, -0.25, 0, 0.25, 0, 0.8, -0.25, 0, 0.25, 0, 0.612, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0.4, 0.8, 1 )
+}
+tracks/2/type = "value"
+tracks/2/path = NodePath("EnemySprite:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 0.4, 0.5, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.384314, 0.286275, 0.286275, 1 ), Color( 0.384314, 0.286275, 0.286275, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 0.384314, 0.286275, 0.286275, 1 ) ]
+}
+
+[sub_resource type="DynamicFont" id=13]
+size = 12
+font_data = ExtResource( 16 )
+
+[sub_resource type="DynamicFont" id=14]
+size = 12
+font_data = ExtResource( 16 )
+
+[sub_resource type="DynamicFont" id=15]
+size = 12
+font_data = ExtResource( 16 )
+
 [node name="PokemonAttack" type="Spatial"]
 script = ExtResource( 1 )
 
@@ -151,16 +300,18 @@ billboard = 1
 shaded = true
 alpha_cut = 2
 texture = ExtResource( 14 )
-hframes = 26
+hframes = 51
+frame = 40
 
 [node name="EnemySprite" type="Sprite3D" parent="."]
-transform = Transform( 0.424078, 0, -1.85207, 0, 1.9, 0, 1.85207, 0, 0.424078, 0.612, 0.115, 0.583 )
+transform = Transform( 0.424078, 0, -1.85207, 0, 1.9, 0, 1.85207, 0, 0.424078, 0.612, 0.115, 0.547 )
 modulate = Color( 0.384314, 0.286275, 0.286275, 1 )
 billboard = 1
 shaded = true
 alpha_cut = 2
 texture = ExtResource( 13 )
-hframes = 35
+hframes = 45
+frame = 34
 
 [node name="Light" type="SpotLight" parent="."]
 transform = Transform( 0.842342, -0.000232229, -0.538943, 0.000287577, 1, 1.85727e-05, 0.538943, -0.000170632, 0.842342, -0.801456, 0.239388, 2.2209 )
@@ -190,3 +341,204 @@ interior_ambient_energy = 2.04
 
 [node name="TransitionLayer" parent="." instance=ExtResource( 2 )]
 fill = 1.0
+
+[node name="PlayerAnimation" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/death = SubResource( 18 )
+anims/idle = SubResource( 11 )
+
+[node name="EnemyAnimation" type="AnimationPlayer" parent="."]
+autoplay = "idle"
+anims/death = SubResource( 19 )
+anims/idle = SubResource( 12 )
+
+[node name="AttackAnimation" type="AnimationPlayer" parent="."]
+anims/enemy_attack = SubResource( 17 )
+anims/player_attack = SubResource( 16 )
+
+[node name="PokemonUI" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="BaseMenu" type="Control" parent="PokemonUI"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AssManHealthUI" type="NinePatchRect" parent="PokemonUI/BaseMenu"]
+margin_left = 4.0
+margin_top = 4.0
+margin_right = 161.0
+margin_bottom = 46.0
+texture = ExtResource( 17 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="PokemonUI/BaseMenu/AssManHealthUI"]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 70.0
+margin_bottom = 22.0
+custom_fonts/font = SubResource( 13 )
+custom_colors/font_color = Color( 0.160156, 0.160156, 0.160156, 1 )
+text = "Ass Man"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="EnemyHealthUI" type="NinePatchRect" parent="PokemonUI/BaseMenu"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -161.0
+margin_top = 4.0
+margin_right = -4.0
+margin_bottom = 46.0
+texture = ExtResource( 17 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Name" type="Label" parent="PokemonUI/BaseMenu/EnemyHealthUI"]
+margin_left = 87.0
+margin_top = 10.0
+margin_right = 147.0
+margin_bottom = 22.0
+custom_fonts/font = SubResource( 13 )
+custom_colors/font_color = Color( 0.160156, 0.160156, 0.160156, 1 )
+text = "Garbage"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Options" type="NinePatchRect" parent="PokemonUI/BaseMenu"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 173.0
+margin_top = -49.0
+margin_right = -161.0
+margin_bottom = -11.0
+texture = ExtResource( 17 )
+patch_margin_left = 5
+patch_margin_top = 5
+patch_margin_right = 5
+patch_margin_bottom = 5
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GeneralText" type="RichTextLabel" parent="PokemonUI/BaseMenu/Options"]
+visible = false
+margin_left = 11.0
+margin_top = 12.0
+margin_right = 297.0
+margin_bottom = 24.0
+custom_fonts/normal_font = SubResource( 14 )
+custom_colors/default_color = Color( 0, 0, 0, 1 )
+bbcode_enabled = true
+bbcode_text = "[shake]EAT MY ASS[/shake]"
+text = "EAT MY ASS"
+scroll_active = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerChoiceButtons" type="Control" parent="PokemonUI/BaseMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FightButton" type="Button" parent="PokemonUI/BaseMenu/PlayerChoiceButtons"]
+margin_left = 182.0
+margin_top = 320.0
+margin_right = 234.0
+margin_bottom = 340.0
+focus_mode = 0
+mouse_filter = 1
+custom_fonts/font = SubResource( 15 )
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+enabled_focus_mode = 0
+text = "FIGHT"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AssMenButton" type="Button" parent="PokemonUI/BaseMenu/PlayerChoiceButtons"]
+margin_left = 269.0
+margin_top = 320.0
+margin_right = 343.0
+margin_bottom = 340.0
+focus_mode = 0
+mouse_filter = 1
+custom_fonts/font = SubResource( 15 )
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+enabled_focus_mode = 0
+text = "ASS MEN"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="FuckinRunButton" type="Button" parent="PokemonUI/BaseMenu/PlayerChoiceButtons"]
+margin_left = 376.0
+margin_top = 320.0
+margin_right = 470.0
+margin_bottom = 340.0
+focus_mode = 0
+mouse_filter = 1
+custom_fonts/font = SubResource( 15 )
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+enabled_focus_mode = 0
+text = "FUCKIN RUN"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerAttackChoices" type="Control" parent="PokemonUI/BaseMenu"]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AssClenchAttack" type="Button" parent="PokemonUI/BaseMenu/PlayerAttackChoices"]
+margin_left = 182.0
+margin_top = 320.0
+margin_right = 234.0
+margin_bottom = 340.0
+focus_mode = 0
+mouse_filter = 1
+custom_fonts/font = SubResource( 15 )
+custom_colors/font_color = Color( 0.121569, 0.121569, 0.121569, 1 )
+disabled = true
+enabled_focus_mode = 0
+text = "ASS CLENCH"
+flat = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ShowText" type="Tween" parent="PokemonUI"]
+[connection signal="animation_finished" from="PlayerAnimation" to="." method="_on_PlayerAnimation_animation_finished"]
+[connection signal="animation_finished" from="EnemyAnimation" to="." method="_on_EnemyAnimation_animation_finished"]
+[connection signal="animation_finished" from="AttackAnimation" to="." method="_on_AttackAnimation_animation_finished"]
+[connection signal="pressed" from="PokemonUI/BaseMenu/PlayerChoiceButtons/FightButton" to="." method="_on_FightButton_pressed"]
+[connection signal="pressed" from="PokemonUI/BaseMenu/PlayerChoiceButtons/AssMenButton" to="." method="_on_AssMenButton_pressed"]
+[connection signal="pressed" from="PokemonUI/BaseMenu/PlayerChoiceButtons/FuckinRunButton" to="." method="_on_FuckinRunButton_pressed"]
+[connection signal="pressed" from="PokemonUI/BaseMenu/PlayerAttackChoices/AssClenchAttack" to="." method="_on_AssClenchAttack_pressed"]
