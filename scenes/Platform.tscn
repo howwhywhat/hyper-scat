@@ -39,5 +39,3 @@ collision_layer = 2
 [node name="Collider" type="CollisionShape2D" parent="TurnOffSpikes"]
 position = Vector2( 0, -86 )
 shape = SubResource( 2 )
-[connection signal="body_entered" from="TurnOffSpikes" to="." method="_on_TurnOffSpikes_body_entered"]
-[connection signal="body_exited" from="TurnOffSpikes" to="." method="_on_TurnOffSpikes_body_exited"]

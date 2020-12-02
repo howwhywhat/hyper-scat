@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=2]
+[gd_scene load_steps=44 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -42,6 +42,9 @@
 [ext_resource path="res://scenes/Platform.tscn" type="PackedScene" id=40]
 [ext_resource path="res://scenes/JumpDetection.tscn" type="PackedScene" id=41]
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 49, 10 )
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 1, 10 )
 
@@ -56,6 +59,14 @@ collision_mask = 29
 
 [node name="Hitbox" type="CollisionPolygon2D" parent="RoofCollision"]
 polygon = PoolVector2Array( 64, 181, 64, 192, 576, 192, 576, 181, 576, 181 )
+
+[node name="SewerBlock" type="StaticBody2D" parent="."]
+position = Vector2( 34, 183 )
+collision_layer = 2
+
+[node name="Collider" type="CollisionShape2D" parent="SewerBlock"]
+shape = SubResource( 2 )
+disabled = true
 
 [node name="NullTiles" type="TileMap" parent="." groups=[
 "WallTiles",
@@ -682,5 +693,6 @@ zoom = Vector2( 0.5, 0.5 )
 visible = false
 SPIKE_TYPE = ExtResource( 39 )
 PLAYER = NodePath("../Player")
+enabled = false
 [connection signal="screen_entered" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_entered"]
 [connection signal="screen_exited" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_exited"]

@@ -7,6 +7,7 @@ var state_logic_enabled = true
 func _ready():
 	add_state("idle")
 	add_state("walk")
+	add_state("wall_slide")
 	add_state("jump")
 	add_state("fall")
 	add_state("special_attack")
@@ -18,10 +19,16 @@ func _ready():
 func _state_logic(delta):
 	parent.apply_gravity(delta)
 	if state_logic_enabled == true:
-		parent.loop_damage_checker()
-		parent.apply_jumping(delta)
 		parent.apply_movement(delta)
 		parent.apply_special_attack_controls()
+		parent.loop_damage_checker()
+		parent.start_movement()
+		parent.apply_jumping()
+		
+		if state == states.wall_slide:
+			parent.wall_slide_drop_check(delta)
+			parent.wall_slide_fast_slide_check(delta)
+			parent.apply_wall_slide_jump(parent.get_wall_axis())
 	else:
 		parent.apply_empty_movement(delta)
 
@@ -29,6 +36,8 @@ func _get_transition(delta):
 	match state:
 		states.idle:
 			parent.state.text = "idle"
+			parent.sprite.scale.x = 1
+			parent.halfAss.scale.x = 1
 			if !parent.is_on_floor():
 				if parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
 					return states.jump
@@ -59,6 +68,8 @@ func _get_transition(delta):
 				return states.stunned
 			if Input.is_action_pressed("shoot") and parent.can_fire_bullet == true:
 				return states.shoot
+			if not parent.is_on_floor() and parent.is_on_wall():
+				return states.wall_slide
 		states.jump:
 			parent.state.text = "jump"
 			if parent.is_on_floor():
@@ -69,6 +80,8 @@ func _get_transition(delta):
 				return states.stunned
 			if Input.is_action_pressed("shoot") and parent.can_fire_bullet == true:
 				return states.shoot
+			if not parent.is_on_floor() and parent.is_on_wall():
+				return states.wall_slide
 		states.fall:
 			parent.state.text = "fall"
 			if parent.is_on_floor():
@@ -83,6 +96,8 @@ func _get_transition(delta):
 				return states.stunned
 			if Input.is_action_pressed("shoot") and parent.can_fire_bullet == true:
 				return states.shoot
+			if not parent.is_on_floor() and parent.is_on_wall():
+				return states.wall_slide
 		states.special_attack:
 			parent.state.text = "special attack"
 			if !parent.is_on_floor():
@@ -129,6 +144,10 @@ func _get_transition(delta):
 				return states.death
 			if parent.stunned == true:
 				return states.stunned
+		states.wall_slide:
+			parent.state.text = "wall_slide"
+			if parent.get_wall_axis() == 0 or parent.is_on_floor():
+				return states.idle
 	return null
 
 func _enter_state(new_state, old_state):
@@ -170,6 +189,13 @@ func _enter_state(new_state, old_state):
 			state_logic_enabled = true
 		states.shoot:
 			parent.shoot()
+		states.wall_slide:
+			parent.animation.play("wall_slide")
+			
+			var wallAxis = parent.get_wall_axis()
+			if wallAxis != 0:
+				parent.sprite.scale.x = -wallAxis
+				parent.halfAss.scale.x = -wallAxis
 
 func _exit_state(old_state, new_state):
 	pass

@@ -4,6 +4,7 @@ extends "res://scripts/entities/Enemy.gd"
 onready var collider = $Collider
 onready var animation = $Animation
 onready var sprite = $Texture
+onready var hurtbox = $BulletDetection/Hurtbox
 onready var stateMachine = $StateMachine
 var woke_up = false
 var been_bounced = false

@@ -8,7 +8,7 @@ onready var player = get_node(PLAYER)
 var max_points = 900
 var outside_delta
 var y_level = 247
-var enabled = true
+export (bool) var enabled = true
 
 func _process(delta):
 	outside_delta = delta

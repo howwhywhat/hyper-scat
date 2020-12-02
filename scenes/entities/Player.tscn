@@ -433,7 +433,14 @@ position = Vector2( -5, -3 )
 [node name="ShootingParticlesPosition" type="Position2D" parent="."]
 position = Vector2( -5, -3 )
 
+[node name="LeftArmPosition" type="Position2D" parent="."]
+position = Vector2( -5, 4 )
+
+[node name="RightArmPosition" type="Position2D" parent="."]
+position = Vector2( 6, 4 )
+
 [node name="BounceRaycasts" type="Node2D" parent="."]
+visible = false
 
 [node name="Raycast" type="RayCast2D" parent="BounceRaycasts"]
 position = Vector2( 0, 11 )

@@ -124,6 +124,7 @@ func _on_Animation_animation_finished(anim_name):
 func _start_pokemon_fight_scene():
 	var pokemonScene = POKEMON_SCENE.instance()
 	pokemonScene.garbageEntity = self
+	pokemonScene.player = player
 	get_tree().current_scene.get_node("TransitionLayer")._set_mask(get_tree().current_scene.get_node("TransitionLayer").Transitions.pixel_swirl)
 	get_tree().current_scene.get_node("TransitionLayer")._set_fill(0.0)
 	get_tree().current_scene.get_node("TransitionLayer").shaderLayer.hide_screen()

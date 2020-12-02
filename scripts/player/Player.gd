@@ -55,6 +55,17 @@ onready var coyoteTimer = $CoyoteTime
 onready var jumpBuffer = $JumpBuffer
 var was_on_floor
 var yCoordinateBeforeJump = global_position.y
+export (int) var WALL_SLIDE_SPEED = 48
+export (int) var MAX_WALL_SLIDE_SPEED = 128
+
+# sprite textures
+var left_arm_attached = true
+var right_arm_attached = true
+onready var leftArmPosition = $LeftArmPosition
+onready var rightArmPosition = $RightArmPosition
+var LIMB_SCENE = preload("res://scenes/entities/AssManLimb.tscn")
+var damaged_1 = preload("res://assets/textures/entities/ass_man/spritesheet_no_left_arm.png")
+var damaged_2 = preload("res://assets/textures/entities/ass_man/spritesheet_no_right_arm.png")
 
 func _ready():
 	uiHearts.initialize(100, 100)
@@ -64,11 +75,35 @@ func _process(delta):
 	if sprite.flip_h == false:
 		bulletPosition.position.x = -5
 		bulletPosition.rotation = -0.23
+		rightArmPosition.position.x = 6
+		rightArmPosition.rotation = -2.93
+		leftArmPosition.position.x = -5
+		leftArmPosition.rotation = -2.93
 		shootParticlesPos.position.x = -2
 	else:
 		bulletPosition.position.x = 5
+		leftArmPosition.position.x = 5
+		rightArmPosition.position.x = -6
+		rightArmPosition.rotation = -0.23
+		leftArmPosition.rotation = -0.23
 		bulletPosition.rotation = -2.93
 		shootParticlesPos.position.x = 2
+
+func apply_damage_texture():
+	if health <= 50 and left_arm_attached == true:
+		left_arm_attached = false
+		var limb = LIMB_SCENE.instance()
+		limb.global_position = leftArmPosition.global_position
+		limb.rotation = leftArmPosition.rotation
+		get_tree().current_scene.add_child(limb)
+		sprite.texture = damaged_1
+	elif health <= 25 and right_arm_attached == true:
+		right_arm_attached = false
+		var limb = LIMB_SCENE.instance()
+		limb.global_position = rightArmPosition.global_position
+		limb.rotation = rightArmPosition.rotation
+		get_tree().current_scene.add_child(limb)
+		sprite.texture = damaged_2
 
 func apply_gravity(delta):
 	if coyoteTimer.is_stopped():
@@ -103,7 +138,7 @@ func apply_special_attack_controls():
 			yield(get_tree().create_timer(15), "timeout")
 			can_fire = true
 
-func apply_jumping(delta):
+func apply_jumping():
 	if is_on_floor() || !coyoteTimer.is_stopped():
 		if x_input == 0:
 			motion.x = lerp(motion.x, 0, FRICTION)
@@ -123,7 +158,6 @@ func apply_jumping(delta):
 
 func apply_movement(delta):
 	x_input = Input.get_action_strength("d") - Input.get_action_strength("a")
-	
 	was_on_floor = is_on_floor()
 	if x_input != 0:
 		motion.x += x_input * ACCELERATION * delta
@@ -131,11 +165,12 @@ func apply_movement(delta):
 		sprite.flip_h = x_input < 0
 		halfAss.flip_h = x_input < 0
 	_check_bounce(delta)
+
+func start_movement():
 	motion = move_and_slide(motion, Vector2.UP)
 
 func apply_empty_movement(delta):
 	motion.x = lerp(motion.x, 0, FRICTION)
-	motion = move_and_slide(motion, Vector2.UP)
 
 func loop_damage_checker():
 	for body in $BulletDetection.get_overlapping_bodies():
@@ -150,6 +185,7 @@ func stunned():
 	stunned = false
 
 func apply_damage(damage):
+	apply_damage_texture()
 	if health <= 0:
 		var deathId = DEATH_ID_SCENE.instance()
 		get_tree().current_scene.add_child(deathId)
@@ -193,12 +229,36 @@ func _check_bounce(delta):
 				raycast.get_collider().call_deferred("pounced", self)
 				break
 
+func get_wall_axis():
+	var is_right_wall = test_move(transform, Vector2.RIGHT)
+	var is_left_wall = test_move(transform, Vector2.LEFT)
+	return int(is_left_wall) - int(is_right_wall)
+
+func apply_wall_slide_jump(wall_axis):
+	if Input.is_action_just_pressed("w"):
+		motion.x = wall_axis * 154
+		motion.y = -JUMP_FORCE * 1.5
+
+func wall_slide_drop_check(delta):
+	if Input.is_action_pressed("d"):
+		motion.x = ACCELERATION * delta
+	
+	if Input.is_action_pressed("a"):
+		motion.x = -ACCELERATION * delta
+
+func wall_slide_fast_slide_check(delta):
+	var max_slide_speed = WALL_SLIDE_SPEED
+	if Input.is_action_pressed("s"):
+		max_slide_speed = MAX_WALL_SLIDE_SPEED
+	motion.y = min(motion.y + GRAVITY * delta, max_slide_speed)
+
 func _on_IfVisible_screen_entered():
 	var oldCamera = get_node(camera_in_level)
 	oldCamera.current = false
 	camera.current = true
 	oldCamera.queue_free()
 	ifVisible.queue_free()
+	get_tree().current_scene.get_node("SewerBlock").get_node("Collider").disabled = false
 
 func bounce():
 	motion.y = -100
