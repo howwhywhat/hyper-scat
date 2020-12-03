@@ -42,10 +42,10 @@
 [ext_resource path="res://scenes/Platform.tscn" type="PackedScene" id=40]
 [ext_resource path="res://scenes/JumpDetection.tscn" type="PackedScene" id=41]
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 49, 10 )
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 1, 10 )
 
 [node name="Level1" type="Node2D"]
@@ -54,6 +54,7 @@ script = ExtResource( 37 )
 [node name="RoofCollision" type="StaticBody2D" parent="." groups=[
 "WallTiles",
 ]]
+visible = false
 collision_layer = 32
 collision_mask = 29
 
@@ -61,11 +62,12 @@ collision_mask = 29
 polygon = PoolVector2Array( 64, 181, 64, 192, 576, 192, 576, 181, 576, 181 )
 
 [node name="SewerBlock" type="StaticBody2D" parent="."]
+visible = false
 position = Vector2( 34, 183 )
 collision_layer = 2
 
 [node name="Collider" type="CollisionShape2D" parent="SewerBlock"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 disabled = true
 
 [node name="NullTiles" type="TileMap" parent="." groups=[
@@ -567,14 +569,14 @@ position = Vector2( 9, 24 )
 
 [node name="Collider" type="CollisionShape2D" parent="Platforms/Platform/JumpDetection"]
 position = Vector2( 10, -9 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="JumpDetection2" parent="Platforms/Platform" instance=ExtResource( 41 )]
 position = Vector2( -25, 24 )
 
 [node name="Collider" type="CollisionShape2D" parent="Platforms/Platform/JumpDetection2"]
 position = Vector2( 6, -9 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 
 [node name="Enemies" type="Node2D" parent="."]
 __meta__ = {
@@ -693,6 +695,5 @@ zoom = Vector2( 0.5, 0.5 )
 visible = false
 SPIKE_TYPE = ExtResource( 39 )
 PLAYER = NodePath("../Player")
-enabled = false
 [connection signal="screen_entered" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_entered"]
 [connection signal="screen_exited" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_exited"]

@@ -6,8 +6,8 @@
 [ext_resource path="res://assets/textures/entities/piece_of_shit_enemy/spritesheet.png" type="Texture" id=4]
 [ext_resource path="res://scripts/entities/PieceOfShitFSM.gd" type="Script" id=5]
 
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 11, 7.811 )
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 6, 7.945 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 12, 8 )
@@ -105,21 +105,26 @@ tracks/0/keys = {
 "ForeignEntities",
 ] instance=ExtResource( 1 )]
 scale = Vector2( 0.5, 0.5 )
-collision_layer = 80
-collision_mask = 35
+collision_layer = 2147483728
+collision_mask = 34
 script = ExtResource( 2 )
 HEALTH = 1
 
-[node name="Texture" parent="." index="0"]
+[node name="StateMachine" type="Node2D" parent="." index="0"]
+script = ExtResource( 5 )
+
+[node name="Texture" parent="." index="1"]
 texture = ExtResource( 4 )
 normal_map = ExtResource( 3 )
 hframes = 33
+frame = 15
 
-[node name="Collider" parent="." index="1"]
-position = Vector2( 0, 3.904 )
-shape = SubResource( 1 )
+[node name="Collider" parent="." index="2"]
+position = Vector2( 0, 4.096 )
+shape = SubResource( 9 )
 
-[node name="BulletDetection" type="Area2D" parent="." index="2"]
+[node name="BulletDetection" type="Area2D" parent="." index="3"]
+visible = false
 collision_layer = 2147483664
 collision_mask = 4
 
@@ -127,39 +132,36 @@ collision_mask = 4
 position = Vector2( 0, 3.944 )
 shape = SubResource( 2 )
 
-[node name="PlayerDetectionWakeup" type="Area2D" parent="." index="3"]
+[node name="PlayerDetectionWakeup" type="Area2D" parent="." index="4"]
 visible = false
 collision_layer = 16
 
 [node name="Collider" type="CollisionShape2D" parent="PlayerDetectionWakeup" index="0"]
 shape = SubResource( 3 )
 
-[node name="PlayerChaseCast" type="RayCast2D" parent="." index="4"]
+[node name="PlayerChaseCast" type="RayCast2D" parent="." index="5"]
 visible = false
 scale = Vector2( 2, 3 )
 enabled = true
 cast_to = Vector2( 0, 0 )
 collision_mask = 35
 
-[node name="RightPlayerAttackDetection" type="RayCast2D" parent="." index="5"]
+[node name="RightPlayerAttackDetection" type="RayCast2D" parent="." index="6"]
 visible = false
 enabled = true
 cast_to = Vector2( 26, 0 )
 
-[node name="LeftPlayerAttackDetection" type="RayCast2D" parent="." index="6"]
+[node name="LeftPlayerAttackDetection" type="RayCast2D" parent="." index="7"]
 visible = false
 enabled = true
 cast_to = Vector2( -26, 0 )
 
-[node name="Animation" parent="." index="7"]
+[node name="Animation" parent="." index="8"]
 anims/asleep = SubResource( 4 )
 anims/death = SubResource( 5 )
 anims/idle = SubResource( 6 )
 anims/wake_up = SubResource( 7 )
 anims/walk = SubResource( 8 )
-
-[node name="StateMachine" type="Node2D" parent="." index="8"]
-script = ExtResource( 5 )
 
 [node name="FloorLeft" type="RayCast2D" parent="." index="9"]
 visible = false
@@ -188,6 +190,7 @@ cast_to = Vector2( -24, 0 )
 collision_mask = 32
 
 [node name="JumpTop" type="RayCast2D" parent="." index="13"]
+visible = false
 position = Vector2( 0, -4.831 )
 enabled = true
 cast_to = Vector2( -12, 0 )
@@ -195,6 +198,7 @@ collision_mask = 2147483776
 collide_with_areas = true
 
 [node name="JumpBottom" type="RayCast2D" parent="." index="14"]
+visible = false
 position = Vector2( 0, 11.081 )
 enabled = true
 cast_to = Vector2( -12, 0 )

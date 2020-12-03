@@ -151,7 +151,7 @@ radius = 13.0
 height = 2.0
 
 [sub_resource type="CircleShape2D" id=8]
-radius = 98.0204
+radius = 71.007
 
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 42, 4.193 )
@@ -160,31 +160,34 @@ extents = Vector2( 42, 4.193 )
 "ForeignEntities",
 ] instance=ExtResource( 2 )]
 collision_layer = 16
-collision_mask = 2147483683
+collision_mask = 34
 script = ExtResource( 1 )
 MAX_SPEED = 25
 HEALTH = 35
 
-[node name="Texture" parent="." index="0"]
+[node name="StateMachine" type="Node2D" parent="." index="0"]
+script = ExtResource( 3 )
+
+[node name="Texture" parent="." index="1"]
 material = ExtResource( 6 )
 texture = ExtResource( 4 )
 normal_map = ExtResource( 5 )
 hframes = 45
 frame = 36
 
-[node name="Collider" parent="." index="1"]
+[node name="Collider" parent="." index="2"]
 visible = false
 position = Vector2( 0, 10.067 )
 shape = SubResource( 1 )
 
-[node name="Animation" parent="." index="2"]
+[node name="Animation" parent="." index="3"]
 anims/attack = SubResource( 2 )
 anims/death = SubResource( 3 )
 anims/idle = SubResource( 4 )
 anims/stunned = SubResource( 5 )
 anims/walk = SubResource( 6 )
 
-[node name="PlayerDamage" type="Area2D" parent="." index="3"]
+[node name="PlayerDamage" type="Area2D" parent="." index="4"]
 visible = false
 collision_layer = 16
 collision_mask = 4
@@ -192,9 +195,6 @@ collision_mask = 4
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerDamage" index="0"]
 position = Vector2( 0, 13 )
 shape = SubResource( 7 )
-
-[node name="StateMachine" type="Node2D" parent="." index="4"]
-script = ExtResource( 3 )
 
 [node name="State" type="Label" parent="." index="5"]
 visible = false
@@ -208,13 +208,14 @@ __meta__ = {
 }
 
 [node name="PlayerDetectionWakeup" type="Area2D" parent="." index="6"]
-visible = false
 collision_layer = 16
 
 [node name="Collider" type="CollisionShape2D" parent="PlayerDetectionWakeup" index="0"]
 shape = SubResource( 8 )
 
-[node name="PlayerHitDetection" type="Area2D" parent="." index="7"]
+[node name="PlayerHitDetection" type="Area2D" parent="." index="7" groups=[
+"ForeignEntityAttack",
+]]
 visible = false
 collision_layer = 16
 

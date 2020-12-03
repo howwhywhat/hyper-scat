@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 # general
 var health = 100
+var laxatives = 0
 var stunned = false
 onready var DEATH_ID_SCENE = preload("res://scenes/interface/DeathUI.tscn")
 onready var SHOOTING_PARTICLES = preload("res://scenes/particles/ShootingParticles.tscn")
@@ -22,7 +23,6 @@ const ACCELERATION = 512
 const MAX_SPEED = 64
 var FRICTION = 0.25
 const AIR_RESISTANCE  = 0.02
-const GRAVITY = 200
 const JUMP_FORCE = 128
 
 var motion = Vector2.ZERO
@@ -49,6 +49,7 @@ onready var hurtbox = $BulletDetection/BulletHitbox
 export (NodePath) var UI_NODE
 onready var ui = get_node(UI_NODE)
 onready var uiHearts = ui.get_node("Hearts")
+onready var uiLaxatives = ui.get_node("Laxatives").get_node("Label")
 
 # jump handling
 onready var coyoteTimer = $CoyoteTime
@@ -72,6 +73,7 @@ func _ready():
 	connect("player_damaged", uiHearts, "_on_Player_damage")
 
 func _process(delta):
+	uiLaxatives.text = str(laxatives)
 	if sprite.flip_h == false:
 		bulletPosition.position.x = -5
 		bulletPosition.rotation = -0.23
@@ -107,8 +109,8 @@ func apply_damage_texture():
 
 func apply_gravity(delta):
 	if coyoteTimer.is_stopped():
-		motion.y += GRAVITY * delta
-		motion.y += GRAVITY * delta
+		motion.y += GlobalConstants.GRAVITY * delta
+		motion.y += GlobalConstants.GRAVITY * delta
 
 func execute_special_attack():
 	var shitWave = shit_wave.instance()
@@ -158,7 +160,6 @@ func apply_jumping():
 
 func apply_movement(delta):
 	x_input = Input.get_action_strength("d") - Input.get_action_strength("a")
-	was_on_floor = is_on_floor()
 	if x_input != 0:
 		motion.x += x_input * ACCELERATION * delta
 		motion.x = clamp(motion.x, -MAX_SPEED, MAX_SPEED)
@@ -167,15 +168,14 @@ func apply_movement(delta):
 	_check_bounce(delta)
 
 func start_movement():
+	was_on_floor = is_on_floor()
 	motion = move_and_slide(motion, Vector2.UP)
-
-func apply_empty_movement(delta):
-	motion.x = lerp(motion.x, 0, FRICTION)
 
 func loop_damage_checker():
 	for body in $BulletDetection.get_overlapping_bodies():
-		apply_damage(body.damage)
-		enemyOrigin = body.transform.origin
+		if body.is_in_group("ForeignEnemyAttack"):
+			apply_damage(body.damage)
+			enemyOrigin = body.transform.origin
 
 func stunned():
 	hurtbox.disabled = true
@@ -250,7 +250,7 @@ func wall_slide_fast_slide_check(delta):
 	var max_slide_speed = WALL_SLIDE_SPEED
 	if Input.is_action_pressed("s"):
 		max_slide_speed = MAX_WALL_SLIDE_SPEED
-	motion.y = min(motion.y + GRAVITY * delta, max_slide_speed)
+	motion.y = min(motion.y + GlobalConstants.GRAVITY * delta, max_slide_speed)
 
 func _on_IfVisible_screen_entered():
 	var oldCamera = get_node(camera_in_level)
@@ -262,3 +262,17 @@ func _on_IfVisible_screen_entered():
 
 func bounce():
 	motion.y = -100
+
+func _on_PickUpDrops_body_entered(body):
+	if body.is_in_group("ItemDrop"):
+		body.pick_up_item()
+
+func _on_DropMoveToRadius_body_entered(body):
+	if body.is_in_group("ItemDrop"):
+		print("body in")
+		body.set_process(true)
+
+func _on_DropMoveToRadius_body_exited(body):
+	if body.is_in_group("ItemDrop"):
+		print("body out")
+		body.set_process(false)

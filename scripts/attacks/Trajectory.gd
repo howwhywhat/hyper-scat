@@ -19,7 +19,7 @@ func update_trajectory(delta):
 	var vel = player.global_transform.x * player.motion
 	for i in max_points:
 		add_point(pos)
-		vel.y += player.GRAVITY * delta
+		vel.y += GlobalConstants.GRAVITY * delta
 		pos += vel * delta
 		if pos.y > y_level:
 			var spike = SPIKE_TYPE.instance()

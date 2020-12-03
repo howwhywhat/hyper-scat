@@ -8,7 +8,6 @@ onready var hurtbox = $BulletDetection/Hurtbox
 onready var stateMachine = $StateMachine
 var woke_up = false
 var been_bounced = false
-const GRAVITY = 200
 const JUMP = 240
 
 # raycasting / general ai
@@ -31,9 +30,6 @@ onready var jumpBottom = $JumpBottom
 # debugging
 onready var stateLabel = $Label
 
-export (NodePath) var PLAYER_SCENE
-onready var player = get_node(PLAYER_SCENE)
-
 func _process(_delta):
 	if can_see() and player != null:
 		if global_position.x < player.global_position.x:
@@ -55,8 +51,8 @@ func _process(_delta):
 		jumpBottom.cast_to = Vector2(12, 0)
 
 func _apply_gravity(delta):
-	motion.y += GRAVITY * delta
-	motion.y += GRAVITY * delta
+	motion.y += GlobalConstants.GRAVITY * delta
+	motion.y += GlobalConstants.GRAVITY * delta
 
 func in_sight():
 	var dir = Vector2(player.position.x - position.x, player.position.y - position.y)

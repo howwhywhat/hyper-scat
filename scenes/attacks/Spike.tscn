@@ -79,7 +79,9 @@ tracks/0/keys = {
 [sub_resource type="CircleShape2D" id=4]
 radius = 1.57143
 
-[node name="Spike" type="Sprite"]
+[node name="Spike" type="Sprite" groups=[
+"ForeignEnemyAttack",
+]]
 modulate = Color( 0, 0.576471, 1, 1 )
 material = ExtResource( 4 )
 texture = ExtResource( 2 )

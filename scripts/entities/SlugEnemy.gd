@@ -9,7 +9,6 @@ onready var stunTween = $StunTween
 onready var stateMachine = $StateMachine
 var woke_up = false
 var stunned = false
-const GRAVITY = 200
 const JUMP = 190
 
 export(float, 0.0, 5.0) var fill : float = 0.0 setget _set_fill
@@ -27,9 +26,6 @@ onready var playerDetection = $PlayerDetectionWakeup
 onready var leftAttackDetection = $LeftPlayerAttackDetection
 onready var rightAttackDetection = $RightPlayerAttackDetection
 onready var chaseHitbox = $PlayerChaseCast
-
-export (NodePath) var PLAYER_SCENE
-onready var player = get_node(PLAYER_SCENE)
 
 # jumping
 onready var jumpTop = $JumpTop
@@ -59,8 +55,8 @@ func move_towards_player(delta):
 	motion = motion.move_toward(direction * MAX_SPEED, 25 * delta)
 
 func _apply_gravity(delta):
-	motion.y += GRAVITY * delta
-	motion.y += GRAVITY * delta
+	motion.y += GlobalConstants.GRAVITY * delta
+	motion.y += GlobalConstants.GRAVITY * delta
 
 func move():
 	motion = move_and_slide(motion, Vector2.UP)

@@ -178,6 +178,7 @@ func _enter_state(new_state, old_state):
 			if parent.playerDetection != null:
 				parent.playerDetection.queue_free()
 			parent.stop_movement()
+			parent.spawn_drops(2)
 			if mouthAttack != null:
 				mouthAttack.animation.play("mouth_close")
 			parent.animation.play("death")

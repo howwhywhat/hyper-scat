@@ -18,11 +18,11 @@ func _ready():
 
 func _state_logic(delta):
 	parent.apply_gravity(delta)
+	parent.start_movement()
 	if state_logic_enabled == true:
 		parent.apply_movement(delta)
 		parent.apply_special_attack_controls()
 		parent.loop_damage_checker()
-		parent.start_movement()
 		parent.apply_jumping()
 		
 		if state == states.wall_slide:
@@ -30,7 +30,7 @@ func _state_logic(delta):
 			parent.wall_slide_fast_slide_check(delta)
 			parent.apply_wall_slide_jump(parent.get_wall_axis())
 	else:
-		parent.apply_empty_movement(delta)
+		parent.motion.x = lerp(parent.motion.x, 0, 0.25)
 
 func _get_transition(delta):
 	match state:
@@ -45,7 +45,7 @@ func _get_transition(delta):
 					return states.fall
 			elif parent.x_input != 0:
 				return states.walk
-			elif parent.power_value != 0:
+			if parent.power_value != 0:
 				return states.special_attack
 			if parent.health <= 0:
 				return states.death
@@ -102,15 +102,12 @@ func _get_transition(delta):
 			parent.state.text = "special attack"
 			if !parent.is_on_floor():
 				if parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
-					parent.power_value = 0
 					return states.jump
 				elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
-					parent.power_value = 0
 					return states.fall
 			elif parent.x_input != 0:
-				parent.power_value = 0
 				return states.walk
-			elif parent.power_value == 0:
+			if parent.power_value == 0:
 				return states.idle
 			if parent.health <= 0:
 				return states.death
@@ -128,15 +125,12 @@ func _get_transition(delta):
 			parent.state.text = "shoot"
 			if !parent.is_on_floor():
 				if parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
-					parent.power_value = 0
 					return states.jump
 				elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
-					parent.power_value = 0
 					return states.fall
 			elif parent.x_input != 0:
-				parent.power_value = 0
 				return states.walk
-			elif parent.power_value == 0:
+			elif parent.x_input == 0:
 				return states.idle
 			elif parent.power_value != 0:
 				return states.special_attack
@@ -153,10 +147,13 @@ func _get_transition(delta):
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.idle:
+			parent.power_value = 0
 			parent.animation.play("idle")
 		states.walk:
+			parent.power_value = 0
 			parent.animation.play("walk")
 		states.jump:
+			parent.power_value = 0
 			if get_parent().x_input != 0:
 				var dustParticles = dust_particles.instance()
 				dustParticles.position = get_parent().position
@@ -167,35 +164,44 @@ func _enter_state(new_state, old_state):
 			parent.jumpBuffer.stop()
 			parent.animation.play("jump")
 		states.fall:
+			parent.power_value = 0
 			parent.coyoteTimer.start()
 			parent.motion.y = 0
 			parent.animation.play("fall")
 		states.special_attack:
 			parent.animation.play("special_attack")
 		states.death:
+			parent.power_value = 0
 			state_logic_enabled = false
 			parent.animation.stop()
 			parent.animation.play("death")
 		states.stunned:
-			parent.FRICTION = 0.1
+			parent.power_value = 0
 			var direction = parent.transform.origin - parent.enemyOrigin
-			direction.y = 0
-			parent.apply_knockback(-direction)
-			
+			direction.y /= 4
+			if parent.sprite.flip_h == false:
+				parent.apply_knockback(-direction)
+			else:
+				parent.apply_knockback(direction)
 			parent.animation.play("stunned")
 			state_logic_enabled = false
 			yield(get_tree().create_timer(1.25), "timeout")
-			parent.FRICTION = 0.25
 			state_logic_enabled = true
 		states.shoot:
+			parent.power_value = 0
 			parent.shoot()
 		states.wall_slide:
+			parent.power_value = 0
 			parent.animation.play("wall_slide")
 			
 			var wallAxis = parent.get_wall_axis()
 			if wallAxis != 0:
-				parent.sprite.scale.x = -wallAxis
-				parent.halfAss.scale.x = -wallAxis
+				if parent.sprite.flip_h == false:
+					parent.sprite.scale.x = wallAxis
+					parent.halfAss.scale.x = wallAxis
+				else:
+					parent.sprite.scale.x = -wallAxis
+					parent.halfAss.scale.x = -wallAxis
 
 func _exit_state(old_state, new_state):
 	pass

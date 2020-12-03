@@ -202,6 +202,7 @@ func _enter_state(new_state, old_state):
 			if parent.hurtbox != null:
 				parent.hurtbox.queue_free()
 			parent.stop_movement()
+			parent.spawn_drops(3)
 			parent.stunned_vfx()
 			parent.animation.play("death")
 

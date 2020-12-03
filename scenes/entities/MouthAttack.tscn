@@ -51,7 +51,9 @@ tracks/0/keys = {
 "values": [ 6, 7 ]
 }
 
-[node name="MouthAttack" type="Area2D"]
+[node name="MouthAttack" type="Area2D" groups=[
+"ForeignEntityAttack",
+]]
 scale = Vector2( 2, 2 )
 script = ExtResource( 3 )
 
