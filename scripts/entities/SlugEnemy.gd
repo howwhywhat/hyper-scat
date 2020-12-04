@@ -2,6 +2,7 @@ extends "res://scripts/entities/Enemy.gd"
 
 # general functionality
 onready var collider = $Collider
+onready var sleepingParticles = $SleepingParticles
 onready var hurtbox = $PlayerDamage/Hurtbox
 onready var animation = $Animation
 onready var sprite = $Texture
@@ -10,6 +11,8 @@ onready var stateMachine = $StateMachine
 var woke_up = false
 var stunned = false
 const JUMP = 190
+
+var BLOOD_SCENE = preload("res://scenes/particles/BloodShitParticles.tscn")
 
 export(float, 0.0, 5.0) var fill : float = 0.0 setget _set_fill
 
@@ -126,6 +129,12 @@ func _start_pokemon_fight_scene():
 	get_tree().current_scene.get_node("TransitionLayer").shaderLayer.hide_screen()
 	yield(get_tree().create_timer(1.15), "timeout")
 	get_tree().get_root().add_child(pokemonScene)
+
+func instance_blood_particles():
+	var blood = BLOOD_SCENE.instance()
+	blood.global_position = global_position
+	blood.emitting = true
+	get_tree().current_scene.add_child(blood)
 
 # use tweening and use it for death and stun
 func stunned_vfx():

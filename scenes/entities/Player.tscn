@@ -408,12 +408,14 @@ position = Vector2( 0, 1.025 )
 shape = SubResource( 5 )
 
 [node name="PickUpDrops" type="Area2D" parent="."]
+visible = false
 collision_mask = 256
 
 [node name="Collider" type="CollisionShape2D" parent="PickUpDrops"]
 shape = SubResource( 6 )
 
 [node name="DropMoveToRadius" type="Area2D" parent="."]
+visible = false
 collision_mask = 256
 
 [node name="Collider" type="CollisionShape2D" parent="DropMoveToRadius"]
@@ -431,6 +433,7 @@ anims/walk = SubResource( 15 )
 anims/wall_slide = SubResource( 16 )
 
 [node name="State" type="Label" parent="."]
+visible = false
 margin_left = -17.0
 margin_top = -24.0
 margin_right = 23.0

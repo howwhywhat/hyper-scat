@@ -1,0 +1,48 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://scenes/attacks/Bullet.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/attacks/EnergyBall.gd" type="Script" id=2]
+[ext_resource path="res://assets/textures/attacks/energyball/normal_map_sprite.png" type="Texture" id=3]
+[ext_resource path="res://assets/textures/attacks/energyball/sprite.png" type="Texture" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 5.81
+
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 0 ]
+}
+
+[node name="EnergyBall" instance=ExtResource( 1 )]
+collision_layer = 8
+collision_mask = 35
+script = ExtResource( 2 )
+bullet_name = "EnergyBall"
+damage = 15
+rate_of_fire = 0.5
+projectile_speed = 250
+
+[node name="Texture" parent="." index="0"]
+texture = ExtResource( 4 )
+normal_map = ExtResource( 3 )
+hframes = 1
+
+[node name="Hitbox" parent="." index="1"]
+position = Vector2( 4.19, 0 )
+shape = SubResource( 1 )
+
+[node name="Animation" parent="." index="3"]
+autoplay = "idle"
+anims/idle = SubResource( 2 )
+[connection signal="body_entered" from="." to="." method="_on_EnergyBall_body_entered"]

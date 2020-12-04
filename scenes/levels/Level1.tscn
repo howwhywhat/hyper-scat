@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=2]
+[gd_scene load_steps=46 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -41,6 +41,8 @@
 [ext_resource path="res://scenes/attacks/Spike.tscn" type="PackedScene" id=39]
 [ext_resource path="res://scenes/Platform.tscn" type="PackedScene" id=40]
 [ext_resource path="res://scenes/JumpDetection.tscn" type="PackedScene" id=41]
+[ext_resource path="res://scenes/Vignette.tscn" type="PackedScene" id=42]
+[ext_resource path="res://scenes/entities/GroundEnemy.tscn" type="PackedScene" id=43]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 49, 10 )
@@ -614,6 +616,12 @@ position = Vector2( 506, 243 )
 scale = Vector2( 0.65, 0.65 )
 PLAYER_SCENE = NodePath("../../../Player")
 
+[node name="ButtGround" type="Node2D" parent="Enemies"]
+
+[node name="Enemy" parent="Enemies/ButtGround" instance=ExtResource( 43 )]
+position = Vector2( 548, 244 )
+PLAYER_SCENE = NodePath("../../../Player")
+
 [node name="Player" parent="." instance=ExtResource( 12 )]
 position = Vector2( 34, 94 )
 collision_mask = 2
@@ -682,7 +690,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Vignette" parent="." instance=ExtResource( 42 )]
+
 [node name="UI" parent="." instance=ExtResource( 13 )]
+layer = 3
 
 [node name="IniitalCamera" type="Camera2D" parent="."]
 position = Vector2( 36, 225 )
@@ -690,6 +701,7 @@ current = true
 zoom = Vector2( 0.5, 0.5 )
 
 [node name="TransitionLayer" parent="." instance=ExtResource( 33 )]
+layer = 4
 
 [node name="Trajectory" parent="." instance=ExtResource( 38 )]
 visible = false

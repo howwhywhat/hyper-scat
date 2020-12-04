@@ -147,13 +147,16 @@ func _get_transition(delta):
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.idle:
+			parent.able_to_dash = true
 			parent.power_value = 0
 			parent.animation.play("idle")
 		states.walk:
 			parent.power_value = 0
+			parent.able_to_dash = true
 			parent.animation.play("walk")
 		states.jump:
 			parent.power_value = 0
+			parent.able_to_dash = true
 			if get_parent().x_input != 0:
 				var dustParticles = dust_particles.instance()
 				dustParticles.position = get_parent().position
@@ -164,18 +167,22 @@ func _enter_state(new_state, old_state):
 			parent.jumpBuffer.stop()
 			parent.animation.play("jump")
 		states.fall:
+			parent.able_to_dash = false
 			parent.power_value = 0
 			parent.coyoteTimer.start()
 			parent.motion.y = 0
 			parent.animation.play("fall")
 		states.special_attack:
+			parent.able_to_dash = false
 			parent.animation.play("special_attack")
 		states.death:
+			parent.able_to_dash = false
 			parent.power_value = 0
 			state_logic_enabled = false
 			parent.animation.stop()
 			parent.animation.play("death")
 		states.stunned:
+			parent.able_to_dash = false
 			parent.power_value = 0
 			var direction = parent.transform.origin - parent.enemyOrigin
 			direction.y /= 4
@@ -188,9 +195,11 @@ func _enter_state(new_state, old_state):
 			yield(get_tree().create_timer(1.25), "timeout")
 			state_logic_enabled = true
 		states.shoot:
+			parent.able_to_dash = false
 			parent.power_value = 0
 			parent.shoot()
 		states.wall_slide:
+			parent.able_to_dash = false
 			parent.power_value = 0
 			parent.animation.play("wall_slide")
 			

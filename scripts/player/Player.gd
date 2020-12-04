@@ -20,9 +20,9 @@ export (NodePath) var camera_in_level
 
 # movement
 const ACCELERATION = 512
-const MAX_SPEED = 64
+var MAX_SPEED = 64
 var FRICTION = 0.25
-const AIR_RESISTANCE  = 0.02
+const AIR_RESISTANCE = 0.02
 const JUMP_FORCE = 128
 
 var motion = Vector2.ZERO
@@ -51,6 +51,13 @@ onready var ui = get_node(UI_NODE)
 onready var uiHearts = ui.get_node("Hearts")
 onready var uiLaxatives = ui.get_node("Laxatives").get_node("Label")
 
+# dashing
+var tappedRight = 0
+var tappedLeft = 0
+var dash = false
+var able_to_dash = false
+var GHOST_SPRITE_SCENE = preload("res://scenes/entities/PlayerGhost.tscn")
+
 # jump handling
 onready var coyoteTimer = $CoyoteTime
 onready var jumpBuffer = $JumpBuffer
@@ -65,12 +72,51 @@ var right_arm_attached = true
 onready var leftArmPosition = $LeftArmPosition
 onready var rightArmPosition = $RightArmPosition
 var LIMB_SCENE = preload("res://scenes/entities/AssManLimb.tscn")
+var BLOOD_PARTICLES = preload("res://scenes/particles/ArmBloodParticles.tscn")
+var bloodParticlesLeft = null
+var bloodParticlesRight = null
 var damaged_1 = preload("res://assets/textures/entities/ass_man/spritesheet_no_left_arm.png")
 var damaged_2 = preload("res://assets/textures/entities/ass_man/spritesheet_no_right_arm.png")
 
 func _ready():
 	uiHearts.initialize(100, 100)
 	connect("player_damaged", uiHearts, "_on_Player_damage")
+
+func _physics_process(_delta):
+	if dash == true:
+		var ghostSprite = GHOST_SPRITE_SCENE.instance()
+		ghostSprite.global_position = global_position
+		ghostSprite.frame = sprite.frame
+		ghostSprite.flip_h = sprite.flip_h
+		get_tree().current_scene.add_child(ghostSprite)
+
+	if able_to_dash:
+		if Input.is_action_just_pressed("d") and dash == false:
+			tappedRight += 1
+			yield(get_tree().create_timer(.2), "timeout")
+			tappedRight = 0
+		if Input.is_action_pressed("d") and dash == false and tappedRight == 2:
+			hurtbox.disabled = true
+			dash = true
+			MAX_SPEED *= 2
+			motion.x += 500
+			yield(get_tree().create_timer(.3), "timeout")
+			hurtbox.disabled = false
+			dash = false
+			MAX_SPEED /= 2
+		if Input.is_action_just_pressed("a") and dash == false:
+			tappedLeft += 1
+			yield(get_tree().create_timer(.2), "timeout")
+			tappedLeft = 0
+		if Input.is_action_pressed("a") and dash == false and tappedLeft == 2:
+			hurtbox.disabled = true
+			dash = true
+			MAX_SPEED *= 2
+			motion.x -= 500
+			yield(get_tree().create_timer(.5), "timeout")
+			hurtbox.disabled = false
+			dash = false
+			MAX_SPEED /= 2
 
 func _process(delta):
 	uiLaxatives.text = str(laxatives)
@@ -82,6 +128,11 @@ func _process(delta):
 		leftArmPosition.position.x = -5
 		leftArmPosition.rotation = -2.93
 		shootParticlesPos.position.x = -2
+
+		if not bloodParticlesLeft == null:
+			bloodParticlesLeft.position = leftArmPosition.position
+		if not bloodParticlesRight == null:
+			bloodParticlesRight.position = rightArmPosition.position
 	else:
 		bulletPosition.position.x = 5
 		leftArmPosition.position.x = 5
@@ -91,9 +142,19 @@ func _process(delta):
 		bulletPosition.rotation = -2.93
 		shootParticlesPos.position.x = 2
 
+		if not bloodParticlesLeft == null:
+			bloodParticlesLeft.position = leftArmPosition.position
+		if not bloodParticlesRight == null:
+			bloodParticlesRight.position = rightArmPosition.position
+
 func apply_damage_texture():
 	if health <= 50 and left_arm_attached == true:
 		left_arm_attached = false
+		bloodParticlesLeft = BLOOD_PARTICLES.instance()
+		bloodParticlesLeft.emitting = true
+		bloodParticlesLeft.position = leftArmPosition.position
+		add_child(bloodParticlesLeft)
+
 		var limb = LIMB_SCENE.instance()
 		limb.global_position = leftArmPosition.global_position
 		limb.rotation = leftArmPosition.rotation
@@ -101,6 +162,11 @@ func apply_damage_texture():
 		sprite.texture = damaged_1
 	elif health <= 25 and right_arm_attached == true:
 		right_arm_attached = false
+		bloodParticlesRight = BLOOD_PARTICLES.instance()
+		bloodParticlesRight.emitting = true
+		bloodParticlesRight.position = rightArmPosition.position
+		add_child(bloodParticlesRight)
+
 		var limb = LIMB_SCENE.instance()
 		limb.global_position = rightArmPosition.global_position
 		limb.rotation = rightArmPosition.rotation

@@ -142,11 +142,14 @@ func _get_transition(delta):
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.idle:
+			parent.sleepingParticles.emitting = true
 			chase = false
 			parent.animation.play("idle")
 		states.stunned:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.stop_movement()
+			parent.instance_blood_particles()
 			parent.stunned_vfx()
 			if parent.sprite.flip_h == true:
 				parent.apply_knockback(Vector2(-45, 0))
@@ -154,31 +157,38 @@ func _enter_state(new_state, old_state):
 				parent.apply_knockback(Vector2(45, 0))
 			parent.animation.play("stunned")
 		states.attack:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.stop_movement()
 			parent.animation.play("attack")
 		states.left:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.animation.play("walk")
 			parent.motion.x = -parent.MAX_SPEED
 			parent.sprite.flip_h = false
 		states.right:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.animation.play("walk")
 			parent.motion.x = parent.MAX_SPEED
 			parent.sprite.flip_h = true
 		states.chase:
+			parent.sleepingParticles.emitting = false
 			chase = true
 			parent.animation.play("walk")
 		states.jump:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.jump()
 			parent.animation.play("walk")
 		states.fall:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.motion.y = 0
 			parent.animation.play("fall")
 		states.death:
+			parent.sleepingParticles.emitting = false
 			state_enabled = false
 			state_logic_enabled = false
 			if parent.collider != null:

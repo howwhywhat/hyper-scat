@@ -1,0 +1,187 @@
+[gd_scene load_steps=18 format=2]
+
+[ext_resource path="res://scripts/entities/GroundEnemy.gd" type="Script" id=1]
+[ext_resource path="res://scenes/entities/Enemy.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/entities/GroundFSM.gd" type="Script" id=3]
+[ext_resource path="res://assets/textures/entities/ground_enemy/spritesheet_2.png" type="Texture" id=4]
+[ext_resource path="res://assets/textures/entities/ground_enemy/spritesheet_1.png" type="Texture" id=5]
+[ext_resource path="res://assets/textures/entities/ground_enemy/normal_map_spritesheet_2.png" type="Texture" id=6]
+[ext_resource path="res://assets/textures/entities/ground_enemy/normal_map_spritesheet_1.png" type="Texture" id=7]
+[ext_resource path="res://assets/textures/entities/ground_enemy/normal_map_spritesheet_weapon.png" type="Texture" id=8]
+[ext_resource path="res://assets/textures/entities/ground_enemy/spritesheet_weapon.png" type="Texture" id=9]
+[ext_resource path="res://scenes/particles/SleepingParticles.tscn" type="PackedScene" id=10]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 6, 1.835 )
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 60.0083
+
+[sub_resource type="Animation" id=3]
+length = 0.3
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 2, 3, 4 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Texture2:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ 2, 3, 4 ]
+}
+
+[sub_resource type="Animation" id=4]
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture2:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 0 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Texture:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 0 ]
+}
+
+[sub_resource type="Animation" id=5]
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Weapon:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 10, 11, 12, 13, 14, 15 ]
+}
+
+[sub_resource type="Animation" id=6]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Weapon:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 0 ]
+}
+
+[sub_resource type="Animation" id=7]
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("Weapon:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 2, 3, 4, 5, 6, 7, 8 ]
+}
+
+[node name="Enemy" groups=[
+"ForeignEntities",
+] instance=ExtResource( 2 )]
+collision_layer = 80
+collision_mask = 34
+script = ExtResource( 1 )
+MAX_SPEED = 0
+HEALTH = 35
+
+[node name="StateMachine" type="Node2D" parent="." index="0"]
+script = ExtResource( 3 )
+
+[node name="Weapon" type="Sprite" parent="." index="1"]
+texture = ExtResource( 9 )
+normal_map = ExtResource( 8 )
+hframes = 17
+frame = 10
+
+[node name="Texture2" type="Sprite" parent="." index="2"]
+texture = ExtResource( 4 )
+normal_map = ExtResource( 6 )
+hframes = 5
+frame = 2
+
+[node name="Texture" parent="." index="3"]
+z_index = 1
+texture = ExtResource( 5 )
+normal_map = ExtResource( 7 )
+hframes = 5
+frame = 2
+
+[node name="Collider" parent="." index="4"]
+position = Vector2( 0, 10.007 )
+shape = SubResource( 1 )
+
+[node name="PlayerDetection" type="Area2D" parent="." index="5"]
+visible = false
+collision_layer = 16
+
+[node name="Collider" type="CollisionShape2D" parent="PlayerDetection" index="0"]
+shape = SubResource( 2 )
+
+[node name="Animation" parent="." index="6"]
+anims/death = SubResource( 3 )
+anims/idle = SubResource( 4 )
+
+[node name="WeaponAnimation" type="AnimationPlayer" parent="." index="7"]
+anims/asleep = SubResource( 5 )
+anims/idle = SubResource( 6 )
+anims/wake_up = SubResource( 7 )
+
+[node name="State" type="Label" parent="." index="8"]
+visible = false
+margin_left = -15.0
+margin_top = -14.0
+margin_right = 25.0
+text = "state"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SleepingParticles" parent="." index="9" instance=ExtResource( 10 )]
+position = Vector2( -7, 10 )
+
+[node name="Pivot" type="Node2D" parent="." index="10"]
+
+[node name="BulletPosition" type="Position2D" parent="Pivot" index="0"]
+position = Vector2( 9, 0 )
+[connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
+[connection signal="animation_finished" from="WeaponAnimation" to="." method="_on_WeaponAnimation_animation_finished"]

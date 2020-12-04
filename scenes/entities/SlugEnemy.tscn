@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/entities/SlugEnemy.gd" type="Script" id=1]
 [ext_resource path="res://scenes/entities/Enemy.tscn" type="PackedScene" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://assets/textures/entities/slug_enemy/spritesheet.png" type="Texture" id=4]
 [ext_resource path="res://assets/textures/entities/slug_enemy/normal_map_spritesheet.png" type="Texture" id=5]
 [ext_resource path="res://assets/shaders/flash/Flash.tres" type="Material" id=6]
+[ext_resource path="res://scenes/particles/SleepingParticles.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
 height = 2.134
@@ -208,6 +209,7 @@ __meta__ = {
 }
 
 [node name="PlayerDetectionWakeup" type="Area2D" parent="." index="6"]
+visible = false
 collision_layer = 16
 
 [node name="Collider" type="CollisionShape2D" parent="PlayerDetectionWakeup" index="0"]
@@ -224,7 +226,8 @@ position = Vector2( 0, 11.193 )
 shape = SubResource( 9 )
 
 [node name="PlayerChaseCast" type="RayCast2D" parent="." index="8"]
-scale = Vector2( 2, 3 )
+visible = false
+scale = Vector2( 2, 5 )
 enabled = true
 cast_to = Vector2( 0, 0 )
 collision_mask = 3
@@ -268,6 +271,7 @@ position = Vector2( -10.03, 10.38 )
 cast_to = Vector2( -12, 0 )
 
 [node name="JumpTop" type="RayCast2D" parent="." index="15"]
+visible = false
 position = Vector2( 0, -5.466 )
 enabled = true
 cast_to = Vector2( -12, 0 )
@@ -275,6 +279,7 @@ collision_mask = 128
 collide_with_areas = true
 
 [node name="JumpBottom" type="RayCast2D" parent="." index="16"]
+visible = false
 position = Vector2( 0, 18.884 )
 enabled = true
 cast_to = Vector2( -12, 0 )
@@ -282,5 +287,8 @@ collision_mask = 128
 collide_with_areas = true
 
 [node name="StunTween" type="Tween" parent="." index="17"]
+
+[node name="SleepingParticles" parent="." index="18" instance=ExtResource( 7 )]
+position = Vector2( -9, 11 )
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="PlayerHitDetection" to="." method="_on_PlayerHitDetection_body_entered"]

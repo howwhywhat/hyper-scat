@@ -1,6 +1,7 @@
 extends "res://scripts/entities/Enemy.gd"
 
 # general functionality
+onready var sleepingParticles = $SleepingParticles
 onready var collider = $Collider
 onready var animation = $Animation
 onready var sprite = $Texture
@@ -9,6 +10,8 @@ onready var stateMachine = $StateMachine
 var woke_up = false
 var been_bounced = false
 const JUMP = 240
+
+var BLOOD_SCENE = preload("res://scenes/particles/BloodShitParticles.tscn")
 
 # raycasting / general ai
 onready var floorLeft = $FloorLeft
@@ -61,6 +64,11 @@ func in_sight():
 		return false
 	else:
 		return true
+
+func instance_blood_particles():
+	var blood = BLOOD_SCENE.instance()
+	blood.global_position = global_position
+	get_tree().current_scene.add_child(blood)
 
 func can_see():
 	if not playerDetection == null:

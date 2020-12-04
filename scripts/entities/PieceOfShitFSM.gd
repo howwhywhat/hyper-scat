@@ -124,6 +124,7 @@ func _get_transition(delta):
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.mouth_attack:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			mouthAttack = MOUTH_ATTACK_SCENE.instance()
 			mouthAttack.position = parent.mouthPosition.position
@@ -131,32 +132,41 @@ func _enter_state(new_state, old_state):
 			parent.stop_movement()
 			parent.animation.play("idle")
 		states.jump:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.jump()
 			parent.animation.play("idle")
 		states.fall:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.motion.y = 0
 			parent.animation.play("fall")
 		states.asleep:
+			parent.sleepingParticles.emitting = true
 			chase = false
 			parent.animation.play("asleep")
 		states.wake_up:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.animation.play("wake_up")
 		states.left:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.animation.play("walk")
 			parent.motion.x = -parent.MAX_SPEED
 			parent.sprite.flip_h = true
 		states.right:
+			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.animation.play("walk")
 			parent.motion.x = parent.MAX_SPEED
 			parent.sprite.flip_h = false
 		states.chase:
+			parent.sleepingParticles.emitting = false
 			chase = true
 		states.death:
+			parent.instance_blood_particles()
+			parent.sleepingParticles.emitting = false
 			state_enabled = false
 			state_logic_enabled = false
 			if parent.collider != null:
