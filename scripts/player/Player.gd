@@ -253,8 +253,6 @@ func stunned():
 func apply_damage(damage):
 	apply_damage_texture()
 	if health <= 0:
-		var deathId = DEATH_ID_SCENE.instance()
-		get_tree().current_scene.add_child(deathId)
 		return
 	health -= damage
 	stunned()
@@ -342,3 +340,8 @@ func _on_DropMoveToRadius_body_exited(body):
 	if body.is_in_group("ItemDrop"):
 		print("body out")
 		body.set_process(false)
+
+func _on_Animation_animation_finished(anim_name):
+	if anim_name == "death":
+		var deathId = DEATH_ID_SCENE.instance()
+		get_tree().current_scene.add_child(deathId)

@@ -1,7 +1,17 @@
 extends CanvasLayer
 
 func _on_Retry_pressed():
+	layer -= 2
+	get_tree().current_scene.transitionLayer._set_mask(get_tree().current_scene.transitionLayer.Transitions.grid)
+	get_tree().current_scene.transitionLayer._set_fill(0.0)
+	get_tree().current_scene.transitionLayer.shaderLayer.hide_screen()
+	yield(get_tree().create_timer(1), "timeout")
 	get_tree().reload_current_scene()
 
 func _on_Exit_pressed():
-	get_tree().quit()
+	layer -= 2
+	get_tree().current_scene.transitionLayer._set_mask(get_tree().current_scene.transitionLayer.Transitions.grid)
+	get_tree().current_scene.transitionLayer._set_fill(0.0)
+	get_tree().current_scene.transitionLayer.shaderLayer.hide_screen()
+	yield(get_tree().create_timer(1), "timeout")
+	get_tree().change_scene("res://scenes/interface/MainMenu.tscn")

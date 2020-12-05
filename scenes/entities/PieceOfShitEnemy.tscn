@@ -168,20 +168,20 @@ visible = false
 position = Vector2( -6.967, 11.608 )
 enabled = true
 cast_to = Vector2( 0, 12 )
-collision_mask = 2
+collision_mask = 514
 
 [node name="FloorRight" type="RayCast2D" parent="." index="10"]
 visible = false
 position = Vector2( 6.635, 11.43 )
 enabled = true
 cast_to = Vector2( 0, 12 )
-collision_mask = 2
+collision_mask = 514
 
 [node name="WallRight" type="RayCast2D" parent="." index="11"]
 visible = false
 enabled = true
 cast_to = Vector2( 24, 0 )
-collision_mask = 32
+collision_mask = 2147483680
 
 [node name="WallLeft" type="RayCast2D" parent="." index="12"]
 visible = false

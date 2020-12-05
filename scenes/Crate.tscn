@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/textures/decor/1.png" type="Texture" id=1]
+[ext_resource path="res://assets/textures/decor/normal_map_1.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 12, 12 )
+
+[node name="Crate" type="RigidBody2D"]
+collision_layer = 512
+collision_mask = 59
+mode = 1
+
+[node name="Texture" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+normal_map = ExtResource( 2 )
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )

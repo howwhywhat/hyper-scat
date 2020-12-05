@@ -384,7 +384,7 @@ script = ExtResource( 3 )
 material = SubResource( 2 )
 texture = ExtResource( 1 )
 hframes = 53
-frame = 52
+frame = 25
 
 [node name="HalfAss" type="Sprite" parent="."]
 light_mask = -2147483647
@@ -527,4 +527,5 @@ one_shot = true
 [connection signal="body_entered" from="PickUpDrops" to="." method="_on_PickUpDrops_body_entered"]
 [connection signal="body_entered" from="DropMoveToRadius" to="." method="_on_DropMoveToRadius_body_entered"]
 [connection signal="body_exited" from="DropMoveToRadius" to="." method="_on_DropMoveToRadius_body_exited"]
+[connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
 [connection signal="screen_entered" from="IfVisible" to="." method="_on_IfVisible_screen_entered"]

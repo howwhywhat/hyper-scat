@@ -108,6 +108,7 @@ shoot={
 2d_physics/layer_7="Bounceable"
 2d_physics/layer_8="InvisiblePhysics"
 2d_physics/layer_9="ItemDrops"
+2d_physics/layer_10="DestructibleObjects"
 
 [rendering]
 

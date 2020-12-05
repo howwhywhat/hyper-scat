@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=2]
+[gd_scene load_steps=50 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -43,12 +43,18 @@
 [ext_resource path="res://scenes/JumpDetection.tscn" type="PackedScene" id=41]
 [ext_resource path="res://scenes/Vignette.tscn" type="PackedScene" id=42]
 [ext_resource path="res://scenes/entities/GroundEnemy.tscn" type="PackedScene" id=43]
+[ext_resource path="res://scenes/Crate.tscn" type="PackedScene" id=44]
+[ext_resource path="res://scripts/ExplodeObject.gd" type="Script" id=45]
+[ext_resource path="res://scenes/FakeExplosionParticles.tscn" type="PackedScene" id=46]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 49, 10 )
 
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 1, 10 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 1, 7 )
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 37 )
@@ -594,6 +600,10 @@ __meta__ = {
 position = Vector2( 338, 250 )
 PLAYER_SCENE = NodePath("../../../Player")
 
+[node name="Enemy5" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
+position = Vector2( 190, 251 )
+PLAYER_SCENE = NodePath("../../../Player")
+
 [node name="Enemy2" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
 position = Vector2( 370, 251 )
 PLAYER_SCENE = NodePath("../../../Player")
@@ -622,8 +632,36 @@ PLAYER_SCENE = NodePath("../../../Player")
 position = Vector2( 548, 244 )
 PLAYER_SCENE = NodePath("../../../Player")
 
+[node name="DestructibleObjects" type="Node2D" parent="."]
+
+[node name="Crate_01" type="Node2D" parent="DestructibleObjects"]
+
+[node name="Crate" parent="DestructibleObjects/Crate_01" instance=ExtResource( 44 )]
+position = Vector2( 146, 244 )
+script = ExtResource( 45 )
+blocks_impulse = 750.0
+fake_explosions_group = "FakeParticles"
+jumpDetection = [ NodePath("../JumpDetection"), NodePath("../JumpDetection2") ]
+
+[node name="FakeParticles" parent="DestructibleObjects/Crate_01" instance=ExtResource( 46 )]
+particles_explode = true
+
+[node name="JumpDetection" parent="DestructibleObjects/Crate_01" instance=ExtResource( 41 )]
+position = Vector2( -1, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DestructibleObjects/Crate_01/JumpDetection"]
+position = Vector2( 160, 249 )
+shape = SubResource( 3 )
+
+[node name="JumpDetection2" parent="DestructibleObjects/Crate_01" instance=ExtResource( 41 )]
+position = Vector2( -27, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DestructibleObjects/Crate_01/JumpDetection2"]
+position = Vector2( 160, 249 )
+shape = SubResource( 3 )
+
 [node name="Player" parent="." instance=ExtResource( 12 )]
-position = Vector2( 34, 94 )
+position = Vector2( 33, 94 )
 collision_mask = 2
 camera_in_level = NodePath("../IniitalCamera")
 UI_NODE = NodePath("../UI")

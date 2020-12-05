@@ -177,6 +177,8 @@ func _enter_state(new_state, old_state):
 			parent.animation.play("special_attack")
 		states.death:
 			parent.able_to_dash = false
+			parent.bloodParticlesLeft.emitting = false
+			parent.bloodParticlesRight.emitting = false
 			parent.power_value = 0
 			state_logic_enabled = false
 			parent.animation.stop()
