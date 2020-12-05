@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=2]
+[gd_scene load_steps=51 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -47,6 +47,23 @@
 [ext_resource path="res://scripts/ExplodeObject.gd" type="Script" id=45]
 [ext_resource path="res://scenes/FakeExplosionParticles.tscn" type="PackedScene" id=46]
 
+[sub_resource type="Environment" id=4]
+background_mode = 4
+ssao_radius = 25.0
+ssao_quality = 2
+dof_blur_far_distance = 6.19
+dof_blur_far_amount = 0.2
+dof_blur_far_quality = 2
+dof_blur_near_enabled = true
+dof_blur_near_distance = 1.0
+glow_enabled = true
+glow_intensity = 0.5
+glow_strength = 0.6
+glow_bloom = 0.6
+glow_blend_mode = 0
+glow_hdr_threshold = 0.65
+glow_bicubic_upscale = true
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 49, 10 )
 
@@ -58,6 +75,9 @@ extents = Vector2( 1, 7 )
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 37 )
+
+[node name="PostProcessingFX" type="WorldEnvironment" parent="."]
+environment = SubResource( 4 )
 
 [node name="RoofCollision" type="StaticBody2D" parent="." groups=[
 "WallTiles",

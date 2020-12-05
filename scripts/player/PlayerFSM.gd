@@ -193,6 +193,7 @@ func _enter_state(new_state, old_state):
 			else:
 				parent.apply_knockback(direction)
 			parent.animation.play("stunned")
+			parent.flashAnimation.play("flash")
 			state_logic_enabled = false
 			yield(get_tree().create_timer(1.25), "timeout")
 			state_logic_enabled = true

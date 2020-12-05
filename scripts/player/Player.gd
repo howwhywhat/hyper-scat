@@ -35,6 +35,7 @@ onready var shit_wave = preload("res://scenes/attacks/ShitWave.tscn")
 
 # variables
 onready var animation = $Animation
+onready var flashAnimation = $BlinkAnimation
 onready var state = $State
 onready var stateMachine = $StateMachine
 onready var halfAss = $HalfAss
@@ -88,6 +89,7 @@ func _physics_process(_delta):
 		ghostSprite.global_position = global_position
 		ghostSprite.frame = sprite.frame
 		ghostSprite.flip_h = sprite.flip_h
+		ghostSprite.scale.x = sprite.scale.x
 		get_tree().current_scene.add_child(ghostSprite)
 
 	if able_to_dash:

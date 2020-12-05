@@ -5,6 +5,7 @@ onready var collider = $Collider
 onready var sleepingParticles = $SleepingParticles
 onready var hurtbox = $PlayerDamage/Hurtbox
 onready var animation = $Animation
+onready var flashAnimation = $BlinkAnimation
 onready var sprite = $Texture
 onready var stunTween = $StunTween
 onready var stateMachine = $StateMachine
@@ -135,18 +136,6 @@ func instance_blood_particles():
 	blood.global_position = global_position
 	blood.emitting = true
 	get_tree().current_scene.add_child(blood)
-
-# use tweening and use it for death and stun
-func stunned_vfx():
-	fill = 5.0
-	if tween_lock or fill == 0.0:
-		return
-	tween_lock = true
-	if stunTween.interpolate_property(self, "fill", fill, 0.0, 1,
-		Tween.TRANS_LINEAR, Tween.EASE_OUT):
-		if stunTween.start():
-			yield(stunTween, "tween_completed")
-			tween_lock = false
 
 func _set_fill(val:float):
 	fill = clamp(val, 0.0, 5.0)

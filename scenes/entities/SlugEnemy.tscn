@@ -5,7 +5,6 @@
 [ext_resource path="res://scripts/entities/SlugFSM.gd" type="Script" id=3]
 [ext_resource path="res://assets/textures/entities/slug_enemy/spritesheet.png" type="Texture" id=4]
 [ext_resource path="res://assets/textures/entities/slug_enemy/normal_map_spritesheet.png" type="Texture" id=5]
-[ext_resource path="res://assets/shaders/flash/Flash.tres" type="Material" id=6]
 [ext_resource path="res://scenes/particles/SleepingParticles.tscn" type="PackedScene" id=7]
 
 [sub_resource type="CapsuleShape2D" id=1]
@@ -147,14 +146,30 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 10 ), Vector2( 0, -3 ), Vector2( 0, 13 ), Vector2( 0, 10 ) ]
 }
 
-[sub_resource type="CapsuleShape2D" id=7]
+[sub_resource type="Animation" id=7]
+resource_name = "flash"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="CapsuleShape2D" id=8]
 radius = 13.0
 height = 2.0
 
-[sub_resource type="CircleShape2D" id=8]
+[sub_resource type="CircleShape2D" id=9]
 radius = 71.007
 
-[sub_resource type="RectangleShape2D" id=9]
+[sub_resource type="RectangleShape2D" id=10]
 extents = Vector2( 42, 4.193 )
 
 [node name="Enemy" groups=[
@@ -170,11 +185,10 @@ HEALTH = 35
 script = ExtResource( 3 )
 
 [node name="Texture" parent="." index="1"]
-material = ExtResource( 6 )
 texture = ExtResource( 4 )
 normal_map = ExtResource( 5 )
 hframes = 45
-frame = 36
+frame = 24
 
 [node name="Collider" parent="." index="2"]
 visible = false
@@ -188,16 +202,19 @@ anims/idle = SubResource( 4 )
 anims/stunned = SubResource( 5 )
 anims/walk = SubResource( 6 )
 
-[node name="PlayerDamage" type="Area2D" parent="." index="4"]
+[node name="BlinkAnimation" type="AnimationPlayer" parent="." index="4"]
+anims/flash = SubResource( 7 )
+
+[node name="PlayerDamage" type="Area2D" parent="." index="5"]
 visible = false
 collision_layer = 16
 collision_mask = 4
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerDamage" index="0"]
 position = Vector2( 0, 13 )
-shape = SubResource( 7 )
+shape = SubResource( 8 )
 
-[node name="State" type="Label" parent="." index="5"]
+[node name="State" type="Label" parent="." index="6"]
 visible = false
 margin_left = -18.0
 margin_top = -17.0
@@ -208,69 +225,69 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PlayerDetectionWakeup" type="Area2D" parent="." index="6"]
+[node name="PlayerDetectionWakeup" type="Area2D" parent="." index="7"]
 visible = false
 collision_layer = 16
 
 [node name="Collider" type="CollisionShape2D" parent="PlayerDetectionWakeup" index="0"]
-shape = SubResource( 8 )
+shape = SubResource( 9 )
 
-[node name="PlayerHitDetection" type="Area2D" parent="." index="7" groups=[
+[node name="PlayerHitDetection" type="Area2D" parent="." index="8" groups=[
 "ForeignEntityAttack",
 ]]
 visible = false
 collision_layer = 16
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerHitDetection" index="0"]
-position = Vector2( 0, 11.193 )
-shape = SubResource( 9 )
+position = Vector2( 0, 500 )
+shape = SubResource( 10 )
 
-[node name="PlayerChaseCast" type="RayCast2D" parent="." index="8"]
+[node name="PlayerChaseCast" type="RayCast2D" parent="." index="9"]
 visible = false
 scale = Vector2( 2, 5 )
 enabled = true
 cast_to = Vector2( 0, 0 )
 collision_mask = 3
 
-[node name="FloorLeft" type="RayCast2D" parent="." index="9"]
+[node name="FloorLeft" type="RayCast2D" parent="." index="10"]
 visible = false
 position = Vector2( -3.967, 21.014 )
 enabled = true
 cast_to = Vector2( 0, 6 )
 collision_mask = 514
 
-[node name="FloorRight" type="RayCast2D" parent="." index="10"]
+[node name="FloorRight" type="RayCast2D" parent="." index="11"]
 visible = false
 position = Vector2( 1.989, 21.014 )
 enabled = true
 cast_to = Vector2( 0, 6 )
 collision_mask = 514
 
-[node name="WallRight" type="RayCast2D" parent="." index="11"]
+[node name="WallRight" type="RayCast2D" parent="." index="12"]
 visible = false
 position = Vector2( 9.009, 10.38 )
 enabled = true
 cast_to = Vector2( 6, 0 )
 collision_mask = 32
 
-[node name="WallLeft" type="RayCast2D" parent="." index="12"]
+[node name="WallLeft" type="RayCast2D" parent="." index="13"]
 visible = false
 position = Vector2( -10.03, 10.38 )
 enabled = true
 cast_to = Vector2( -6, 0 )
 collision_mask = 2147483680
 
-[node name="RightPlayerAttackDetection" type="RayCast2D" parent="." index="13"]
+[node name="RightPlayerAttackDetection" type="RayCast2D" parent="." index="14"]
 visible = false
 position = Vector2( 9.009, 10.38 )
 cast_to = Vector2( 12, 0 )
 
-[node name="LeftPlayerAttackDetection" type="RayCast2D" parent="." index="14"]
+[node name="LeftPlayerAttackDetection" type="RayCast2D" parent="." index="15"]
 visible = false
 position = Vector2( -10.03, 10.38 )
 cast_to = Vector2( -12, 0 )
 
-[node name="JumpTop" type="RayCast2D" parent="." index="15"]
+[node name="JumpTop" type="RayCast2D" parent="." index="16"]
 visible = false
 position = Vector2( 0, -5.466 )
 enabled = true
@@ -278,15 +295,13 @@ cast_to = Vector2( -12, 0 )
 collision_mask = 128
 collide_with_areas = true
 
-[node name="JumpBottom" type="RayCast2D" parent="." index="16"]
+[node name="JumpBottom" type="RayCast2D" parent="." index="17"]
 visible = false
 position = Vector2( 0, 18.884 )
 enabled = true
 cast_to = Vector2( -12, 0 )
 collision_mask = 128
 collide_with_areas = true
-
-[node name="StunTween" type="Tween" parent="." index="17"]
 
 [node name="SleepingParticles" parent="." index="18" instance=ExtResource( 7 )]
 position = Vector2( -9, 11 )

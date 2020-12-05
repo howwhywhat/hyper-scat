@@ -150,7 +150,7 @@ func _enter_state(new_state, old_state):
 			chase = false
 			parent.stop_movement()
 			parent.instance_blood_particles()
-			parent.stunned_vfx()
+			parent.flashAnimation.play("flash")
 			if parent.sprite.flip_h == true:
 				parent.apply_knockback(Vector2(-45, 0))
 			else:
@@ -213,7 +213,7 @@ func _enter_state(new_state, old_state):
 				parent.hurtbox.queue_free()
 			parent.stop_movement()
 			parent.spawn_drops(3)
-			parent.stunned_vfx()
+			parent.flashAnimation.play("flash")
 			parent.animation.play("death")
 
 func _exit_state(old_state, new_state):
