@@ -45,6 +45,8 @@ func _get_transition(delta):
 					return states.asleep
 				if parent.HEALTH <= 0:
 					return states.death
+			else:
+				return states.death
 		states.death:
 			parent.state.text = "death"
 	return null
@@ -62,7 +64,9 @@ func _enter_state(new_state, old_state):
 			parent.animation.play("idle")
 			parent.weaponAnimation.play("wake_up")
 		states.death:
+			state_logic_enabled = false
 			state_enabled = false
+			parent.flashAnimation.play("flash")
 			parent.weaponAnimation.play("asleep")
 
 func _exit_state(old_state, new_state):

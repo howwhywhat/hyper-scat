@@ -9,6 +9,7 @@ onready var flashAnimation = $BlinkAnimation
 onready var sprite = $Texture
 onready var stunTween = $StunTween
 onready var stateMachine = $StateMachine
+var EXPLOSION_SCENE = preload("res://scenes/particles/ExplosionSprite.tscn")
 var woke_up = false
 var stunned = false
 const JUMP = 190
@@ -119,6 +120,11 @@ func _on_Animation_animation_finished(anim_name):
 	if anim_name == "idle":
 		woke_up = true
 	elif anim_name == "death":
+		queue_free()
+	elif anim_name == "death_2":
+		var explosion = EXPLOSION_SCENE.instance()
+		explosion.global_position = global_position
+		get_tree().current_scene.add_child(explosion)
 		queue_free()
 
 func _start_pokemon_fight_scene():

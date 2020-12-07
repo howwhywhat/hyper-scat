@@ -147,9 +147,11 @@ func _get_transition(delta):
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.idle:
+			parent.animation.stop()
+			parent.animation.play("idle")
+			# just sets the boolean to true for dashing because i'm too lazy to add dash state in this cursed fsm
 			parent.able_to_dash = true
 			parent.power_value = 0
-			parent.animation.play("idle")
 		states.walk:
 			parent.power_value = 0
 			parent.able_to_dash = true
@@ -188,10 +190,12 @@ func _enter_state(new_state, old_state):
 			parent.power_value = 0
 			var direction = parent.transform.origin - parent.enemyOrigin
 			direction.y /= 4
-			if parent.sprite.flip_h == false:
-				parent.apply_knockback(-direction)
-			else:
-				parent.apply_knockback(direction)
+			# WHY THE FUCK IS IT NULL I DON'T KNOW BUT I HAVE TO ADD THIS STUPID FUCKING CHECK SO IT DOESN'T CRASH FUCK THIS
+			if parent.lastHitEntity != null:
+				if parent.lastHitEntity.global_position < parent.global_position:
+					parent.apply_knockback(direction)
+				else:
+					parent.apply_knockback(-direction)
 			parent.animation.play("stunned")
 			parent.flashAnimation.play("flash")
 			state_logic_enabled = false

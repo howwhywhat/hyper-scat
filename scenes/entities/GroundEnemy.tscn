@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scripts/entities/GroundEnemy.gd" type="Script" id=1]
 [ext_resource path="res://scenes/entities/Enemy.tscn" type="PackedScene" id=2]
@@ -115,6 +115,22 @@ tracks/0/keys = {
 "values": [ 2, 3, 4, 5, 6, 7, 8 ]
 }
 
+[sub_resource type="Animation" id=8]
+resource_name = "flash"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="Enemy" groups=[
 "ForeignEntities",
 ] instance=ExtResource( 2 )]
@@ -166,7 +182,10 @@ anims/asleep = SubResource( 5 )
 anims/idle = SubResource( 6 )
 anims/wake_up = SubResource( 7 )
 
-[node name="State" type="Label" parent="." index="8"]
+[node name="BlinkAnimation" type="AnimationPlayer" parent="." index="8"]
+anims/flash = SubResource( 8 )
+
+[node name="State" type="Label" parent="." index="9"]
 visible = false
 margin_left = -15.0
 margin_top = -14.0
@@ -176,10 +195,10 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SleepingParticles" parent="." index="9" instance=ExtResource( 10 )]
+[node name="SleepingParticles" parent="." index="10" instance=ExtResource( 10 )]
 position = Vector2( -7, 10 )
 
-[node name="Pivot" type="Node2D" parent="." index="10"]
+[node name="Pivot" type="Node2D" parent="." index="11"]
 
 [node name="BulletPosition" type="Position2D" parent="Pivot" index="0"]
 position = Vector2( 9, 0 )

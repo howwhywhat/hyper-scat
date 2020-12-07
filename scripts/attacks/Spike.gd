@@ -14,6 +14,7 @@ func _on_Timer_timeout():
 
 func _on_PlayerDetection_body_entered(body):
 	if body.is_in_group("Player"):
+		body.lastHitEntity = self
 		if body.stateMachine.state == body.stateMachine.states.fall:
 			body.apply_damage(damage)
 			body.bounce()

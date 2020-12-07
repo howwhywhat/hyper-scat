@@ -171,14 +171,6 @@ func _enter_state(new_state, old_state):
 			state_logic_enabled = false
 			if parent.collider != null:
 				parent.collider.queue_free()
-			if parent.floorLeft != null:
-				parent.floorLeft.queue_free()
-			if parent.floorRight != null:
-				parent.floorRight.queue_free()
-			if parent.wallRight != null:
-				parent.wallRight.queue_free()
-			if parent.wallLeft != null:
-				parent.wallLeft.queue_free()
 			if parent.leftAttackDetection != null:
 				parent.leftAttackDetection.queue_free()
 			if parent.rightAttackDetection != null:
@@ -191,7 +183,13 @@ func _enter_state(new_state, old_state):
 			parent.spawn_drops(2)
 			if mouthAttack != null:
 				mouthAttack.animation.play("mouth_close")
-			parent.animation.play("death")
+			if parent.floorLeft.is_colliding() or parent.floorRight.is_colliding():
+				randomize()
+				var choices = ["death", "death_2"]
+				var finalChoice = choices[randi() % choices.size()]
+				parent.animation.play(finalChoice)
+			else:
+				parent.animation.play("death_2")
 
 func _exit_state(old_state, new_state):
 	pass

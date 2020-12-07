@@ -4,7 +4,7 @@
 [ext_resource path="res://assets/textures/decor/normal_map_1.png" type="Texture" id=2]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 12, 12 )
+extents = Vector2( 8, 8 )
 
 [node name="Crate" type="RigidBody2D"]
 collision_layer = 512

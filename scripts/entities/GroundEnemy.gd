@@ -10,6 +10,7 @@ onready var spriteHalf = $Texture2
 
 onready var animation = $Animation
 onready var weaponAnimation = $WeaponAnimation
+onready var flashAnimation = $BlinkAnimation
 
 onready var playerDetection = $PlayerDetection
 
@@ -25,6 +26,7 @@ func _apply_gravity(delta):
 
 func shoot():
 	if allow_shooting and can_fire:
+		player.lastHitEntity = self
 		for shot in number_of_shots:
 			var bullet = BULLET_SCENE.instance()
 			pivot.rotation += (4 * PI / number_of_shots)
@@ -33,7 +35,7 @@ func shoot():
 			get_tree().current_scene.add_child(bullet)
 			yield(get_tree().create_timer(.002), "timeout")
 		can_fire = false
-		yield(get_tree().create_timer(0.95), "timeout")
+		yield(get_tree().create_timer(1.5), "timeout")
 		can_fire = true
 
 func _on_WeaponAnimation_animation_finished(anim_name):
@@ -45,6 +47,13 @@ func _on_WeaponAnimation_animation_finished(anim_name):
 	if anim_name == "asleep" and HEALTH <= 0:
 		animation.play("death")
 
+func damage(value):
+	HEALTH -= value
+
 func _on_Animation_animation_finished(anim_name):
 	if anim_name == "death":
 		queue_free()
+
+func pounced(bouncer):
+	damage(9999)
+	bouncer.bounce()

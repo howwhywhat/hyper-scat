@@ -15,6 +15,7 @@ func _process(_delta):
 func _on_MouthAttack_body_entered(body):
 	if body.is_in_group("Player") and body.hurtbox.disabled == false:
 		if body.health > 0:
+			body.lastHitEntity = get_parent()
 			body.apply_damage(damage)
 
 func _on_Animation_animation_finished(anim_name):

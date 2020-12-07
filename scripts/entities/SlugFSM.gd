@@ -157,6 +157,7 @@ func _enter_state(new_state, old_state):
 				parent.apply_knockback(Vector2(45, 0))
 			parent.animation.play("stunned")
 		states.attack:
+			parent.player.lastHitEntity = get_parent()
 			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.stop_movement()
@@ -193,14 +194,6 @@ func _enter_state(new_state, old_state):
 			state_logic_enabled = false
 			if parent.collider != null:
 				parent.collider.queue_free()
-			if parent.floorLeft != null:
-				parent.floorLeft.queue_free()
-			if parent.floorRight != null:
-				parent.floorRight.queue_free()
-			if parent.wallRight != null:
-				parent.wallRight.queue_free()
-			if parent.wallLeft != null:
-				parent.wallLeft.queue_free()
 			if parent.leftAttackDetection != null:
 				parent.leftAttackDetection.queue_free()
 			if parent.rightAttackDetection != null:
@@ -214,7 +207,13 @@ func _enter_state(new_state, old_state):
 			parent.stop_movement()
 			parent.spawn_drops(3)
 			parent.flashAnimation.play("flash")
-			parent.animation.play("death")
+			if parent.floorLeft.is_colliding() or parent.floorRight.is_colliding():
+				randomize()
+				var choices = ["death", "death_2"]
+				var finalChoice = choices[randi() % choices.size()]
+				parent.animation.play(finalChoice)
+			else:
+				parent.animation.play("death_2")
 
 func _exit_state(old_state, new_state):
 	pass

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scripts/entities/SlugEnemy.gd" type="Script" id=1]
 [ext_resource path="res://scenes/entities/Enemy.tscn" type="PackedScene" id=2]
@@ -61,6 +61,22 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
 "values": [ 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ]
+}
+
+[sub_resource type="Animation" id=11]
+resource_name = "death_2"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 46, 47 ]
 }
 
 [sub_resource type="Animation" id=4]
@@ -187,8 +203,8 @@ script = ExtResource( 3 )
 [node name="Texture" parent="." index="1"]
 texture = ExtResource( 4 )
 normal_map = ExtResource( 5 )
-hframes = 45
-frame = 24
+hframes = 48
+frame = 46
 
 [node name="Collider" parent="." index="2"]
 visible = false
@@ -198,6 +214,7 @@ shape = SubResource( 1 )
 [node name="Animation" parent="." index="3"]
 anims/attack = SubResource( 2 )
 anims/death = SubResource( 3 )
+anims/death_2 = SubResource( 11 )
 anims/idle = SubResource( 4 )
 anims/stunned = SubResource( 5 )
 anims/walk = SubResource( 6 )
@@ -211,7 +228,7 @@ collision_layer = 16
 collision_mask = 4
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerDamage" index="0"]
-position = Vector2( 0, 13 )
+position = Vector2( 0, 10 )
 shape = SubResource( 8 )
 
 [node name="State" type="Label" parent="." index="6"]

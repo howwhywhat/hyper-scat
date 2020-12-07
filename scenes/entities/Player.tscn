@@ -356,7 +356,7 @@ tracks/1/keys = {
 "values": [ 52, 52 ]
 }
 
-[sub_resource type="Animation" id=18]
+[sub_resource type="Animation" id=17]
 resource_name = "flash"
 length = 0.5
 tracks/0/type = "bezier"
@@ -400,7 +400,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.5 )
 }
 
-[sub_resource type="OpenSimplexNoise" id=17]
+[sub_resource type="OpenSimplexNoise" id=18]
 
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
@@ -465,7 +465,7 @@ anims/walk = SubResource( 15 )
 anims/wall_slide = SubResource( 16 )
 
 [node name="BlinkAnimation" type="AnimationPlayer" parent="."]
-anims/flash = SubResource( 18 )
+anims/flash = SubResource( 17 )
 
 [node name="State" type="Label" parent="."]
 visible = false
@@ -483,7 +483,7 @@ rotating = true
 zoom = Vector2( 0.5, 0.5 )
 smoothing_enabled = true
 script = ExtResource( 7 )
-noise = SubResource( 17 )
+noise = SubResource( 18 )
 max_y = 60
 max_r = 15
 
@@ -493,6 +493,9 @@ texture = ExtResource( 4 )
 energy = 1.2
 mode = 2
 shadow_enabled = true
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_filter = 2
+shadow_filter_smooth = 5.0
 
 [node name="StompParticles" parent="." instance=ExtResource( 6 )]
 position = Vector2( 3, 11 )

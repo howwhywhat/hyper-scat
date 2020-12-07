@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/entities/Enemy.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/entities/PieceOfShitEnemy.gd" type="Script" id=2]
@@ -58,6 +58,34 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=6]
+resource_name = "death_2"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 34, 35 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Texture:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ Color( 204.2, 204.2, 204.2, 1 ), Color( 204.2, 204.2, 204.2, 1 ) ]
+}
+
+[sub_resource type="Animation" id=7]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:frame")
 tracks/0/interp = 1
@@ -71,7 +99,7 @@ tracks/0/keys = {
 "values": [ 6, 6 ]
 }
 
-[sub_resource type="Animation" id=7]
+[sub_resource type="Animation" id=8]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:frame")
@@ -86,7 +114,7 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4 ]
 }
 
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=9]
 length = 0.8
 loop = true
 tracks/0/type = "value"
@@ -117,7 +145,8 @@ script = ExtResource( 5 )
 [node name="Texture" parent="." index="1"]
 texture = ExtResource( 4 )
 normal_map = ExtResource( 3 )
-hframes = 33
+hframes = 36
+frame = 8
 
 [node name="Collider" parent="." index="2"]
 position = Vector2( 0, 4.096 )
@@ -159,9 +188,10 @@ cast_to = Vector2( -26, 0 )
 [node name="Animation" parent="." index="8"]
 anims/asleep = SubResource( 4 )
 anims/death = SubResource( 5 )
-anims/idle = SubResource( 6 )
-anims/wake_up = SubResource( 7 )
-anims/walk = SubResource( 8 )
+anims/death_2 = SubResource( 6 )
+anims/idle = SubResource( 7 )
+anims/wake_up = SubResource( 8 )
+anims/walk = SubResource( 9 )
 
 [node name="FloorLeft" type="RayCast2D" parent="." index="9"]
 visible = false

@@ -7,6 +7,7 @@ var stunned = false
 onready var DEATH_ID_SCENE = preload("res://scenes/interface/DeathUI.tscn")
 onready var SHOOTING_PARTICLES = preload("res://scenes/particles/ShootingParticles.tscn")
 var enemyOrigin = Vector2.ZERO
+var lastHitEntity
 
 # bullet type/weaponry
 export (PackedScene) var bullet_type

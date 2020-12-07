@@ -369,8 +369,7 @@ billboard = 1
 shaded = true
 alpha_cut = 2
 texture = ExtResource( 13 )
-hframes = 45
-frame = 34
+hframes = 48
 
 [node name="Light" type="SpotLight" parent="."]
 transform = Transform( 0.842342, -0.000232229, -0.538943, 0.000287577, 1, 1.85727e-05, 0.538943, -0.000170632, 0.842342, -0.801456, 0.239388, 2.2209 )

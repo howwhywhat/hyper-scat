@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=53 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -46,8 +46,10 @@
 [ext_resource path="res://scenes/Crate.tscn" type="PackedScene" id=44]
 [ext_resource path="res://scripts/ExplodeObject.gd" type="Script" id=45]
 [ext_resource path="res://scenes/FakeExplosionParticles.tscn" type="PackedScene" id=46]
+[ext_resource path="res://assets/textures/decor/foreground_decor/top.png" type="Texture" id=47]
+[ext_resource path="res://scenes/entities/Dog.tscn" type="PackedScene" id=48]
 
-[sub_resource type="Environment" id=4]
+[sub_resource type="Environment" id=1]
 background_mode = 4
 ssao_radius = 25.0
 ssao_quality = 2
@@ -64,20 +66,20 @@ glow_blend_mode = 0
 glow_hdr_threshold = 0.65
 glow_bicubic_upscale = true
 
-[sub_resource type="RectangleShape2D" id=1]
+[sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 49, 10 )
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 1, 10 )
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 1, 7 )
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 37 )
 
 [node name="PostProcessingFX" type="WorldEnvironment" parent="."]
-environment = SubResource( 4 )
+environment = SubResource( 1 )
 
 [node name="RoofCollision" type="StaticBody2D" parent="." groups=[
 "WallTiles",
@@ -95,7 +97,7 @@ position = Vector2( 34, 183 )
 collision_layer = 2
 
 [node name="Collider" type="CollisionShape2D" parent="SewerBlock"]
-shape = SubResource( 1 )
+shape = SubResource( 2 )
 disabled = true
 
 [node name="NullTiles" type="TileMap" parent="." groups=[
@@ -310,6 +312,9 @@ __meta__ = {
 }
 
 [node name="Cobwebs" type="Node2D" parent="WallDecor"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Cobweb1" type="Sprite" parent="WallDecor/Cobwebs"]
 position = Vector2( 7, 198 )
@@ -326,6 +331,9 @@ texture = ExtResource( 3 )
 normal_map = ExtResource( 9 )
 
 [node name="ToiletRolls" type="Node2D" parent="WallDecor"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="ToiletRoll1" type="Sprite" parent="WallDecor/ToiletRolls"]
 position = Vector2( 278, 252 )
@@ -346,6 +354,9 @@ texture = ExtResource( 18 )
 normal_map = ExtResource( 19 )
 
 [node name="SeveredHeads" type="Node2D" parent="WallDecor"]
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="SeveredHead1" type="Sprite" parent="WallDecor/SeveredHeads"]
 position = Vector2( 243, 255 )
@@ -377,6 +388,9 @@ normal_map = ExtResource( 20 )
 
 [node name="ShitLogs" type="Node2D" parent="WallDecor"]
 position = Vector2( 0, 1 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="ShitLogs1" type="Sprite" parent="WallDecor/ShitLogs"]
 position = Vector2( 178, 250 )
@@ -451,6 +465,12 @@ normal_map = ExtResource( 25 )
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="StrayEntities" type="Node2D" parent="WallDecor"]
+
+[node name="Dog" parent="WallDecor/StrayEntities" instance=ExtResource( 48 )]
+position = Vector2( 38, 248 )
+flip_h = true
 
 [node name="AntEntities" type="Node2D" parent="."]
 __meta__ = {
@@ -597,14 +617,14 @@ position = Vector2( 9, 24 )
 
 [node name="Collider" type="CollisionShape2D" parent="Platforms/Platform/JumpDetection"]
 position = Vector2( 10, -9 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="JumpDetection2" parent="Platforms/Platform" instance=ExtResource( 41 )]
 position = Vector2( -25, 24 )
 
 [node name="Collider" type="CollisionShape2D" parent="Platforms/Platform/JumpDetection2"]
 position = Vector2( 6, -9 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="Enemies" type="Node2D" parent="."]
 __meta__ = {
@@ -653,14 +673,16 @@ position = Vector2( 548, 244 )
 PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="DestructibleObjects" type="Node2D" parent="."]
+modulate = Color( 0.423529, 0.423529, 0.423529, 1 )
 
 [node name="Crate_01" type="Node2D" parent="DestructibleObjects"]
 
 [node name="Crate" parent="DestructibleObjects/Crate_01" instance=ExtResource( 44 )]
-position = Vector2( 146, 244 )
+position = Vector2( 146, 249 )
 script = ExtResource( 45 )
 blocks_impulse = 750.0
 fake_explosions_group = "FakeParticles"
+randomize_seed = true
 jumpDetection = [ NodePath("../JumpDetection"), NodePath("../JumpDetection2") ]
 
 [node name="FakeParticles" parent="DestructibleObjects/Crate_01" instance=ExtResource( 46 )]
@@ -670,15 +692,15 @@ particles_explode = true
 position = Vector2( -1, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DestructibleObjects/Crate_01/JumpDetection"]
-position = Vector2( 160, 249 )
-shape = SubResource( 3 )
+position = Vector2( 156, 249 )
+shape = SubResource( 4 )
 
 [node name="JumpDetection2" parent="DestructibleObjects/Crate_01" instance=ExtResource( 41 )]
 position = Vector2( -27, 0 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DestructibleObjects/Crate_01/JumpDetection2"]
-position = Vector2( 160, 249 )
-shape = SubResource( 3 )
+position = Vector2( 164, 249 )
+shape = SubResource( 4 )
 
 [node name="Player" parent="." instance=ExtResource( 12 )]
 position = Vector2( 33, 94 )
@@ -704,6 +726,21 @@ __meta__ = {
 
 [node name="ForegroundParallax" type="ParallaxBackground" parent="."]
 layer = 1
+
+[node name="Top" type="ParallaxLayer" parent="ForegroundParallax"]
+motion_offset = Vector2( 0, 55 )
+motion_mirroring = Vector2( 256, 0 )
+
+[node name="TopTexture" type="TextureRect" parent="ForegroundParallax/Top"]
+modulate = Color( 0.466667, 0.466667, 0.466667, 1 )
+margin_right = 40.0
+margin_bottom = 40.0
+rect_scale = Vector2( 2, 2 )
+texture = ExtResource( 47 )
+__meta__ = {
+"_edit_lock_": true,
+"_edit_use_anchors_": false
+}
 
 [node name="Vines" type="ParallaxLayer" parent="ForegroundParallax"]
 
@@ -736,7 +773,7 @@ __meta__ = {
 }
 
 [node name="Spider" type="ParallaxLayer" parent="ForegroundParallax"]
-motion_offset = Vector2( 320, 135 )
+motion_offset = Vector2( 320, 150 )
 
 [node name="SpiderTexture" type="TextureRect" parent="ForegroundParallax/Spider"]
 modulate = Color( 0.368627, 0.368627, 0.368627, 1 )
