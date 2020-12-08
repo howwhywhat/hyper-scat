@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/textures/entities/alerted.png" type="Texture" id=1]
+[ext_resource path="res://assets/textures/entities/normal_map_alerted.png" type="Texture" id=2]
+
+[sub_resource type="Animation" id=1]
+resource_name = "autoload"
+length = 1.2
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("Texture:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( 25, -0.25, 0, 0.25, 0, -15, -1, 1, 0.38, 0 ),
+"times": PoolRealArray( 0, 0.5 )
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Texture:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.9, 1.2 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 1.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "queue_free"
+} ]
+}
+
+[node name="AlarmScene" type="Node2D"]
+scale = Vector2( 0.5, 0.5 )
+
+[node name="Texture" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0 )
+position = Vector2( 0, -15 )
+texture = ExtResource( 1 )
+normal_map = ExtResource( 2 )
+
+[node name="Animaiton" type="AnimationPlayer" parent="."]
+autoplay = "autoload"
+anims/autoload = SubResource( 1 )

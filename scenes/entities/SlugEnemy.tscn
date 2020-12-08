@@ -63,7 +63,7 @@ tracks/0/keys = {
 "values": [ 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=4]
 resource_name = "death_2"
 length = 0.2
 tracks/0/type = "value"
@@ -79,7 +79,7 @@ tracks/0/keys = {
 "values": [ 46, 47 ]
 }
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id=5]
 length = 2.0
 loop = true
 tracks/0/type = "value"
@@ -107,8 +107,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 13 ), Vector2( 0, 13 ) ]
 }
 
-[sub_resource type="Animation" id=5]
-resource_name = "stunned"
+[sub_resource type="Animation" id=6]
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:frame")
 tracks/0/interp = 1
@@ -134,7 +133,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 13 ), Vector2( 0, 13 ) ]
 }
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 length = 1.1
 loop = true
 tracks/0/type = "value"
@@ -162,8 +161,7 @@ tracks/1/keys = {
 "values": [ Vector2( 0, 10 ), Vector2( 0, -3 ), Vector2( 0, 13 ), Vector2( 0, 10 ) ]
 }
 
-[sub_resource type="Animation" id=7]
-resource_name = "flash"
+[sub_resource type="Animation" id=8]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:modulate")
@@ -178,14 +176,14 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="CapsuleShape2D" id=8]
+[sub_resource type="CapsuleShape2D" id=9]
 radius = 13.0
 height = 2.0
 
-[sub_resource type="CircleShape2D" id=9]
+[sub_resource type="CircleShape2D" id=10]
 radius = 71.007
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=11]
 extents = Vector2( 42, 4.193 )
 
 [node name="Enemy" groups=[
@@ -194,6 +192,7 @@ extents = Vector2( 42, 4.193 )
 collision_layer = 16
 collision_mask = 34
 script = ExtResource( 1 )
+JUMP = 190
 MAX_SPEED = 25
 HEALTH = 35
 
@@ -204,7 +203,7 @@ script = ExtResource( 3 )
 texture = ExtResource( 4 )
 normal_map = ExtResource( 5 )
 hframes = 48
-frame = 46
+frame = 6
 
 [node name="Collider" parent="." index="2"]
 visible = false
@@ -214,13 +213,13 @@ shape = SubResource( 1 )
 [node name="Animation" parent="." index="3"]
 anims/attack = SubResource( 2 )
 anims/death = SubResource( 3 )
-anims/death_2 = SubResource( 11 )
-anims/idle = SubResource( 4 )
-anims/stunned = SubResource( 5 )
-anims/walk = SubResource( 6 )
+anims/death_2 = SubResource( 4 )
+anims/idle = SubResource( 5 )
+anims/stunned = SubResource( 6 )
+anims/walk = SubResource( 7 )
 
 [node name="BlinkAnimation" type="AnimationPlayer" parent="." index="4"]
-anims/flash = SubResource( 7 )
+anims/flash = SubResource( 8 )
 
 [node name="PlayerDamage" type="Area2D" parent="." index="5"]
 visible = false
@@ -228,8 +227,8 @@ collision_layer = 16
 collision_mask = 4
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerDamage" index="0"]
-position = Vector2( 0, 10 )
-shape = SubResource( 8 )
+position = Vector2( 0, 13 )
+shape = SubResource( 9 )
 
 [node name="State" type="Label" parent="." index="6"]
 visible = false
@@ -247,7 +246,7 @@ visible = false
 collision_layer = 16
 
 [node name="Collider" type="CollisionShape2D" parent="PlayerDetectionWakeup" index="0"]
-shape = SubResource( 9 )
+shape = SubResource( 10 )
 
 [node name="PlayerHitDetection" type="Area2D" parent="." index="8" groups=[
 "ForeignEntityAttack",
@@ -257,7 +256,7 @@ collision_layer = 16
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerHitDetection" index="0"]
 position = Vector2( 0, 500 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="PlayerChaseCast" type="RayCast2D" parent="." index="9"]
 visible = false

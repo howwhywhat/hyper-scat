@@ -1,4 +1,4 @@
-extends "res://scripts/entities/Enemy.gd"
+extends Enemy
 
 var wake_up_animation_completed = false
 var allow_shooting = false
@@ -19,10 +19,6 @@ var BULLET_SCENE = preload("res://scenes/attacks/EnergyBall.tscn")
 var can_fire = true
 onready var pivot = $Pivot
 onready var bulletPosition = $Pivot/BulletPosition
-
-func _apply_gravity(delta):
-	motion.y += GlobalConstants.GRAVITY * delta
-	motion.y += GlobalConstants.GRAVITY * delta
 
 func shoot():
 	if allow_shooting and can_fire:

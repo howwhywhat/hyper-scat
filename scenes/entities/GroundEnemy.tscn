@@ -137,6 +137,7 @@ tracks/0/keys = {
 collision_layer = 80
 collision_mask = 34
 script = ExtResource( 1 )
+JUMP = 0
 MAX_SPEED = 0
 HEALTH = 35
 

@@ -1,0 +1,166 @@
+[gd_scene load_steps=14 format=2]
+
+[ext_resource path="res://scenes/entities/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://scripts/entities/UraniumEnemy.gd" type="Script" id=2]
+[ext_resource path="res://scripts/entities/UraniumFSM.gd" type="Script" id=3]
+[ext_resource path="res://scenes/particles/SleepingParticles.tscn" type="PackedScene" id=4]
+[ext_resource path="res://assets/textures/entities/uranium_enemy/normal_map_spritesheet.png" type="Texture" id=5]
+[ext_resource path="res://assets/textures/entities/uranium_enemy/spritesheet.png" type="Texture" id=6]
+[ext_resource path="res://assets/textures/entities/ass_man/light.png" type="Texture" id=7]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 10, 6.713 )
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 105.019
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 10, 7 )
+
+[sub_resource type="Animation" id=2]
+length = 0.2
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 3, 4 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("LightingEffects:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 1.4, 0.0 ]
+}
+
+[sub_resource type="Animation" id=3]
+length = 0.9
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.4, 0.5, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 0, 1, 1 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("LightingEffects:energy")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.9 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.4 ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[node name="Enemy" groups=[
+"ForeignEntities",
+] instance=ExtResource( 1 )]
+collision_layer = 16
+collision_mask = 34
+script = ExtResource( 2 )
+JUMP = 0
+MAX_SPEED = 0
+HEALTH = 45
+
+[node name="Texture" parent="." index="0"]
+texture = ExtResource( 6 )
+normal_map = ExtResource( 5 )
+hframes = 5
+frame = 4
+
+[node name="StateMachine" type="Node2D" parent="." index="1"]
+script = ExtResource( 3 )
+
+[node name="PlayerDamage" type="Area2D" parent="." index="2"]
+visible = false
+collision_layer = 16
+collision_mask = 4
+
+[node name="Hurtbox" type="CollisionShape2D" parent="PlayerDamage" index="0"]
+position = Vector2( 0, 0.713 )
+shape = SubResource( 5 )
+
+[node name="PlayerDetection" type="Area2D" parent="." index="3"]
+visible = false
+
+[node name="Collider" type="CollisionShape2D" parent="PlayerDetection" index="0"]
+shape = SubResource( 1 )
+
+[node name="PlayerHurtDetection" type="Area2D" parent="." index="4"]
+visible = false
+collision_layer = 16
+
+[node name="Collider" type="CollisionShape2D" parent="PlayerHurtDetection" index="0"]
+shape = SubResource( 1 )
+
+[node name="Collider" parent="." index="5"]
+position = Vector2( 0, 0.632 )
+shape = SubResource( 6 )
+
+[node name="Animation" parent="." index="6"]
+autoplay = "idle"
+anims/death = SubResource( 2 )
+anims/idle = SubResource( 3 )
+
+[node name="State" type="Label" parent="." index="7"]
+margin_left = -17.0
+margin_top = -21.0
+margin_right = 23.0
+margin_bottom = -7.0
+text = "state"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BlinkAnimation" type="AnimationPlayer" parent="." index="8"]
+anims/flash = SubResource( 4 )
+
+[node name="LightingEffects" type="Light2D" parent="." index="9"]
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 7 )
+color = Color( 0.266667, 0.435294, 0.0627451, 1 )
+energy = 0.0
+
+[node name="SleepingParticles" parent="." index="10" instance=ExtResource( 4 )]
+
+[node name="DamageTimer" type="Timer" parent="." index="11"]
+wait_time = 2.0
+[connection signal="body_entered" from="PlayerHurtDetection" to="." method="_on_PlayerHurtDetection_body_entered"]
+[connection signal="body_exited" from="PlayerHurtDetection" to="." method="_on_PlayerHurtDetection_body_exited"]
+[connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
+[connection signal="timeout" from="DamageTimer" to="." method="_on_DamageTimer_timeout"]

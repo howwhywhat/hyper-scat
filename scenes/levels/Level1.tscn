@@ -1,4 +1,4 @@
-[gd_scene load_steps=53 format=2]
+[gd_scene load_steps=54 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -48,6 +48,7 @@
 [ext_resource path="res://scenes/FakeExplosionParticles.tscn" type="PackedScene" id=46]
 [ext_resource path="res://assets/textures/decor/foreground_decor/top.png" type="Texture" id=47]
 [ext_resource path="res://scenes/entities/Dog.tscn" type="PackedScene" id=48]
+[ext_resource path="res://scenes/entities/UraniumEnemy.tscn" type="PackedScene" id=49]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -670,6 +671,12 @@ PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="Enemy" parent="Enemies/ButtGround" instance=ExtResource( 43 )]
 position = Vector2( 548, 244 )
+PLAYER_SCENE = NodePath("../../../Player")
+
+[node name="Uranium" type="Node2D" parent="Enemies"]
+
+[node name="Enemy" parent="Enemies/Uranium" instance=ExtResource( 49 )]
+position = Vector2( 394, 232 )
 PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="DestructibleObjects" type="Node2D" parent="."]

@@ -1,7 +1,8 @@
 extends StateMachine
 
-onready var MOUTH_ATTACK_SCENE = preload("res://scenes/entities/MouthAttack.tscn")
+var MOUTH_ATTACK_SCENE = preload("res://scenes/entities/MouthAttack.tscn")
 var mouthAttack
+var alertScene
 var chase = false
 
 var state_enabled = true
@@ -146,6 +147,7 @@ func _enter_state(new_state, old_state):
 			chase = false
 			parent.animation.play("asleep")
 		states.wake_up:
+			parent.instance_alert_scene()
 			parent.sleepingParticles.emitting = false
 			chase = false
 			parent.animation.play("wake_up")
