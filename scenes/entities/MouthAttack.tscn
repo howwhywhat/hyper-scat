@@ -55,6 +55,7 @@ tracks/0/keys = {
 "ForeignEntityAttack",
 ]]
 scale = Vector2( 2, 2 )
+collision_layer = 8
 script = ExtResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="."]

@@ -35,6 +35,11 @@ var can_fire = true
 onready var shit_wave = preload("res://scenes/attacks/ShitWave.tscn")
 
 # variables
+onready var shieldTimer = $BlockedTimer
+onready var shield = $PlayerShield
+onready var shieldHurtbox = $PlayerShield/Hurtbox
+
+onready var stunnedTimer = $StunnedTimer
 onready var animation = $Animation
 onready var flashAnimation = $BlinkAnimation
 onready var state = $State
@@ -240,18 +245,23 @@ func start_movement():
 	was_on_floor = is_on_floor()
 	motion = move_and_slide(motion, Vector2.UP)
 
-func loop_damage_checker():
-	for body in $BulletDetection.get_overlapping_bodies():
-		if body.is_in_group("ForeignEnemyAttack"):
-			apply_damage(body.damage)
-			enemyOrigin = body.transform.origin
+#func loop_damage_checker():
+#	print("called")
+#	if hurtbox.disabled == false:
+#		print("hurtbox enabled")
+#		for body in $BulletDetection.get_overlapping_bodies():
+#			if body.is_in_group("ForeignEnemyAttack"):
+#				print("body has entered dmg")
+#				apply_damage(body.damage)
+#				enemyOrigin = body.transform.origin
 
 func stunned():
 	hurtbox.disabled = true
+	stateMachine.state_logic_enabled = false
 	stunned = true
-	yield(get_tree().create_timer(1.25), "timeout")
-	hurtbox.disabled = false
-	stunned = false
+	if stunnedTimer.is_stopped():
+		stunnedTimer.wait_time = 1.25
+		stunnedTimer.start()
 
 func apply_damage(damage):
 	apply_damage_texture()
@@ -336,15 +346,25 @@ func _on_PickUpDrops_body_entered(body):
 
 func _on_DropMoveToRadius_body_entered(body):
 	if body.is_in_group("ItemDrop"):
-		print("body in")
 		body.set_process(true)
 
 func _on_DropMoveToRadius_body_exited(body):
 	if body.is_in_group("ItemDrop"):
-		print("body out")
 		body.set_process(false)
 
 func _on_Animation_animation_finished(anim_name):
 	if anim_name == "death":
 		var deathId = DEATH_ID_SCENE.instance()
 		get_tree().current_scene.add_child(deathId)
+
+func _on_StunnedTimer_timeout():
+	stunnedTimer.stop()
+	stunnedTimer.wait_time = 1.25
+	hurtbox.disabled = false
+	stunned = false
+	if health > 0:
+		stateMachine.state_logic_enabled = true
+
+func _on_BlockedTimer_timeout():
+	shieldTimer.stop()
+	shieldTimer.wait_time = 5

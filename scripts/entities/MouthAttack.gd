@@ -13,7 +13,9 @@ func _process(_delta):
 		sprite.flip_h = true
 
 func _on_MouthAttack_body_entered(body):
-	if body.is_in_group("Player") and body.hurtbox.disabled == false:
+	if body.is_in_group("PlayerShield"):
+		return
+	elif body.is_in_group("Player") and body.hurtbox.disabled == false:
 		if body.health > 0:
 			body.lastHitEntity = get_parent()
 			body.apply_damage(damage)

@@ -44,6 +44,7 @@ func _on_WeaponAnimation_animation_finished(anim_name):
 		animation.play("death")
 
 func damage(value):
+	player.get_node("Camera").add_trauma(0.3)
 	HEALTH -= value
 
 func _on_Animation_animation_finished(anim_name):

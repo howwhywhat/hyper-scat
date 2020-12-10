@@ -1,9 +1,10 @@
-[gd_scene load_steps=27 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://assets/textures/entities/ass_man/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player/Player.gd" type="Script" id=2]
 [ext_resource path="res://scripts/player/PlayerFSM.gd" type="Script" id=3]
 [ext_resource path="res://assets/textures/entities/ass_man/light.png" type="Texture" id=4]
+[ext_resource path="res://scenes/attacks/PlayerShield.tscn" type="PackedScene" id=5]
 [ext_resource path="res://scenes/particles/StompParticles.tscn" type="PackedScene" id=6]
 [ext_resource path="res://scripts/player/PlayerCameraJuice.gd" type="Script" id=7]
 [ext_resource path="res://scenes/attacks/ShitBall.tscn" type="PackedScene" id=8]
@@ -85,6 +86,34 @@ radius = 6.0
 radius = 40.0125
 
 [sub_resource type="Animation" id=8]
+resource_name = "block"
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 54, 54 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HalfAss:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 8, 8 ]
+}
+
+[sub_resource type="Animation" id=9]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -111,7 +140,7 @@ tracks/1/keys = {
 "values": [ 8, 8 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=10]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -138,7 +167,7 @@ tracks/1/keys = {
 "values": [ 14, 15, 16 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=11]
 length = 2.0
 loop = true
 tracks/0/type = "value"
@@ -166,7 +195,7 @@ tracks/1/keys = {
 "values": [ 40, 40, 0, 0 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=12]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -193,7 +222,7 @@ tracks/1/keys = {
 "values": [ 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=13]
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -220,7 +249,7 @@ tracks/1/keys = {
 "values": [ 18, 18 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=14]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -276,7 +305,7 @@ tracks/3/keys = {
 "values": [ 8, 8 ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=15]
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
 tracks/0/interp = 1
@@ -302,7 +331,7 @@ tracks/1/keys = {
 "values": [ 8, 8 ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=16]
 length = 0.7
 loop = true
 tracks/0/type = "value"
@@ -330,7 +359,7 @@ tracks/1/keys = {
 "values": [ 1, 2, 3, 4, 3, 6, 7 ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=17]
 tracks/0/type = "value"
 tracks/0/path = NodePath("HalfAss:frame")
 tracks/0/interp = 1
@@ -356,8 +385,7 @@ tracks/1/keys = {
 "values": [ 52, 52 ]
 }
 
-[sub_resource type="Animation" id=17]
-resource_name = "flash"
+[sub_resource type="Animation" id=18]
 length = 0.5
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("CharacterSprite:modulate:r")
@@ -400,7 +428,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.5 )
 }
 
-[sub_resource type="OpenSimplexNoise" id=18]
+[sub_resource type="OpenSimplexNoise" id=19]
 
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
@@ -415,8 +443,8 @@ script = ExtResource( 3 )
 [node name="CharacterSprite" type="Sprite" parent="."]
 material = SubResource( 2 )
 texture = ExtResource( 1 )
-hframes = 53
-frame = 37
+hframes = 55
+frame = 40
 
 [node name="HalfAss" type="Sprite" parent="."]
 light_mask = -2147483647
@@ -424,7 +452,7 @@ material = SubResource( 4 )
 z_index = 1
 texture = ExtResource( 9 )
 hframes = 51
-frame = 8
+frame = 40
 
 [node name="EnvironmentHitbox" type="CollisionShape2D" parent="."]
 visible = false
@@ -454,18 +482,19 @@ collision_mask = 256
 shape = SubResource( 7 )
 
 [node name="Animation" type="AnimationPlayer" parent="."]
-anims/death = SubResource( 8 )
-anims/fall = SubResource( 9 )
-anims/idle = SubResource( 10 )
-anims/jump = SubResource( 11 )
-anims/recoil = SubResource( 12 )
-anims/special_attack = SubResource( 13 )
-anims/stunned = SubResource( 14 )
-anims/walk = SubResource( 15 )
-anims/wall_slide = SubResource( 16 )
+anims/block = SubResource( 8 )
+anims/death = SubResource( 9 )
+anims/fall = SubResource( 10 )
+anims/idle = SubResource( 11 )
+anims/jump = SubResource( 12 )
+anims/recoil = SubResource( 13 )
+anims/special_attack = SubResource( 14 )
+anims/stunned = SubResource( 15 )
+anims/walk = SubResource( 16 )
+anims/wall_slide = SubResource( 17 )
 
 [node name="BlinkAnimation" type="AnimationPlayer" parent="."]
-anims/flash = SubResource( 17 )
+anims/flash = SubResource( 18 )
 
 [node name="State" type="Label" parent="."]
 visible = false
@@ -483,7 +512,7 @@ rotating = true
 zoom = Vector2( 0.5, 0.5 )
 smoothing_enabled = true
 script = ExtResource( 7 )
-noise = SubResource( 18 )
+noise = SubResource( 19 )
 max_y = 60
 max_r = 15
 
@@ -562,8 +591,20 @@ one_shot = true
 [node name="JumpBuffer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
+
+[node name="StunnedTimer" type="Timer" parent="."]
+wait_time = 1.25
+
+[node name="BlockedTimer" type="Timer" parent="."]
+wait_time = 5.0
+
+[node name="PlayerShield" parent="." instance=ExtResource( 5 )]
+visible = false
+z_index = 1
 [connection signal="body_entered" from="PickUpDrops" to="." method="_on_PickUpDrops_body_entered"]
 [connection signal="body_entered" from="DropMoveToRadius" to="." method="_on_DropMoveToRadius_body_entered"]
 [connection signal="body_exited" from="DropMoveToRadius" to="." method="_on_DropMoveToRadius_body_exited"]
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
 [connection signal="screen_entered" from="IfVisible" to="." method="_on_IfVisible_screen_entered"]
+[connection signal="timeout" from="StunnedTimer" to="." method="_on_StunnedTimer_timeout"]
+[connection signal="timeout" from="BlockedTimer" to="." method="_on_BlockedTimer_timeout"]

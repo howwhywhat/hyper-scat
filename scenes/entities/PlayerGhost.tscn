@@ -4,9 +4,9 @@
 [ext_resource path="res://scripts/entities/PlayerGhost.gd" type="Script" id=2]
 
 [node name="PlayerGhost" type="Sprite"]
-modulate = Color( 1, 1, 1, 0.1 )
+modulate = Color( 100, 100, 100, 1 )
 texture = ExtResource( 1 )
-hframes = 53
+hframes = 55
 script = ExtResource( 2 )
 
 [node name="Tween" type="Tween" parent="."]

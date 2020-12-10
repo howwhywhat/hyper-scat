@@ -38,6 +38,12 @@ onready var POKEMON_SCENE = preload("res://scenes/levels/PokemonAttack.tscn")
 # debugging
 onready var state = $State
 
+# death shoot
+var number_of_shots = 12
+var BULLET_SCENE = preload("res://scenes/attacks/DeathBall.tscn")
+onready var pivot = $Pivot
+onready var bulletPosition = $Pivot/BulletPosition
+
 func _process(_delta):
 	if can_see() and player != null:
 		if global_position.x < player.global_position.x:
@@ -61,9 +67,20 @@ func can_jump():
 	else:
 		return false
 
+func shoot():
+	player.lastHitEntity = self
+	for shot in number_of_shots:
+		var bullet = BULLET_SCENE.instance()
+		pivot.rotation += (2 * PI / number_of_shots)
+		bullet.global_position = bulletPosition.global_position
+		bullet.rotation = pivot.rotation
+		get_tree().current_scene.add_child(bullet)
+		yield(get_tree().create_timer(.002), "timeout")
+
 func damage(value):
 	if HEALTH > 0:
 		stunned()
+	player.get_node("Camera").add_trauma(0.3)
 	HEALTH -= value
 
 func in_sight():
@@ -103,9 +120,13 @@ func _on_Animation_animation_finished(anim_name):
 	if anim_name == "idle":
 		woke_up = true
 	elif anim_name == "death":
+		visible = false
+		yield(get_tree().create_timer(2), "timeout")
 		queue_free()
 	elif anim_name == "death_2":
 		instance_explosion_scene()
+		visible = false
+		yield(get_tree().create_timer(2), "timeout")
 		queue_free()
 
 func _start_pokemon_fight_scene():

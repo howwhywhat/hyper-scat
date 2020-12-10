@@ -1,0 +1,84 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/shaders/outline/Outline.tres" type="Material" id=1]
+[ext_resource path="res://assets/textures/entities/ass_man/shield/normal_map_spritesheet.png" type="Texture" id=2]
+[ext_resource path="res://assets/textures/entities/ass_man/shield/spritesheet.png" type="Texture" id=3]
+[ext_resource path="res://scripts/attacks/PlayerShield.gd" type="Script" id=4]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 15.3569
+
+[sub_resource type="Animation" id=2]
+resource_name = "idle"
+length = 1.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4, 5, 6, 6 ]
+}
+
+[sub_resource type="Animation" id=3]
+resource_name = "remove"
+length = 0.6
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 17, 16, 15, 14, 13, 12 ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "spawn_in"
+length = 0.7
+tracks/0/type = "value"
+tracks/0/path = NodePath("Texture:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 12, 13, 14, 15, 16, 17, 18 ]
+}
+
+[node name="PlayerShield" type="StaticBody2D" groups=[
+"PlayerShield",
+]]
+collision_mask = 24
+script = ExtResource( 4 )
+
+[node name="Texture" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.454902 )
+material = ExtResource( 1 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 2 )
+hframes = 19
+frame = 12
+
+[node name="Hurtbox" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( 0.65, 0.461 )
+shape = SubResource( 1 )
+disabled = true
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+anims/idle = SubResource( 2 )
+anims/remove = SubResource( 3 )
+anims/spawn_in = SubResource( 4 )
+[connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]

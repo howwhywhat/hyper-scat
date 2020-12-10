@@ -4,6 +4,7 @@ var MOUTH_ATTACK_SCENE = preload("res://scenes/entities/MouthAttack.tscn")
 var mouthAttack
 var alertScene
 var chase = false
+var corpseFrames = 0
 
 var state_enabled = true
 var state_logic_enabled = true
@@ -183,6 +184,7 @@ func _enter_state(new_state, old_state):
 				parent.playerDetection.queue_free()
 			parent.stop_movement()
 			parent.spawn_drops(2)
+			
 			if mouthAttack != null:
 				mouthAttack.animation.play("mouth_close")
 			if parent.floorLeft.is_colliding() or parent.floorRight.is_colliding():

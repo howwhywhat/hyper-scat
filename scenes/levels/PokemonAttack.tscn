@@ -360,7 +360,7 @@ shaded = true
 alpha_cut = 2
 texture = ExtResource( 14 )
 hframes = 51
-frame = 40
+frame = 50
 
 [node name="EnemySprite" type="Sprite3D" parent="."]
 transform = Transform( 0.424078, 0, -1.85207, 0, 1.9, 0, 1.85207, 0, 0.424078, 0.612, 0.115, 0.547 )

@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/entities/PieceOfShitSeparated.gd" type="Script" id=1]
+[ext_resource path="res://assets/textures/entities/piece_of_shit_enemy/normal_map_separated.png" type="Texture" id=2]
+[ext_resource path="res://assets/textures/entities/piece_of_shit_enemy/separated.png" type="Texture" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 5.48334, 1.52477 )
+
+[node name="PieceOfShitSeparated" type="RigidBody2D"]
+collision_layer = 16
+collision_mask = 34
+contacts_reported = 1
+contact_monitor = true
+script = ExtResource( 1 )
+projectile_speed = 400
+
+[node name="Texture" type="Sprite" parent="."]
+position = Vector2( 0, 4 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 3 )
+normal_map = ExtResource( 2 )
+hframes = 3
+
+[node name="IfVisible" type="VisibilityNotifier2D" parent="."]
+
+[node name="Collider" type="CollisionShape2D" parent="."]
+position = Vector2( 0, 8.47858 )
+shape = SubResource( 1 )
+[connection signal="body_entered" from="." to="." method="_on_PieceOfShitSeparated_body_entered"]
+[connection signal="screen_exited" from="IfVisible" to="." method="_on_IfVisible_screen_exited"]

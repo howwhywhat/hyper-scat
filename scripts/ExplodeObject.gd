@@ -173,11 +173,6 @@ func _ready():
 
 
 func _physics_process(delta):
-	if Input.is_key_pressed(KEY_Q) and object.can_detonate or \
-		Input.is_mouse_button_pressed(BUTTON_LEFT) and object.can_detonate:
-		# This is what triggers the explosion, setting 'object.detonate' to 'true'.
-		object.detonate = true
-
 	if object.can_detonate and object.detonate:
 		detonate()
 
@@ -307,9 +302,6 @@ func _on_debris_timer_timeout():
 
 			# Remove the self element as we don't need it anymore.
 			self.queue_free()
-			for nodes in jumpDetection:
-				var node = get_node(nodes)
-				node.queue_free()
 		else:
 			var color_r = child.modulate.r
 			var color_g = child.modulate.g
@@ -329,6 +321,8 @@ func _on_debris_timer_timeout():
 			add_child(opacity_tween, true)
 			opacity_tween.start()
 
-
 func _on_opacity_tween_completed(obj, _key):
 	obj.queue_free()
+
+func _on_Crate_body_entered(body):
+	print("help")

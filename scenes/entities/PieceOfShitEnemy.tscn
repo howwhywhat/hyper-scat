@@ -56,6 +56,20 @@ tracks/1/keys = {
 "update": 0,
 "values": [ Color( 255, 255, 255, 1 ), Color( 1, 1, 1, 1 ) ]
 }
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "shoot"
+} ]
+}
 
 [sub_resource type="Animation" id=6]
 resource_name = "death_2"
@@ -83,6 +97,34 @@ tracks/1/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 0,
 "values": [ Color( 204.2, 204.2, 204.2, 1 ), Color( 204.2, 204.2, 204.2, 1 ) ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "spawn_corpse"
+} ]
+}
+tracks/3/type = "method"
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "shoot"
+} ]
 }
 
 [sub_resource type="Animation" id=7]
@@ -146,7 +188,7 @@ script = ExtResource( 5 )
 texture = ExtResource( 4 )
 normal_map = ExtResource( 3 )
 hframes = 36
-frame = 8
+frame = 24
 
 [node name="Collider" parent="." index="2"]
 position = Vector2( 0, 4.096 )
@@ -173,7 +215,7 @@ visible = false
 scale = Vector2( 2, 5 )
 enabled = true
 cast_to = Vector2( 0, 0 )
-collision_mask = 35
+collision_mask = 547
 
 [node name="RightPlayerAttackDetection" type="RayCast2D" parent="." index="6"]
 visible = false
@@ -249,6 +291,26 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SleepingParticles" parent="." index="17" instance=ExtResource( 6 )]
+[node name="PositionsForCorpse" type="Node2D" parent="." index="17"]
+
+[node name="Top" type="Position2D" parent="PositionsForCorpse" index="0"]
+position = Vector2( 0, -4 )
+rotation = 0.628319
+
+[node name="Middle" type="Position2D" parent="PositionsForCorpse" index="1"]
+position = Vector2( 0, 2 )
+rotation = -0.942478
+
+[node name="Bottom" type="Position2D" parent="PositionsForCorpse" index="2"]
+position = Vector2( 0, 8 )
+rotation = 0.785398
+
+[node name="Pivot" type="Node2D" parent="." index="18"]
+rotation = -3.14159
+
+[node name="BulletPosition" type="Position2D" parent="Pivot" index="0"]
+position = Vector2( 62, 5.42021e-06 )
+
+[node name="SleepingParticles" parent="." index="19" instance=ExtResource( 6 )]
 position = Vector2( -10, 0 )
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]

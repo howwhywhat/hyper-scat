@@ -14,6 +14,7 @@ func _ready():
 	add_state("death")
 	add_state("stunned")
 	add_state("shoot")
+	add_state("block")
 	call_deferred("set_state", states.idle)
 
 func _state_logic(delta):
@@ -22,7 +23,7 @@ func _state_logic(delta):
 	if state_logic_enabled == true:
 		parent.apply_movement(delta)
 		parent.apply_special_attack_controls()
-		parent.loop_damage_checker()
+#		parent.loop_damage_checker()
 		parent.apply_jumping()
 		
 		if state == states.wall_slide:
@@ -53,6 +54,8 @@ func _get_transition(delta):
 				return states.stunned
 			if Input.is_action_pressed("shoot") and parent.can_fire_bullet == true:
 				return states.shoot
+			if Input.is_action_pressed("block") and parent.shieldTimer.is_stopped() and parent.x_input == 0:
+				return states.block
 		states.walk:
 			parent.state.text = "walk"
 			if !parent.is_on_floor():
@@ -142,21 +145,43 @@ func _get_transition(delta):
 			parent.state.text = "wall_slide"
 			if parent.get_wall_axis() == 0 or parent.is_on_floor():
 				return states.idle
+		states.block:
+			parent.state.text = "block"
+			if !parent.is_on_floor():
+				if parent.motion.y < 0 and !parent.jumpBuffer.is_stopped():
+					return states.jump
+				elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
+					return states.fall
+			elif parent.x_input != 0:
+				return states.walk
+			elif parent.x_input == 0 and not Input.is_action_pressed("block"):
+				return states.idle
+			if parent.power_value != 0:
+				return states.special_attack
+			if parent.health <= 0:
+				return states.death
+			if parent.stunned == true:
+				return states.stunned
+			if Input.is_action_pressed("shoot") and parent.can_fire_bullet == true:
+				return states.shoot
 	return null
 
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.idle:
+			parent.shield.animation.play("remove")
 			parent.animation.stop()
 			parent.animation.play("idle")
 			# just sets the boolean to true for dashing because i'm too lazy to add dash state in this cursed fsm
 			parent.able_to_dash = true
 			parent.power_value = 0
 		states.walk:
+			parent.shield.animation.play("remove")
 			parent.power_value = 0
 			parent.able_to_dash = true
 			parent.animation.play("walk")
 		states.jump:
+			parent.shield.animation.play("remove")
 			parent.power_value = 0
 			parent.able_to_dash = true
 			if get_parent().x_input != 0:
@@ -169,23 +194,27 @@ func _enter_state(new_state, old_state):
 			parent.jumpBuffer.stop()
 			parent.animation.play("jump")
 		states.fall:
+			parent.shield.animation.play("remove")
 			parent.able_to_dash = false
 			parent.power_value = 0
 			parent.coyoteTimer.start()
 			parent.motion.y = 0
 			parent.animation.play("fall")
 		states.special_attack:
+			parent.shield.animation.play("remove")
 			parent.able_to_dash = false
 			parent.animation.play("special_attack")
 		states.death:
+			parent.shield.animation.play("remove")
+			state_logic_enabled = false # WHY THE FUCK ISN'T THIS WORKING????!!!!
 			parent.able_to_dash = false
 			parent.bloodParticlesLeft.emitting = false
 			parent.bloodParticlesRight.emitting = false
 			parent.power_value = 0
-			state_logic_enabled = false
 			parent.animation.stop()
 			parent.animation.play("death")
 		states.stunned:
+			parent.shield.animation.play("remove")
 			parent.able_to_dash = false
 			parent.power_value = 0
 			var direction = parent.transform.origin - parent.enemyOrigin
@@ -198,14 +227,13 @@ func _enter_state(new_state, old_state):
 					parent.apply_knockback(-direction)
 			parent.animation.play("stunned")
 			parent.flashAnimation.play("flash")
-			state_logic_enabled = false
-			yield(get_tree().create_timer(1.25), "timeout")
-			state_logic_enabled = true
 		states.shoot:
+			parent.shield.animation.play("remove")
 			parent.able_to_dash = false
 			parent.power_value = 0
 			parent.shoot()
 		states.wall_slide:
+			parent.shield.animation.play("remove")
 			parent.able_to_dash = false
 			parent.power_value = 0
 			parent.animation.play("wall_slide")
@@ -218,6 +246,14 @@ func _enter_state(new_state, old_state):
 				else:
 					parent.sprite.scale.x = -wallAxis
 					parent.halfAss.scale.x = -wallAxis
+		states.block:
+			parent.able_to_dash = false
+			parent.power_value = 0
+			parent.shield.visible = true
+			parent.shield.animation.play("spawn_in")
+			parent.shieldTimer.start()
+			parent.shieldHurtbox.disabled = false
+			parent.animation.play("block")
 
 func _exit_state(old_state, new_state):
 	pass

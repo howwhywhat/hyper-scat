@@ -62,6 +62,20 @@ tracks/0/keys = {
 "update": 1,
 "values": [ 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34 ]
 }
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.5 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "shoot"
+} ]
+}
 
 [sub_resource type="Animation" id=4]
 resource_name = "death_2"
@@ -77,6 +91,20 @@ tracks/0/keys = {
 "transitions": PoolRealArray( 1, 1 ),
 "update": 1,
 "values": [ 46, 47 ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0.2 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "shoot"
+} ]
 }
 
 [sub_resource type="Animation" id=5]
@@ -203,7 +231,7 @@ script = ExtResource( 3 )
 texture = ExtResource( 4 )
 normal_map = ExtResource( 5 )
 hframes = 48
-frame = 6
+frame = 47
 
 [node name="Collider" parent="." index="2"]
 visible = false
@@ -227,7 +255,7 @@ collision_layer = 16
 collision_mask = 4
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerDamage" index="0"]
-position = Vector2( 0, 13 )
+position = Vector2( 0, 12.1429 )
 shape = SubResource( 9 )
 
 [node name="State" type="Label" parent="." index="6"]
@@ -252,10 +280,10 @@ shape = SubResource( 10 )
 "ForeignEntityAttack",
 ]]
 visible = false
-collision_layer = 16
+collision_layer = 8
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerHitDetection" index="0"]
-position = Vector2( 0, 500 )
+position = Vector2( 0, 11.193 )
 shape = SubResource( 11 )
 
 [node name="PlayerChaseCast" type="RayCast2D" parent="." index="9"]
@@ -263,7 +291,7 @@ visible = false
 scale = Vector2( 2, 5 )
 enabled = true
 cast_to = Vector2( 0, 0 )
-collision_mask = 3
+collision_mask = 515
 
 [node name="FloorLeft" type="RayCast2D" parent="." index="10"]
 visible = false
@@ -319,7 +347,13 @@ cast_to = Vector2( -12, 0 )
 collision_mask = 128
 collide_with_areas = true
 
-[node name="SleepingParticles" parent="." index="18" instance=ExtResource( 7 )]
+[node name="Pivot" type="Node2D" parent="." index="18"]
+rotation = -3.14159
+
+[node name="BulletPosition" type="Position2D" parent="Pivot" index="0"]
+position = Vector2( 62, 0 )
+
+[node name="SleepingParticles" parent="." index="19" instance=ExtResource( 7 )]
 position = Vector2( -9, 11 )
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="PlayerHitDetection" to="." method="_on_PlayerHitDetection_body_entered"]
