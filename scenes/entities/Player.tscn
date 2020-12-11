@@ -553,6 +553,9 @@ position = Vector2( -5, 4 )
 [node name="RightArmPosition" type="Position2D" parent="."]
 position = Vector2( 6, 4 )
 
+[node name="SpecialAttackPosition" type="Position2D" parent="."]
+position = Vector2( 58, -12 )
+
 [node name="BounceRaycasts" type="Node2D" parent="."]
 visible = false
 

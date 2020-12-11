@@ -39,6 +39,8 @@ onready var shieldTimer = $BlockedTimer
 onready var shield = $PlayerShield
 onready var shieldHurtbox = $PlayerShield/Hurtbox
 
+onready var specialAttackPosition = $SpecialAttackPosition
+
 onready var stunnedTimer = $StunnedTimer
 onready var animation = $Animation
 onready var flashAnimation = $BlinkAnimation
@@ -106,12 +108,12 @@ func _physics_process(_delta):
 		if Input.is_action_pressed("d") and dash == false and tappedRight == 2:
 			hurtbox.disabled = true
 			dash = true
-			MAX_SPEED *= 2
+			MAX_SPEED *= 1.5
 			motion.x += 500
 			yield(get_tree().create_timer(.3), "timeout")
 			hurtbox.disabled = false
 			dash = false
-			MAX_SPEED /= 2
+			MAX_SPEED /= 1.5
 		if Input.is_action_just_pressed("a") and dash == false:
 			tappedLeft += 1
 			yield(get_tree().create_timer(.2), "timeout")
@@ -119,12 +121,12 @@ func _physics_process(_delta):
 		if Input.is_action_pressed("a") and dash == false and tappedLeft == 2:
 			hurtbox.disabled = true
 			dash = true
-			MAX_SPEED *= 2
+			MAX_SPEED *= 1.5
 			motion.x -= 500
 			yield(get_tree().create_timer(.5), "timeout")
 			hurtbox.disabled = false
 			dash = false
-			MAX_SPEED /= 2
+			MAX_SPEED /= 1.5
 
 func _process(delta):
 	uiLaxatives.text = str(laxatives)
@@ -188,9 +190,7 @@ func apply_gravity(delta):
 
 func execute_special_attack():
 	var shitWave = shit_wave.instance()
-	shitWave.global_position = global_position
-	shitWave.global_position.y -= 32
-	shitWave.global_position.x += 15
+	shitWave.global_position = specialAttackPosition.global_position
 	get_tree().current_scene.add_child(shitWave)
 
 func apply_knockback(amount : Vector2):

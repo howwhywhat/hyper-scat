@@ -191,6 +191,7 @@ hframes = 36
 frame = 24
 
 [node name="Collider" parent="." index="2"]
+visible = false
 position = Vector2( 0, 4.096 )
 shape = SubResource( 1 )
 
@@ -212,7 +213,7 @@ shape = SubResource( 3 )
 
 [node name="PlayerChaseCast" type="RayCast2D" parent="." index="5"]
 visible = false
-scale = Vector2( 2, 5 )
+scale = Vector2( 15, 1 )
 enabled = true
 cast_to = Vector2( 0, 0 )
 collision_mask = 547
@@ -277,10 +278,24 @@ cast_to = Vector2( -12, 0 )
 collision_mask = 128
 collide_with_areas = true
 
-[node name="MouthPosition" type="Position2D" parent="." index="15"]
+[node name="TopLeft" type="RayCast2D" parent="." index="15"]
+visible = false
+position = Vector2( -6, 0 )
+scale = Vector2( 4, 1 )
+enabled = true
+cast_to = Vector2( 0, -50 )
+
+[node name="TopRight" type="RayCast2D" parent="." index="16"]
+visible = false
+position = Vector2( 6, 0 )
+scale = Vector2( 4, 1 )
+enabled = true
+cast_to = Vector2( 0, -50 )
+
+[node name="MouthPosition" type="Position2D" parent="." index="17"]
 position = Vector2( 13, 2 )
 
-[node name="Label" type="Label" parent="." index="16"]
+[node name="Label" type="Label" parent="." index="18"]
 visible = false
 margin_left = -18.0
 margin_top = -20.0
@@ -291,7 +306,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="PositionsForCorpse" type="Node2D" parent="." index="17"]
+[node name="PositionsForCorpse" type="Node2D" parent="." index="19"]
 
 [node name="Top" type="Position2D" parent="PositionsForCorpse" index="0"]
 position = Vector2( 0, -4 )
@@ -305,12 +320,12 @@ rotation = -0.942478
 position = Vector2( 0, 8 )
 rotation = 0.785398
 
-[node name="Pivot" type="Node2D" parent="." index="18"]
+[node name="Pivot" type="Node2D" parent="." index="20"]
 rotation = -3.14159
 
 [node name="BulletPosition" type="Position2D" parent="Pivot" index="0"]
-position = Vector2( 62, 5.42021e-06 )
+position = Vector2( 50, 0 )
 
-[node name="SleepingParticles" parent="." index="19" instance=ExtResource( 6 )]
+[node name="SleepingParticles" parent="." index="21" instance=ExtResource( 6 )]
 position = Vector2( -10, 0 )
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]

@@ -288,7 +288,7 @@ shape = SubResource( 11 )
 
 [node name="PlayerChaseCast" type="RayCast2D" parent="." index="9"]
 visible = false
-scale = Vector2( 2, 5 )
+scale = Vector2( 15, 1 )
 enabled = true
 cast_to = Vector2( 0, 0 )
 collision_mask = 515

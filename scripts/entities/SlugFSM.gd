@@ -64,7 +64,7 @@ func _get_transition(delta):
 				if parent.is_on_floor():
 					if not parent.floorLeft.is_colliding() or parent.wallLeft.is_colliding():
 						return states.right
-					if parent.can_see() and parent.leftAttackDetection.is_colliding() or parent.rightAttackDetection.is_colliding():
+					if parent.can_see() and parent.player.stunned == false and parent.leftAttackDetection.is_colliding() or parent.rightAttackDetection.is_colliding():
 						return states.attack
 					if parent.can_see():
 						return states.chase
@@ -82,7 +82,7 @@ func _get_transition(delta):
 				if parent.is_on_floor():
 					if not parent.floorRight.is_colliding() or parent.wallRight.is_colliding():
 						return states.left
-					if parent.can_see() and parent.rightAttackDetection.is_colliding() or parent.rightAttackDetection.is_colliding():
+					if parent.can_see() and parent.player.stunned == false and parent.rightAttackDetection.is_colliding() or parent.rightAttackDetection.is_colliding():
 						return states.attack
 					if parent.can_see():
 						return states.chase
@@ -100,7 +100,7 @@ func _get_transition(delta):
 				if parent.is_on_floor():
 					if not parent.in_sight():
 						return states.left
-					if parent.can_see() and parent.position.distance_to(parent.player.position) < 35:
+					if parent.can_see() and parent.player.stunned == false and parent.position.distance_to(parent.player.position) < 35:
 						return states.attack
 				if parent.can_jump():
 					return states.jump

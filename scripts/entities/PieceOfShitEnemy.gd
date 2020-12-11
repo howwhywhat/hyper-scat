@@ -19,6 +19,8 @@ onready var floorLeft = $FloorLeft
 onready var floorRight = $FloorRight
 onready var wallLeft  = $WallLeft
 onready var wallRight  = $WallRight
+onready var topRight  = $TopRight
+onready var topLeft  = $TopLeft
 onready var mouthPosition = $MouthPosition
 
 # player detection
@@ -61,7 +63,7 @@ func _process(_delta):
 		jumpBottom.cast_to = Vector2(12, 0)
 
 func in_sight():
-	var dir = Vector2(player.position.x - position.x, player.position.y - position.y)
+	var dir = Vector2(player.position.x - position.x , player.position.y - position.y)
 	chaseHitbox.cast_to = dir
 	if chaseHitbox.get_collider() != player:
 		return false
@@ -88,7 +90,6 @@ func move_towards_player(delta):
 	motion = motion.move_toward(direction * MAX_SPEED, 25 * delta)
 
 func move():
-	motion.y += 5
 	motion = move_and_slide(motion, Vector2.UP)
 
 func damage(value):

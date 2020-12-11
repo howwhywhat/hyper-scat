@@ -24,6 +24,7 @@ onready var wallRight  = $WallRight
 
 # player detection
 onready var playerDetection = $PlayerDetectionWakeup
+onready var attackHurtbox = $PlayerHitDetection/Hurtbox
 onready var leftAttackDetection = $LeftPlayerAttackDetection
 onready var rightAttackDetection = $RightPlayerAttackDetection
 onready var chaseHitbox = $PlayerChaseCast
@@ -121,11 +122,13 @@ func _on_Animation_animation_finished(anim_name):
 		woke_up = true
 	elif anim_name == "death":
 		visible = false
+		attackHurtbox.queue_free()
 		yield(get_tree().create_timer(2), "timeout")
 		queue_free()
 	elif anim_name == "death_2":
 		instance_explosion_scene()
 		visible = false
+		attackHurtbox.queue_free()
 		yield(get_tree().create_timer(2), "timeout")
 		queue_free()
 
