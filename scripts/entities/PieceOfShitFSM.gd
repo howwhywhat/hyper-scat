@@ -4,6 +4,7 @@ var MOUTH_ATTACK_SCENE = preload("res://scenes/entities/MouthAttack.tscn")
 var mouthAttack
 var alertScene
 var chase = false
+var patrol = false
 var corpseFrames = 0
 
 var state_enabled = true
@@ -13,6 +14,7 @@ func _ready():
 	add_state("death")
 	add_state("mouth_attack")
 	add_state("chase")
+	add_state("patrol")
 	add_state("asleep")
 	add_state("wake_up")
 	add_state("left")
@@ -28,6 +30,8 @@ func _state_logic(delta):
 		parent._apply_gravity(delta)
 		if chase == true:
 			parent.move_towards_player(delta)
+		if patrol:
+			parent.move_towards_last_seen(delta)
 
 func _get_transition(delta):
 	match state:
@@ -50,6 +54,18 @@ func _get_transition(delta):
 					return states.death
 			else:
 				return states.death
+		states.patrol:
+			if state_enabled:
+				parent.stateLabel.text = "patrol"
+				if parent.is_on_floor():
+					if parent.patrolling == false:
+						return states.left
+					if parent.can_see():
+						return states.chase
+				if parent.can_jump():
+					return states.jump
+				if parent.HEALTH <= 0:
+					return states.death
 		states.left:
 			if state_enabled:
 				parent.stateLabel.text = "left"
@@ -60,6 +76,8 @@ func _get_transition(delta):
 						return states.mouth_attack
 					if parent.can_see():
 						return states.chase
+					if parent.patrolling == true and chase != true:
+						return states.patrol
 				if parent.can_jump():
 					return states.jump
 				if parent.HEALTH <= 0:
@@ -76,6 +94,8 @@ func _get_transition(delta):
 						return states.mouth_attack
 					if parent.can_see():
 						return states.chase
+					if parent.patrolling == true and chase != true:
+						return states.patrol
 				if parent.can_jump():
 					return states.jump
 				if parent.HEALTH <= 0:
@@ -90,6 +110,8 @@ func _get_transition(delta):
 						return states.left
 					if parent.can_see() and parent.player.stunned == false and parent.position.distance_to(parent.player.position) < 35:
 						return states.mouth_attack
+					if parent.patrolling == true and chase != true:
+						return states.patrol
 				if parent.can_jump():
 					return states.jump
 				if parent.HEALTH <= 0:
@@ -99,12 +121,12 @@ func _get_transition(delta):
 		states.jump:
 			if state_enabled:
 				parent.stateLabel.text = "jump"
+				if parent.HEALTH <= 0:
+					return states.death
 				if parent.is_on_floor():
 					return states.left
 				elif parent.motion.y > 0:
 					return states.fall
-				if parent.HEALTH <= 0:
-					return states.death
 			else:
 				return states.death
 		states.fall:
@@ -138,55 +160,75 @@ func _get_transition(delta):
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.mouth_attack:
+			parent.can_flip_h = false
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			mouthAttack = MOUTH_ATTACK_SCENE.instance()
 			mouthAttack.position = parent.mouthPosition.position
 			get_parent().add_child(mouthAttack)
 			parent.stop_movement()
 			parent.animation.play("idle")
+		states.patrol:
+			patrol = true
 		states.jump:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.jump()
 			parent.animation.play("idle")
 		states.fall:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.motion.y = 0
 			parent.animation.play("fall")
 		states.asleep:
+			parent.can_flip_h = false
 			parent.sleepingParticles.emitting = true
 			chase = false
+			patrol = false
 			parent.animation.play("asleep")
 		states.wake_up:
+			parent.can_flip_h = true
 			parent.instance_alert_scene()
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.animation.play("wake_up")
 		states.left:
+			parent.can_flip_h = true
 			if mouthAttack != null:
 				mouthAttack.animation.play("mouth_close")
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.animation.play("walk")
 			parent.motion.x = -parent.MAX_SPEED
 			parent.sprite.flip_h = true
 		states.right:
+			parent.can_flip_h = true
 			if mouthAttack != null:
 				mouthAttack.animation.play("mouth_close")
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.animation.play("walk")
 			parent.motion.x = parent.MAX_SPEED
 			parent.sprite.flip_h = false
 		states.chase:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = false
 			chase = true
+			patrol = false
 		states.death:
+			parent.can_flip_h = false
 			parent.instance_blood_particles()
 			parent.sleepingParticles.emitting = false
 			state_enabled = false
+			patrol = false
 			state_logic_enabled = false
 			if parent.collider != null:
 				parent.collider.queue_free()

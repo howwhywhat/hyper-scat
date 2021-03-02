@@ -1,5 +1,10 @@
 extends CanvasLayer
 
+func _input(event):
+	if event.is_action_pressed("shoot"):
+		$Animation.stop()
+		offset.x = 0
+
 func _on_Retry_pressed():
 	layer -= 2
 	get_tree().current_scene.transitionLayer._set_mask(get_tree().current_scene.transitionLayer.Transitions.grid)

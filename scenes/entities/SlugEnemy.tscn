@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scripts/entities/SlugEnemy.gd" type="Script" id=1]
 [ext_resource path="res://scenes/entities/Enemy.tscn" type="PackedScene" id=2]
@@ -190,6 +190,22 @@ tracks/1/keys = {
 }
 
 [sub_resource type="Animation" id=8]
+resource_name = "damager"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=9]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Texture:modulate")
@@ -204,14 +220,14 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ), Color( 100, 100, 100, 1 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[sub_resource type="CapsuleShape2D" id=9]
+[sub_resource type="CapsuleShape2D" id=10]
 radius = 13.0
 height = 2.0
 
-[sub_resource type="CircleShape2D" id=10]
+[sub_resource type="CircleShape2D" id=11]
 radius = 71.007
 
-[sub_resource type="RectangleShape2D" id=11]
+[sub_resource type="RectangleShape2D" id=12]
 extents = Vector2( 42, 4.193 )
 
 [node name="Enemy" groups=[
@@ -247,7 +263,8 @@ anims/stunned = SubResource( 6 )
 anims/walk = SubResource( 7 )
 
 [node name="BlinkAnimation" type="AnimationPlayer" parent="." index="4"]
-anims/flash = SubResource( 8 )
+anims/damager = SubResource( 8 )
+anims/flash = SubResource( 9 )
 
 [node name="PlayerDamage" type="Area2D" parent="." index="5"]
 visible = false
@@ -256,7 +273,7 @@ collision_mask = 4
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerDamage" index="0"]
 position = Vector2( 0, 12.1429 )
-shape = SubResource( 9 )
+shape = SubResource( 10 )
 
 [node name="State" type="Label" parent="." index="6"]
 visible = false
@@ -274,7 +291,7 @@ visible = false
 collision_layer = 16
 
 [node name="Collider" type="CollisionShape2D" parent="PlayerDetectionWakeup" index="0"]
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="PlayerHitDetection" type="Area2D" parent="." index="8" groups=[
 "ForeignEntityAttack",
@@ -284,7 +301,7 @@ collision_layer = 8
 
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerHitDetection" index="0"]
 position = Vector2( 0, 11.193 )
-shape = SubResource( 11 )
+shape = SubResource( 12 )
 
 [node name="PlayerChaseCast" type="RayCast2D" parent="." index="9"]
 visible = false
@@ -355,5 +372,9 @@ position = Vector2( 62, 0 )
 
 [node name="SleepingParticles" parent="." index="19" instance=ExtResource( 7 )]
 position = Vector2( -9, 11 )
+
+[node name="PatrolTimer" type="Timer" parent="." index="20"]
+wait_time = 10.0
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
 [connection signal="body_entered" from="PlayerHitDetection" to="." method="_on_PlayerHitDetection_body_entered"]
+[connection signal="timeout" from="PatrolTimer" to="." method="_on_PatrolTimer_timeout"]

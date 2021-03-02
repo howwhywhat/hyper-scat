@@ -6,10 +6,10 @@ export (NodePath) var PLAYER_SCENE
 onready var player = get_node(PLAYER_SCENE)
 
 # scenes
-var EXPLOSION_SCENE = preload("res://scenes/particles/ExplosionSprite.tscn")
-var BLOOD_SCENE = preload("res://scenes/particles/BloodShitParticles.tscn")
-var ENEMY_DROPS_SCENE = preload("res://scenes/EnemyItemDrop.tscn")
-var ALERT_SCENE = preload("res://scenes/AlarmScene.tscn")
+const EXPLOSION_SCENE = preload("res://scenes/particles/ExplosionSprite.tscn")
+const BLOOD_SCENE = preload("res://scenes/particles/BloodShitParticles.tscn")
+const ENEMY_DROPS_SCENE = preload("res://scenes/EnemyItemDrop.tscn")
+const ALERT_SCENE = preload("res://scenes/AlarmScene.tscn")
 
 export (int) var JUMP = 240
 export (int) var MAX_SPEED = 15

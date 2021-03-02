@@ -1,5 +1,6 @@
 extends "res://scripts/attacks/Bullet.gd"
 
+onready var flashAnimation = $BlinkAnimation
 var IMPACT_SCENE = preload("res://scenes/particles/BulletImpact.tscn")
 
 func _on_IfVisible_screen_exited():

@@ -17,7 +17,7 @@ void fragment() {
 
 [sub_resource type="ShaderMaterial" id=2]
 shader = SubResource( 1 )
-shader_param/fill = 1.0
+shader_param/fill = 0.0
 
 [node name="TransitionLayer" type="CanvasLayer"]
 layer = 2

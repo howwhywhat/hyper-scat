@@ -1,0 +1,94 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://assets/textures/entities/saw_ground.png" type="Texture" id=1]
+[ext_resource path="res://assets/textures/entities/saw_ground_normal_map.png" type="Texture" id=2]
+[ext_resource path="res://scripts/entities/SawGround.gd" type="Script" id=3]
+[ext_resource path="res://scenes/JumpDetection.tscn" type="PackedScene" id=4]
+
+[sub_resource type="Animation" id=1]
+resource_name = "autoload"
+length = 0.5
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 0, 1, 2, 3, 4 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath(".:rotation_degrees")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 360.0 ]
+}
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 9.0
+
+[sub_resource type="Animation" id=3]
+resource_name = "damager"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 2, 10 )
+
+[node name="SawGround" type="Area2D"]
+collision_layer = 16
+collision_mask = 29
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -0.541494, 0.527121 )
+texture = ExtResource( 1 )
+normal_map = ExtResource( 2 )
+hframes = 5
+
+[node name="Animation" type="AnimationPlayer" parent="."]
+autoplay = "autoload"
+playback_speed = 3.0
+anims/autoload = SubResource( 1 )
+
+[node name="Hitbox" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="BlinkAnimation" type="AnimationPlayer" parent="."]
+anims/damager = SubResource( 3 )
+
+[node name="JumpDetection" parent="." instance=ExtResource( 4 )]
+position = Vector2( 15, 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpDetection"]
+position = Vector2( -4, -5 )
+shape = SubResource( 4 )
+
+[node name="JumpDetection2" parent="." instance=ExtResource( 4 )]
+position = Vector2( 15, 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpDetection2"]
+position = Vector2( -26, -5 )
+shape = SubResource( 4 )
+[connection signal="body_entered" from="." to="." method="_on_SawGround_body_entered"]

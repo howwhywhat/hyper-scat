@@ -5,6 +5,7 @@ export (int) var damage = 15
 var PARTICLES_SCENE = preload("res://scenes/particles/TopSpikeParticle.tscn")
 var particles
 onready var animation = $Animation
+onready var flashAnimation = $BlinkAnimation
 onready var playerDetection = $PlayerDetection
 
 func _process(_delta):

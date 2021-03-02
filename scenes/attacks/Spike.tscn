@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scripts/attacks/Spike.gd" type="Script" id=1]
 [ext_resource path="res://assets/textures/attacks/spike_prediction/spritesheet.png" type="Texture" id=2]
@@ -79,6 +79,22 @@ tracks/0/keys = {
 [sub_resource type="CircleShape2D" id=4]
 radius = 1.57143
 
+[sub_resource type="Animation" id=5]
+resource_name = "damager"
+length = 0.9
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0, 0.576471, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 0, 0.576471, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 0, 0.576471, 1, 1 ), Color( 1, 0, 0, 1 ), Color( 0, 0.576471, 1, 1 ), Color( 1, 0.0470588, 0, 1 ), Color( 0, 0.576471, 1, 1 ) ]
+}
+
 [node name="Spike" type="Sprite" groups=[
 "ForeignEnemyAttack",
 ]]
@@ -106,6 +122,9 @@ collision_layer = 16
 [node name="Hurtbox" type="CollisionShape2D" parent="PlayerDetection"]
 position = Vector2( 0.435, 0 )
 shape = SubResource( 4 )
+
+[node name="BlinkAnimation" type="AnimationPlayer" parent="."]
+anims/damager = SubResource( 5 )
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="body_entered" from="PlayerDetection" to="." method="_on_PlayerDetection_body_entered"]

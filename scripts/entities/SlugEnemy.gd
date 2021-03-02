@@ -7,10 +7,13 @@ onready var hurtbox = $PlayerDamage/Hurtbox
 onready var animation = $Animation
 onready var flashAnimation = $BlinkAnimation
 onready var sprite = $Texture
-onready var stunTween = $StunTween
 onready var stateMachine = $StateMachine
+onready var patrolTimer = $PatrolTimer
 var woke_up = false
 var stunned = false
+var can_flip_h = true
+var patrolling = false
+var player_last_seen = null
 
 export(float, 0.0, 5.0) var fill : float = 0.0 setget _set_fill
 
@@ -46,12 +49,12 @@ onready var pivot = $Pivot
 onready var bulletPosition = $Pivot/BulletPosition
 
 func _process(_delta):
-	if can_see() and player != null:
+	if can_see() and player != null and can_flip_h:
 		if global_position.x < player.global_position.x:
 			sprite.flip_h = true
 		else:
 			sprite.flip_h = false
-	if sprite.flip_h:
+	if sprite.flip_h and can_flip_h:
 		jumpTop.cast_to = Vector2(12, 0)
 		jumpBottom.cast_to = Vector2(12, 0)
 	else:
@@ -60,6 +63,10 @@ func _process(_delta):
 
 func move_towards_player(delta):
 	var direction = (player.global_position - global_position).normalized()
+	motion = motion.move_toward(direction * MAX_SPEED, 25 * delta)
+
+func move_towards_last_seen(delta):
+	var direction = (player_last_seen - global_position).normalized()
 	motion = motion.move_toward(direction * MAX_SPEED, 25 * delta)
 
 func can_jump():
@@ -96,6 +103,9 @@ func can_see():
 	if playerDetection != null:
 		if playerDetection.overlaps_body(player):
 			if in_sight():
+				player_last_seen = player.global_position
+				patrolTimer.start()
+				patrolling = true
 				return true
 		else:
 			chaseHitbox.cast_to = Vector2.ZERO
@@ -156,3 +166,6 @@ func _on_PlayerHitDetection_body_entered(body):
 func pounced(bouncer):
 	damage(5)
 	bouncer.bounce()
+
+func _on_PatrolTimer_timeout():
+	patrolling = false

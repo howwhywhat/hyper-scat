@@ -1,4 +1,4 @@
-[gd_scene load_steps=51 format=2]
+[gd_scene load_steps=56 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -31,7 +31,7 @@
 [ext_resource path="res://scenes/particles/SewerParticles.tscn" type="PackedScene" id=29]
 [ext_resource path="res://assets/textures/decor/wall_decor/9.png" type="Texture" id=30]
 [ext_resource path="res://assets/textures/decor/wall_decor/normal_map_9.png" type="Texture" id=31]
-[ext_resource path="res://scenes/entities/SlugEnemy.tscn" type="PackedScene" id=32]
+[ext_resource path="res://scenes/SawGround.tscn" type="PackedScene" id=32]
 [ext_resource path="res://scenes/interface/TransitionLayer.tscn" type="PackedScene" id=33]
 [ext_resource path="res://scenes/entities/PieceOfShitEnemy.tscn" type="PackedScene" id=34]
 [ext_resource path="res://scenes/entities/HangingSpider.tscn" type="PackedScene" id=35]
@@ -39,14 +39,18 @@
 [ext_resource path="res://scripts/levels/Level1.gd" type="Script" id=37]
 [ext_resource path="res://scenes/attacks/Trajectory.tscn" type="PackedScene" id=38]
 [ext_resource path="res://scenes/attacks/Spike.tscn" type="PackedScene" id=39]
-[ext_resource path="res://scenes/Platform.tscn" type="PackedScene" id=40]
-[ext_resource path="res://scenes/JumpDetection.tscn" type="PackedScene" id=41]
+[ext_resource path="res://scenes/UnlockNextArea.tscn" type="PackedScene" id=40]
 [ext_resource path="res://scenes/attacks/TopSpike.tscn" type="PackedScene" id=42]
-[ext_resource path="res://scenes/entities/GroundEnemy.tscn" type="PackedScene" id=43]
+[ext_resource path="res://assets/textures/decor/foreground_decor/bars_2.png" type="Texture" id=43]
 [ext_resource path="res://scenes/particles/WaterParticles.tscn" type="PackedScene" id=44]
+[ext_resource path="res://assets/textures/particles/black.png" type="Texture" id=45]
+[ext_resource path="res://scripts/TrajectoryToggles.gd" type="Script" id=46]
 [ext_resource path="res://assets/textures/decor/foreground_decor/top.png" type="Texture" id=47]
 [ext_resource path="res://scenes/entities/Dog.tscn" type="PackedScene" id=48]
 [ext_resource path="res://scenes/Vignette.tscn" type="PackedScene" id=49]
+[ext_resource path="res://assets/textures/decor/signs_spritesheet.png" type="Texture" id=50]
+[ext_resource path="res://assets/textures/decor/signs_spritesheet_normal_map.png" type="Texture" id=51]
+[ext_resource path="res://scenes/Lamp.tscn" type="PackedScene" id=52]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -69,7 +73,10 @@ glow_bicubic_upscale = true
 extents = Vector2( 49, 10 )
 
 [sub_resource type="RectangleShape2D" id=3]
-extents = Vector2( 1, 10 )
+extents = Vector2( 31, 89 )
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 31, 10 )
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 37 )
@@ -104,7 +111,7 @@ tile_set = ExtResource( 1 )
 collision_layer = 32
 collision_mask = 29
 format = 1
-tile_data = PoolIntArray( 0, 4, 0, 131071, 4, 0, 65537, 4, 0, 196607, 4, 0, 131073, 4, 0, 131074, 4, 0, 131075, 4, 0, 131076, 4, 0, 131077, 4, 0, 131078, 4, 0, 131079, 4, 0, 131080, 4, 0, 131081, 4, 0, 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262153, 4, 0 )
+tile_data = PoolIntArray( 0, 4, 0, 131071, 4, 0, 65537, 4, 0, 196607, 4, 0, 131073, 4, 0, 131074, 4, 0, 131075, 4, 0, 131076, 4, 0, 131077, 4, 0, 131078, 4, 0, 131079, 4, 0, 131080, 4, 0, 131081, 4, 0, 131082, 4, 0, 131083, 4, 0, 131084, 4, 0, 131085, 4, 0, 131086, 4, 0, 262143, 4, 0, 196617, 4, 0, 196618, 4, 0, 196619, 4, 0, 196620, 4, 0, 196621, 4, 0, 196622, 4, 0, 262153, 4, 0, 262154, 4, 0, 262155, 4, 0, 262156, 4, 0, 262157, 4, 0, 262158, 4, 0, 262159, 4, 0, 327683, 4, 0, 327684, 4, 0, 327685, 4, 0, 327686, 4, 0, 327687, 4, 0, 327692, 4, 0, 393219, 4, 0, 393220, 4, 0, 393221, 4, 0, 393222, 4, 0, 393223, 4, 0, 458755, 4, 0, 458756, 4, 0, 458757, 4, 0, 458758, 4, 0, 458759, 4, 0, 458760, 4, 0, 458761, 4, 0, 458762, 4, 0, 458763, 4, 0, 458764, 4, 0, 458765, 4, 0, 458766, 4, 0, 458767, 4, 0 )
 
 [node name="FloorTiles" type="TileMap" parent="." groups=[
 "FloorTiles",
@@ -113,13 +120,22 @@ z_index = 6
 tile_set = ExtResource( 1 )
 collision_layer = 2
 collision_mask = 29
+occluder_light_mask = 0
 format = 1
-tile_data = PoolIntArray( 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262144, 3, 0, 262145, 3, 0, 262146, 3, 0, 262147, 3, 0, 262148, 3, 0, 262149, 3, 0, 262150, 3, 0, 262151, 3, 0, 262152, 3, 0, 262153, -1610612732, 0 )
+tile_data = PoolIntArray( 262143, 4, 0, 196617, 4, 0, 327679, 4, 0, 262144, 3, 0, 262145, 3, 0, 262146, 3, 0, 262147, 3, 0, 262148, 3, 0, 262149, 3, 0, 262150, 3, 0, 262151, 3, 0, 262153, -1610612732, 0, 393224, 3, 0, 393225, 3, 0, 393226, 3, 0, 393227, 3, 0 )
 script = ExtResource( 11 )
 WATER_SPAWN = NodePath("../../Level1/SewerPipes/WaterSpawn")
 
 [node name="LiquidSim" type="Node" parent="FloorTiles"]
 script = ExtResource( 14 )
+
+[node name="FloorLightMask" type="TileMap" parent="."]
+light_mask = 0
+position = Vector2( 0, 1 )
+tile_set = ExtResource( 1 )
+collision_layer = 1024
+format = 1
+tile_data = PoolIntArray( 327677, 1073741828, 0, 327678, 1073741828, 0, 327679, 1073741828, 0, 262144, 1073741828, 0, 262145, 1073741828, 0, 262146, 1073741828, 0, 262147, 1073741828, 0, 262148, 1073741828, 0, 262149, 1073741828, 0, 262150, 1073741828, 0, 262151, 1073741828, 0, 393224, 1073741828, 0, 393225, 4, 0, 393226, 4, 0, 393227, 4, 0 )
 
 [node name="Walls" type="Node2D" parent="."]
 __meta__ = {
@@ -130,7 +146,7 @@ __meta__ = {
 position = Vector2( 544, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 1
 __meta__ = {
 "_edit_lock_": true
@@ -140,7 +156,7 @@ __meta__ = {
 position = Vector2( 32, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 9
 __meta__ = {
 "_edit_lock_": true
@@ -150,7 +166,7 @@ __meta__ = {
 position = Vector2( 32, 160 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 8
 __meta__ = {
 "_edit_lock_": true
@@ -160,7 +176,7 @@ __meta__ = {
 position = Vector2( 32, 96 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 7
 __meta__ = {
 "_edit_lock_": true
@@ -170,7 +186,7 @@ __meta__ = {
 position = Vector2( 160, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -180,7 +196,7 @@ __meta__ = {
 position = Vector2( 224, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 6
 __meta__ = {
 "_edit_lock_": true
@@ -190,7 +206,7 @@ __meta__ = {
 position = Vector2( 288, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -200,7 +216,7 @@ __meta__ = {
 position = Vector2( 416, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 6
 __meta__ = {
 "_edit_lock_": true
@@ -210,7 +226,7 @@ __meta__ = {
 position = Vector2( 352, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 3
 __meta__ = {
 "_edit_lock_": true
@@ -220,7 +236,7 @@ __meta__ = {
 position = Vector2( 480, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -230,11 +246,32 @@ __meta__ = {
 position = Vector2( 96, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 10
+hframes = 13
 frame = 4
 __meta__ = {
 "_edit_lock_": true
 }
+
+[node name="wallGoingDown1" type="Sprite" parent="Walls"]
+position = Vector2( 544, 288 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 13
+frame = 10
+
+[node name="wallBottom1" type="Sprite" parent="Walls"]
+position = Vector2( 544, 352 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 13
+frame = 11
+
+[node name="wallBottom2" type="Sprite" parent="Walls"]
+position = Vector2( 608, 352 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 13
+frame = 12
 
 [node name="SewerPipes" type="Node2D" parent="."]
 __meta__ = {
@@ -264,6 +301,19 @@ __meta__ = {
 position = Vector2( -3.05176e-05, -6.10352e-05 )
 scale = Vector2( 0.25, 0.25 )
 
+[node name="SewerPipeShadow2" type="Sprite" parent="SewerPipes"]
+modulate = Color( 0, 0, 0, 0.878431 )
+position = Vector2( 546, 357 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+
+[node name="SewerPipe2" type="Sprite" parent="SewerPipes"]
+modulate = Color( 0.501961, 0.501961, 0.501961, 1 )
+position = Vector2( 546, 361 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 7 )
+normal_map = ExtResource( 17 )
+
 [node name="WaterSpawn" type="Position2D" parent="SewerPipes"]
 position = Vector2( 359, 226 )
 __meta__ = {
@@ -277,9 +327,6 @@ __meta__ = {
 
 [node name="WallStain" type="Node2D" parent="WallDecor"]
 modulate = Color( 1, 1, 1, 0.686275 )
-__meta__ = {
-"_edit_lock_": true
-}
 
 [node name="Red1" type="Sprite" parent="WallDecor/WallStain"]
 position = Vector2( 409, 232 )
@@ -289,6 +336,13 @@ normal_map = ExtResource( 28 )
 
 [node name="Green2" type="Sprite" parent="WallDecor/WallStain"]
 position = Vector2( 494, 216 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 30 )
+normal_map = ExtResource( 31 )
+
+[node name="Green3" type="Sprite" parent="WallDecor/WallStain"]
+position = Vector2( 537, 302 )
+rotation = -1.5708
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 30 )
 normal_map = ExtResource( 31 )
@@ -463,11 +517,127 @@ __meta__ = {
 "_edit_lock_": true
 }
 
+[node name="Ladder11" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 544, 282 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder12" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 544, 292 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder13" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 544, 302 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder14" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 544, 312 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder15" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0, 0, 0, 1 )
+position = Vector2( 544, 270 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder6" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.294118, 0.294118, 0.294118, 1 )
+position = Vector2( 544, 284 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder7" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.294118, 0.294118, 0.294118, 1 )
+position = Vector2( 544, 294 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder8" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.294118, 0.294118, 0.294118, 1 )
+position = Vector2( 544, 304 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder9" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.294118, 0.294118, 0.294118, 1 )
+position = Vector2( 544, 314 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="Ladder10" type="Sprite" parent="WallDecor/Ladder"]
+modulate = Color( 0.294118, 0.294118, 0.294118, 1 )
+position = Vector2( 544, 272 )
+texture = ExtResource( 27 )
+normal_map = ExtResource( 25 )
+__meta__ = {
+"_edit_lock_": true
+}
+
 [node name="StrayEntities" type="Node2D" parent="WallDecor"]
 
 [node name="Dog" parent="WallDecor/StrayEntities" instance=ExtResource( 48 )]
 position = Vector2( 38, 248 )
 flip_h = true
+
+[node name="Signs" type="Node2D" parent="WallDecor"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="NoTresspassing" type="Sprite" parent="WallDecor/Signs"]
+position = Vector2( 543, 230 )
+scale = Vector2( 0.8, 0.8 )
+texture = ExtResource( 50 )
+normal_map = ExtResource( 51 )
+hframes = 2
+frame = 1
+
+[node name="Zone" type="Sprite" parent="WallDecor/Signs"]
+position = Vector2( 543, 228 )
+rotation = 0.169297
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 50 )
+normal_map = ExtResource( 51 )
+hframes = 2
+
+[node name="Lamp" type="Node2D" parent="WallDecor"]
+
+[node name="LampJoint" parent="WallDecor/Lamp" instance=ExtResource( 52 )]
+position = Vector2( 553, 193 )
 
 [node name="AntEntities" type="Node2D" parent="."]
 __meta__ = {
@@ -515,20 +685,23 @@ __meta__ = {
 
 [node name="MovementDirections" type="Node2D" parent="TutorialText"]
 position = Vector2( -188.361, -3.36359 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="W" type="Sprite" parent="TutorialText/MovementDirections"]
 position = Vector2( 229.848, 215.98 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 
 [node name="A" type="Sprite" parent="TutorialText/MovementDirections"]
 position = Vector2( 215.98, 230.215 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 frame = 1
 
 [node name="S" type="Sprite" parent="TutorialText/MovementDirections"]
@@ -536,7 +709,7 @@ position = Vector2( 233.355, 231.84 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 frame = 2
 
 [node name="D" type="Sprite" parent="TutorialText/MovementDirections"]
@@ -544,50 +717,118 @@ position = Vector2( 251.355, 232.84 )
 scale = Vector2( 0.5, 0.5 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 frame = 3
 
 [node name="Figure" type="Sprite" parent="TutorialText/MovementDirections"]
 position = Vector2( 247.647, 212.842 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 frame = 5
 
 [node name="SpecialAttackDirections" type="Node2D" parent="TutorialText"]
+position = Vector2( -33, 0 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="CTRL" type="Sprite" parent="TutorialText/SpecialAttackDirections"]
 position = Vector2( 205.427, 226.097 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 frame = 4
 
 [node name="Figure" type="Sprite" parent="TutorialText/SpecialAttackDirections"]
 position = Vector2( 207.113, 237.709 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 frame = 6
 
 [node name="ShootAttackDirections" type="Node2D" parent="TutorialText"]
-position = Vector2( -130, 4 )
+position = Vector2( 62, 3 )
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="LMB" type="Sprite" parent="TutorialText/ShootAttackDirections"]
 position = Vector2( 409, 222 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 frame = 7
 
 [node name="Figure" type="Sprite" parent="TutorialText/ShootAttackDirections"]
 position = Vector2( 437, 217 )
 texture = ExtResource( 8 )
 normal_map = ExtResource( 4 )
-hframes = 9
+hframes = 13
 frame = 8
+
+[node name="BlockAttackDirections" type="Node2D" parent="TutorialText"]
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="ALT" type="Sprite" parent="TutorialText/BlockAttackDirections"]
+position = Vector2( 407, 220 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 13
+frame = 9
+
+[node name="Figure" type="Sprite" parent="TutorialText/BlockAttackDirections"]
+position = Vector2( 432, 216 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 13
+frame = 10
+
+[node name="DashDirections" type="Node2D" parent="TutorialText"]
+position = Vector2( -205, -6 )
+__meta__ = {
+"_edit_lock_": true
+}
+
+[node name="A" type="Sprite" parent="TutorialText/DashDirections"]
+position = Vector2( 459.976, 230.109 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 13
+frame = 1
+
+[node name="D" type="Sprite" parent="TutorialText/DashDirections"]
+position = Vector2( 475.976, 231.109 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 13
+frame = 3
+
+[node name="Figure" type="Sprite" parent="TutorialText/DashDirections"]
+position = Vector2( 447.976, 234.109 )
+rotation = -0.340339
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 13
+frame = 12
+
+[node name="x2" type="Sprite" parent="TutorialText/DashDirections"]
+position = Vector2( 484.976, 218.109 )
+rotation = -0.340339
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 8 )
+normal_map = ExtResource( 4 )
+hframes = 13
+frame = 11
 
 [node name="SewerParticles" type="Node2D" parent="."]
 __meta__ = {
@@ -603,29 +844,6 @@ position = Vector2( 262, 194 )
 [node name="Particles3" parent="SewerParticles" instance=ExtResource( 29 )]
 position = Vector2( 437, 194 )
 
-[node name="Platforms" type="Node2D" parent="."]
-__meta__ = {
-"_edit_lock_": true
-}
-
-[node name="Platform" parent="Platforms" instance=ExtResource( 40 )]
-position = Vector2( 224, 233 )
-SPIKES_PATH = NodePath("../../Trajectory")
-
-[node name="JumpDetection" parent="Platforms/Platform" instance=ExtResource( 41 )]
-position = Vector2( 9, 24 )
-
-[node name="Collider" type="CollisionShape2D" parent="Platforms/Platform/JumpDetection"]
-position = Vector2( 10, -9 )
-shape = SubResource( 3 )
-
-[node name="JumpDetection2" parent="Platforms/Platform" instance=ExtResource( 41 )]
-position = Vector2( -25, 24 )
-
-[node name="Collider" type="CollisionShape2D" parent="Platforms/Platform/JumpDetection2"]
-position = Vector2( 6, -9 )
-shape = SubResource( 3 )
-
 [node name="Enemies" type="Node2D" parent="."]
 __meta__ = {
 "_edit_lock_": true
@@ -637,23 +855,23 @@ __meta__ = {
 }
 
 [node name="Enemy1" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
-position = Vector2( 338, 250 )
+position = Vector2( 252, 250 )
 PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="Enemy5" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
-position = Vector2( 190, 251 )
+position = Vector2( 276, 250 )
 PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="Enemy2" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
-position = Vector2( 370, 251 )
+position = Vector2( 240, 250 )
 PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="Enemy3" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
-position = Vector2( 401, 251 )
+position = Vector2( 228, 250 )
 PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="Enemy4" parent="Enemies/PieceOfShit" instance=ExtResource( 34 )]
-position = Vector2( 467, 251 )
+position = Vector2( 264, 250 )
 PLAYER_SCENE = NodePath("../../../Player")
 
 [node name="Garbage" type="Node2D" parent="Enemies"]
@@ -661,16 +879,27 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Enemy" parent="Enemies/Garbage" instance=ExtResource( 32 )]
-position = Vector2( 506, 243 )
-scale = Vector2( 0.65, 0.65 )
-PLAYER_SCENE = NodePath("../../../Player")
-
 [node name="ButtGround" type="Node2D" parent="Enemies"]
 
-[node name="Enemy" parent="Enemies/ButtGround" instance=ExtResource( 43 )]
-position = Vector2( 548, 244 )
-PLAYER_SCENE = NodePath("../../../Player")
+[node name="Saw" type="Node2D" parent="Enemies"]
+
+[node name="SawGround" parent="Enemies/Saw" instance=ExtResource( 32 )]
+position = Vector2( 300, 255 )
+
+[node name="SawGround2" parent="Enemies/Saw" instance=ExtResource( 32 )]
+position = Vector2( 318, 255 )
+
+[node name="SawGround3" parent="Enemies/Saw" instance=ExtResource( 32 )]
+position = Vector2( 336, 255 )
+
+[node name="SawGround4" parent="Enemies/Saw" instance=ExtResource( 32 )]
+position = Vector2( 300, 194 )
+
+[node name="SawGround5" parent="Enemies/Saw" instance=ExtResource( 32 )]
+position = Vector2( 318, 194 )
+
+[node name="SawGround6" parent="Enemies/Saw" instance=ExtResource( 32 )]
+position = Vector2( 336, 194 )
 
 [node name="TopSpikes" type="Node2D" parent="."]
 __meta__ = {
@@ -681,7 +910,7 @@ __meta__ = {
 position = Vector2( 166, 205 )
 
 [node name="TopSpike2" parent="TopSpikes" instance=ExtResource( 42 )]
-position = Vector2( 341, 205 )
+position = Vector2( 369, 205 )
 
 [node name="TopSpike3" parent="TopSpikes" instance=ExtResource( 42 )]
 position = Vector2( 528, 205 )
@@ -698,6 +927,89 @@ position = Vector2( 33, 94 )
 collision_mask = 2
 camera_in_level = NodePath("../IniitalCamera")
 UI_NODE = NodePath("../UI")
+
+[node name="BarSprite" type="Node2D" parent="."]
+light_mask = 0
+position = Vector2( 0, -4 )
+z_index = 10
+
+[node name="Sprite" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( -77, 295 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite3" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( -197, 295 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite2" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 43, 295 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite4" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 163, 295 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite5" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 283, 295 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite6" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 403, 295 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite7" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 531, 421 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite11" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 651, 421 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite12" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 771, 421 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite13" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 891, 421 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite9" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 444, 318 )
+scale = Vector2( 8.66666, 9 )
+texture = ExtResource( 45 )
+
+[node name="Sprite8" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 452, 295 )
+scale = Vector2( 5, 5 )
+texture = ExtResource( 5 )
+
+[node name="Sprite10" type="Sprite" parent="BarSprite"]
+light_mask = 0
+position = Vector2( 452, 361 )
+scale = Vector2( 5, 2.5 )
+texture = ExtResource( 43 )
 
 [node name="WaterPositions" type="Node" parent="."]
 
@@ -746,23 +1058,6 @@ __meta__ = {
 "_edit_lock_": true
 }
 
-[node name="Bars" type="ParallaxLayer" parent="ForegroundParallax"]
-motion_offset = Vector2( 0, 175 )
-motion_mirroring = Vector2( 336, 0 )
-
-[node name="BarTexture" type="TextureRect" parent="ForegroundParallax/Bars"]
-modulate = Color( 0.286275, 0.286275, 0.286275, 1 )
-margin_left = 3.0
-margin_top = 1.0
-margin_right = 51.0
-margin_bottom = 25.0
-rect_scale = Vector2( 14, 14 )
-texture = ExtResource( 5 )
-__meta__ = {
-"_edit_lock_": true,
-"_edit_use_anchors_": false
-}
-
 [node name="Spider" type="ParallaxLayer" parent="ForegroundParallax"]
 motion_offset = Vector2( 320, 150 )
 
@@ -794,5 +1089,34 @@ layer = 4
 visible = false
 SPIKE_TYPE = ExtResource( 39 )
 PLAYER = NodePath("../Player")
+
+[node name="TrajectoryToggles" type="Node2D" parent="."]
+visible = false
+script = ExtResource( 46 )
+TRAJECTORY_PATH = NodePath("../Trajectory")
+
+[node name="Off" type="Area2D" parent="TrajectoryToggles"]
+position = Vector2( 544, 262 )
+collision_layer = 512
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TrajectoryToggles/Off"]
+shape = SubResource( 3 )
+
+[node name="On" type="Area2D" parent="TrajectoryToggles"]
+position = Vector2( 544, 381 )
+collision_layer = 512
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="TrajectoryToggles/On"]
+shape = SubResource( 4 )
+
+[node name="LockedAreas" type="Node2D" parent="."]
+
+[node name="UnlockNextArea" parent="LockedAreas" instance=ExtResource( 40 )]
+position = Vector2( 575, 258 )
+text_label = "price: 10 pills"
+price_amount = 10
 [connection signal="screen_entered" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_entered"]
 [connection signal="screen_exited" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_exited"]
+[connection signal="body_entered" from="TrajectoryToggles/Off" to="TrajectoryToggles" method="_on_Off_body_entered"]
+[connection signal="body_entered" from="TrajectoryToggles/On" to="TrajectoryToggles" method="_on_On_body_entered"]
+[connection signal="body_exited" from="TrajectoryToggles/On" to="TrajectoryToggles" method="_on_On_body_exited"]

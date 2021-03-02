@@ -8,6 +8,9 @@ onready var DEATH_ID_SCENE = preload("res://scenes/interface/DeathUI.tscn")
 onready var SHOOTING_PARTICLES = preload("res://scenes/particles/ShootingParticles.tscn")
 var enemyOrigin = Vector2.ZERO
 var lastHitEntity
+var wentThroughSaw = false
+
+export (PackedScene) var BLOOD_SCENE : PackedScene
 
 # bullet type/weaponry
 export (PackedScene) var bullet_type
@@ -39,8 +42,10 @@ onready var shieldTimer = $BlockedTimer
 onready var shield = $PlayerShield
 onready var shieldHurtbox = $PlayerShield/Hurtbox
 
-onready var specialAttackPosition = $SpecialAttackPosition
+onready var specialAttackPositionL = $SpecialAttackPositionL
+onready var specialAttackPositionR = $SpecialAttackPositionR
 
+onready var environmentHitbox = $EnvironmentHitbox
 onready var stunnedTimer = $StunnedTimer
 onready var animation = $Animation
 onready var flashAnimation = $BlinkAnimation
@@ -64,6 +69,8 @@ onready var uiLaxatives = ui.get_node("Laxatives").get_node("Label")
 var tappedRight = 0
 var tappedLeft = 0
 var dash = false
+onready var dragTimer = $DragTimer
+var drag = false
 var able_to_dash = false
 var GHOST_SPRITE_SCENE = preload("res://scenes/entities/PlayerGhost.tscn")
 
@@ -92,7 +99,15 @@ func _ready():
 	connect("player_damaged", uiHearts, "_on_Player_damage")
 
 func _physics_process(_delta):
+	if !stateMachine.state_logic_enabled:
+		able_to_dash = false
+
 	if dash == true:
+		if !Input.is_action_pressed("w") and !drag:
+			motion.y = 0
+			dragTimer.start()
+		else:
+			drag = false
 		var ghostSprite = GHOST_SPRITE_SCENE.instance()
 		ghostSprite.global_position = global_position
 		ghostSprite.frame = sprite.frame
@@ -108,12 +123,12 @@ func _physics_process(_delta):
 		if Input.is_action_pressed("d") and dash == false and tappedRight == 2:
 			hurtbox.disabled = true
 			dash = true
-			MAX_SPEED *= 1.5
+			MAX_SPEED *= 3
 			motion.x += 500
 			yield(get_tree().create_timer(.3), "timeout")
 			hurtbox.disabled = false
 			dash = false
-			MAX_SPEED /= 1.5
+			MAX_SPEED /= 3
 		if Input.is_action_just_pressed("a") and dash == false:
 			tappedLeft += 1
 			yield(get_tree().create_timer(.2), "timeout")
@@ -121,12 +136,12 @@ func _physics_process(_delta):
 		if Input.is_action_pressed("a") and dash == false and tappedLeft == 2:
 			hurtbox.disabled = true
 			dash = true
-			MAX_SPEED *= 1.5
+			MAX_SPEED *= 3
 			motion.x -= 500
 			yield(get_tree().create_timer(.5), "timeout")
 			hurtbox.disabled = false
 			dash = false
-			MAX_SPEED /= 1.5
+			MAX_SPEED /= 3
 
 func _process(delta):
 	uiLaxatives.text = str(laxatives)
@@ -165,6 +180,9 @@ func apply_damage_texture():
 		bloodParticlesLeft.position = leftArmPosition.position
 		add_child(bloodParticlesLeft)
 
+		MAX_SPEED /= 2
+		animation.playback_speed /= 2
+
 		var limb = LIMB_SCENE.instance()
 		limb.global_position = leftArmPosition.global_position
 		limb.rotation = leftArmPosition.rotation
@@ -176,6 +194,9 @@ func apply_damage_texture():
 		bloodParticlesRight.emitting = true
 		bloodParticlesRight.position = rightArmPosition.position
 		add_child(bloodParticlesRight)
+
+		MAX_SPEED /= 2
+		animation.playback_speed /= 2
 
 		var limb = LIMB_SCENE.instance()
 		limb.global_position = rightArmPosition.global_position
@@ -190,8 +211,14 @@ func apply_gravity(delta):
 
 func execute_special_attack():
 	var shitWave = shit_wave.instance()
-	shitWave.global_position = specialAttackPosition.global_position
 	get_tree().current_scene.add_child(shitWave)
+
+	if sprite.flip_h:
+		shitWave.global_position = specialAttackPositionL.global_position
+		shitWave.scale.x = -0.45
+	else:
+		shitWave.global_position = specialAttackPositionR.global_position
+		shitWave.scale.x = 0.45
 
 func apply_knockback(amount : Vector2):
 	motion = amount.normalized() * ACCELERATION / 2
@@ -265,7 +292,12 @@ func stunned():
 
 func apply_damage(damage):
 	apply_damage_texture()
+	for i in range(55):
+		var blood_instance : Area2D = BLOOD_SCENE.instance()
+		blood_instance.global_position = global_position
+		get_tree().current_scene.call_deferred("add_child", blood_instance)
 	if health <= 0:
+		animation.playback_speed = 1
 		return
 	health -= damage
 	stunned()
@@ -368,3 +400,6 @@ func _on_StunnedTimer_timeout():
 func _on_BlockedTimer_timeout():
 	shieldTimer.stop()
 	shieldTimer.wait_time = 5
+
+func _on_DragTimer_timeout():
+	drag = true

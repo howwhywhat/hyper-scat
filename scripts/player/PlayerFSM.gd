@@ -77,7 +77,7 @@ func _get_transition(delta):
 			parent.state.text = "jump"
 			if parent.is_on_floor():
 				return states.idle
-			elif parent.motion.y > 0 and parent.was_on_floor and parent.coyoteTimer.is_stopped():
+			elif parent.motion.y > 0 and !parent.is_on_floor() and parent.was_on_floor and parent.coyoteTimer.is_stopped():
 				return states.fall
 			if parent.stunned == true:
 				return states.stunned
@@ -208,8 +208,10 @@ func _enter_state(new_state, old_state):
 			parent.shield.animation.play("remove")
 			state_logic_enabled = false # WHY THE FUCK ISN'T THIS WORKING????!!!!
 			parent.able_to_dash = false
-			parent.bloodParticlesLeft.emitting = false
-			parent.bloodParticlesRight.emitting = false
+			if parent.bloodParticlesLeft != null:
+				parent.bloodParticlesLeft.emitting = false
+			if parent.bloodParticlesRight != null:
+				parent.bloodParticlesRight.emitting = false
 			parent.power_value = 0
 			parent.animation.stop()
 			parent.animation.play("death")
@@ -221,6 +223,7 @@ func _enter_state(new_state, old_state):
 			direction.y /= 4
 			# WHY THE FUCK IS IT NULL I DON'T KNOW BUT I HAVE TO ADD THIS STUPID FUCKING CHECK SO IT DOESN'T CRASH FUCK THIS
 			if parent.lastHitEntity != null:
+				parent.lastHitEntity.flashAnimation.play("damager")
 				if parent.lastHitEntity.global_position < parent.global_position:
 					parent.apply_knockback(direction)
 				else:

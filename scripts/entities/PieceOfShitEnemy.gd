@@ -4,11 +4,16 @@ extends Enemy
 onready var sleepingParticles = $SleepingParticles
 onready var collider = $Collider
 onready var animation = $Animation
+onready var flashAnimation = $BlinkAnimation
 onready var sprite = $Texture
 onready var hurtbox = $BulletDetection/Hurtbox
 onready var stateMachine = $StateMachine
+onready var patrolTimer = $PatrolTimer
 var woke_up = false
 var been_bounced = false
+var can_flip_h = true
+var patrolling = false
+var player_last_seen = null
 
 # corpse
 var CORPSE_SCENE = preload("res://scenes/entities/PieceOfShitSeparated.tscn")
@@ -43,7 +48,7 @@ onready var pivot = $Pivot
 onready var bulletPosition = $Pivot/BulletPosition
 
 func _process(_delta):
-	if can_see() and player != null:
+	if can_see() and player != null and can_flip_h:
 		if global_position.x < player.global_position.x:
 			if stateMachine.mouthAttack != null:
 				stateMachine.mouthAttack.position.x = mouthPosition.position.x
@@ -53,7 +58,7 @@ func _process(_delta):
 				stateMachine.mouthAttack.position.x = mouthPosition.position.x
 			sprite.flip_h = true
 	
-	if sprite.flip_h == true:
+	if sprite.flip_h and can_flip_h:
 		mouthPosition.position.x = -24
 		jumpTop.cast_to = Vector2(-12, 0)
 		jumpBottom.cast_to = Vector2(-12, 0)
@@ -74,6 +79,9 @@ func can_see():
 	if not playerDetection == null:
 		if playerDetection.overlaps_body(player):
 			if in_sight():
+				player_last_seen = player.global_position
+				patrolTimer.start()
+				patrolling = true
 				return true
 		else:
 			chaseHitbox.cast_to = Vector2.ZERO
@@ -87,6 +95,10 @@ func can_jump():
 
 func move_towards_player(delta):
 	var direction = (player.global_position - global_position).normalized()
+	motion = motion.move_toward(direction * MAX_SPEED, 25 * delta)
+
+func move_towards_last_seen(delta):
+	var direction = (player_last_seen - global_position).normalized()
 	motion = motion.move_toward(direction * MAX_SPEED, 25 * delta)
 
 func move():
@@ -133,3 +145,6 @@ func _on_Animation_animation_finished(anim_name):
 func pounced(bouncer):
 	damage(9999)
 	bouncer.bounce()
+
+func _on_PatrolTimer_timeout():
+	patrolling = false

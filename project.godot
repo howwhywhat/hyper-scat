@@ -14,6 +14,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/entities/Enemy.gd"
 }, {
+"base": "Sprite",
+"class": "Paint",
+"language": "GDScript",
+"path": "res://scripts/Surface.gd"
+}, {
 "base": "Node",
 "class": "StateMachine",
 "language": "GDScript",
@@ -21,6 +26,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "Enemy": "",
+"Paint": "",
 "StateMachine": ""
 }
 
@@ -35,6 +41,7 @@ config/icon="res://icon.png"
 [autoload]
 
 GlobalConstants="*res://scripts/GlobalConstants.gd"
+Surface="*res://scenes/particles/Surface.tscn"
 
 [display]
 
@@ -112,6 +119,11 @@ run={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777237,"unicode":0,"echo":false,"script":null)
  ]
 }
+select={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -124,7 +136,9 @@ run={
 2d_physics/layer_7="Bounceable"
 2d_physics/layer_8="InvisiblePhysics"
 2d_physics/layer_9="ItemDrops"
-2d_physics/layer_10="DestructibleObjects"
+2d_physics/layer_10="TrajectoryToggles"
+2d_physics/layer_11="FloorUnderFloor"
+2d_physics/layer_12="Joints"
 
 [rendering]
 

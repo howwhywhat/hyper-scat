@@ -2,6 +2,7 @@ extends RigidBody2D
 
 onready var hitbox = $Hitbox
 onready var animation = $Animation
+onready var flashAnimation = $BlinkAnimation
 
 export (int) var projectile_speed
 export (int) var damage

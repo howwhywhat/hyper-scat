@@ -59,6 +59,8 @@ tracks/2/keys = {
 
 [node name="DeathUI" type="CanvasLayer"]
 layer = 5
+offset = Vector2( -600, 0 )
+transform = Transform2D( 1, 0, 0, 1, -600, 0 )
 script = ExtResource( 2 )
 
 [node name="Portrait" type="TextureRect" parent="."]

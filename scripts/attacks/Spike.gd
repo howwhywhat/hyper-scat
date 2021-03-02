@@ -2,6 +2,7 @@ extends Sprite
 
 export (int) var damage = 0
 onready var animation = $Animation
+onready var flashAnimation = $BlinkAnimation
 
 func _on_Animation_animation_finished(anim_name):
 	if anim_name == "start":

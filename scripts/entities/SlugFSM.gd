@@ -3,6 +3,7 @@ extends StateMachine
 var state_enabled = true
 var state_logic_enabled = true
 var chase = true
+var patrol = false
 
 func _ready():
 	add_state("idle")
@@ -15,6 +16,7 @@ func _ready():
 	add_state("left")
 	add_state("right")
 	add_state("jump")
+	add_state("patrol")
 	add_state("fall")
 	call_deferred("set_state", states.asleep)
 
@@ -24,6 +26,8 @@ func _state_logic(delta):
 		parent.move()
 		if chase == true:
 			parent.move_towards_player(delta)
+		if patrol == true:
+			parent.move_towards_last_seen(delta)
 
 func _get_transition(delta):
 	match state:
@@ -37,15 +41,27 @@ func _get_transition(delta):
 					return states.death
 			else:
 				return states.death
+		states.patrol:
+			if state_enabled:
+				parent.state.text = "patrol"
+				if parent.is_on_floor():
+					if parent.patrolling == false:
+						return states.left
+					if parent.can_see():
+						return states.chase
+				if parent.HEALTH <= 0:
+					return states.death
+				if parent.can_jump():
+					return states.jump
 		states.wake_up:
 			if state_enabled:
 				parent.state.text = "wake_up"
+				if parent.HEALTH <= 0:
+					return states.death
 				if parent.playerDetection.get_overlapping_bodies().size() == 0:
 					return states.asleep
 				else:
 					return states.idle
-				if parent.HEALTH <= 0:
-					return states.death
 			else:
 				return states.death
 		states.idle:
@@ -68,6 +84,8 @@ func _get_transition(delta):
 						return states.attack
 					if parent.can_see():
 						return states.chase
+					if parent.patrolling == true and chase != true:
+						return states.patrol
 				if parent.can_jump():
 					return states.jump
 				if parent.HEALTH <= 0:
@@ -86,6 +104,8 @@ func _get_transition(delta):
 						return states.attack
 					if parent.can_see():
 						return states.chase
+					if parent.patrolling == true and chase != true:
+						return states.patrol
 				if parent.can_jump():
 					return states.jump
 				if parent.HEALTH <= 0:
@@ -102,6 +122,8 @@ func _get_transition(delta):
 						return states.left
 					if parent.can_see() and parent.player.stunned == false and parent.position.distance_to(parent.player.position) < 35:
 						return states.attack
+					if parent.patrolling == true and chase != true:
+						return states.patrol
 				if parent.can_jump():
 					return states.jump
 				if parent.HEALTH <= 0:
@@ -163,21 +185,29 @@ func _get_transition(delta):
 func _enter_state(new_state, old_state):
 	match new_state:
 		states.asleep:
+			parent.can_flip_h = false
+			patrol = false
 			parent.sleepingParticles.emitting = true
 			chase = false
 			parent.animation.play("idle")
 		states.wake_up:
+			parent.can_flip_h = true
 			parent.instance_alert_scene()
 			parent.sleepingParticles.emitting = true
 			chase = false
+			patrol = false
 			parent.animation.play("idle")
 		states.idle:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = true
 			chase = false
+			patrol = false
 			parent.animation.play("idle")
 		states.stunned:
+			parent.can_flip_h = false
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.stop_movement()
 			parent.instance_blood_particles()
 			parent.flashAnimation.play("flash")
@@ -187,40 +217,54 @@ func _enter_state(new_state, old_state):
 				parent.apply_knockback(Vector2(45, 0))
 			parent.animation.play("stunned")
 		states.attack:
+			parent.can_flip_h = false
 			parent.player.lastHitEntity = get_parent()
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.stop_movement()
 			parent.animation.play("attack")
 		states.left:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.animation.play("walk")
 			parent.motion.x = -parent.MAX_SPEED
 			parent.sprite.flip_h = false
 		states.right:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.animation.play("walk")
 			parent.motion.x = parent.MAX_SPEED
 			parent.sprite.flip_h = true
 		states.chase:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = false
 			chase = true
+			patrol = false
 			parent.animation.play("walk")
 		states.jump:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.jump()
 			parent.animation.play("walk")
 		states.fall:
+			parent.can_flip_h = true
 			parent.sleepingParticles.emitting = false
 			chase = false
+			patrol = false
 			parent.motion.y = 0
 			parent.animation.play("fall")
 		states.death:
+			parent.can_flip_h = false
 			parent.sleepingParticles.emitting = false
 			state_enabled = false
+			patrol = false
 			state_logic_enabled = false
 			if parent.collider != null:
 				parent.collider.queue_free()
@@ -244,6 +288,13 @@ func _enter_state(new_state, old_state):
 				parent.animation.play(finalChoice)
 			else:
 				parent.animation.play("death_2")
+		states.patrol:
+			patrol = true
+			parent.can_flip_h = true
+			if parent.motion != Vector2.ZERO:
+				parent.animation.play("walk")
+			else:
+				parent.animation.play("idle")
 
 func _exit_state(old_state, new_state):
 	pass
