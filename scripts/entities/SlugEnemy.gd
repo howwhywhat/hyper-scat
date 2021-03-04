@@ -1,18 +1,18 @@
 extends Enemy
 
 # general functionality
-onready var collider = $Collider
-onready var sleepingParticles = $SleepingParticles
-onready var hurtbox = $PlayerDamage/Hurtbox
-onready var animation = $Animation
-onready var flashAnimation = $BlinkAnimation
-onready var sprite = $Texture
-onready var stateMachine = $StateMachine
-onready var patrolTimer = $PatrolTimer
-var woke_up = false
-var stunned = false
-var can_flip_h = true
-var patrolling = false
+onready var collider := $Collider
+onready var sleepingParticles := $SleepingParticles
+onready var hurtbox := $PlayerDamage/Hurtbox
+onready var animation : AnimationPlayer = $Animation
+onready var flashAnimation : AnimationPlayer = $BlinkAnimation
+onready var sprite : Sprite = $Texture
+onready var stateMachine : StateMachine = $StateMachine
+onready var patrolTimer : Timer = $PatrolTimer
+var woke_up : bool = false
+var stunned : bool = false
+var can_flip_h : bool = true
+var patrolling : bool = false
 var player_last_seen = null
 
 export(float, 0.0, 5.0) var fill : float = 0.0 setget _set_fill
@@ -20,35 +20,35 @@ export(float, 0.0, 5.0) var fill : float = 0.0 setget _set_fill
 var tween_lock : bool = false
 
 # raycasting / general ai
-onready var floorLeft = $FloorLeft
-onready var floorRight = $FloorRight
-onready var wallLeft  = $WallLeft
-onready var wallRight  = $WallRight
+onready var floorLeft := $FloorLeft
+onready var floorRight := $FloorRight
+onready var wallLeft := $WallLeft
+onready var wallRight := $WallRight
 
 # player detection
-onready var playerDetection = $PlayerDetectionWakeup
-onready var attackHurtbox = $PlayerHitDetection/Hurtbox
-onready var leftAttackDetection = $LeftPlayerAttackDetection
-onready var rightAttackDetection = $RightPlayerAttackDetection
-onready var chaseHitbox = $PlayerChaseCast
+onready var playerDetection := $PlayerDetectionWakeup
+onready var attackHurtbox := $PlayerHitDetection/Hurtbox
+onready var leftAttackDetection := $LeftPlayerAttackDetection
+onready var rightAttackDetection := $RightPlayerAttackDetection
+onready var chaseHitbox := $PlayerChaseCast
 
 # jumping
-onready var jumpTop = $JumpTop
-onready var jumpBottom = $JumpBottom
+onready var jumpTop := $JumpTop
+onready var jumpBottom := $JumpBottom
 
 # attacks
-onready var POKEMON_SCENE = preload("res://scenes/levels/PokemonAttack.tscn")
+const POKEMON_SCENE := preload("res://scenes/levels/PokemonAttack.tscn")
 
 # debugging
-onready var state = $State
+onready var state : Label = $State
 
 # death shoot
-var number_of_shots = 12
-var BULLET_SCENE = preload("res://scenes/attacks/DeathBall.tscn")
-onready var pivot = $Pivot
-onready var bulletPosition = $Pivot/BulletPosition
+var number_of_shots : int = 12
+const BULLET_SCENE := preload("res://scenes/attacks/DeathBall.tscn")
+onready var pivot := $Pivot
+onready var bulletPosition := $Pivot/BulletPosition
 
-func _process(_delta):
+func _process(_delta) -> void:
 	if can_see() and player != null and can_flip_h:
 		if global_position.x < player.global_position.x:
 			sprite.flip_h = true
@@ -61,11 +61,11 @@ func _process(_delta):
 		jumpTop.cast_to = Vector2(-12, 0)
 		jumpBottom.cast_to = Vector2(-12, 0)
 
-func move_towards_player(delta):
+func move_towards_player(delta) -> void:
 	var direction = (player.global_position - global_position).normalized()
 	motion = motion.move_toward(direction * MAX_SPEED, 25 * delta)
 
-func move_towards_last_seen(delta):
+func move_towards_last_seen(delta) -> void:
 	var direction = (player_last_seen - global_position).normalized()
 	motion = motion.move_toward(direction * MAX_SPEED, 25 * delta)
 
@@ -75,17 +75,17 @@ func can_jump():
 	else:
 		return false
 
-func shoot():
+func shoot() -> void:
 	player.lastHitEntity = self
 	for shot in number_of_shots:
-		var bullet = BULLET_SCENE.instance()
+		var bullet := BULLET_SCENE.instance()
 		pivot.rotation += (2 * PI / number_of_shots)
 		bullet.global_position = bulletPosition.global_position
 		bullet.rotation = pivot.rotation
 		get_tree().current_scene.add_child(bullet)
 		yield(get_tree().create_timer(.002), "timeout")
 
-func damage(value):
+func damage(value : float) -> void:
 	if HEALTH > 0:
 		stunned()
 	player.get_node("Camera").add_trauma(0.3)
@@ -111,7 +111,7 @@ func can_see():
 			chaseHitbox.cast_to = Vector2.ZERO
 			return false
 
-func stunned():
+func stunned() -> void:
 	if hurtbox != null:
 		hurtbox.disabled = true
 	stunned = true
@@ -120,14 +120,14 @@ func stunned():
 		hurtbox.disabled = false
 	stunned = false
 
-func apply_knockback(amount : Vector2):
+func apply_knockback(amount : Vector2) -> void:
 	motion = amount.normalized() * MAX_SPEED / 2
 	motion.x = lerp(motion.x, 0, 0.5)
 
-func set_player(new_value):
+func set_player(new_value) -> void:
 	player = new_value
 
-func _on_Animation_animation_finished(anim_name):
+func _on_Animation_animation_finished(anim_name : String) -> void:
 	if anim_name == "idle":
 		woke_up = true
 	elif anim_name == "death":
@@ -142,8 +142,8 @@ func _on_Animation_animation_finished(anim_name):
 		yield(get_tree().create_timer(2), "timeout")
 		queue_free()
 
-func _start_pokemon_fight_scene():
-	var pokemonScene = POKEMON_SCENE.instance()
+func _start_pokemon_fight_scene() -> void:
+	var pokemonScene := POKEMON_SCENE.instance()
 	pokemonScene.garbageEntity = self
 	pokemonScene.player = player
 	get_tree().current_scene.get_node("TransitionLayer")._set_mask(get_tree().current_scene.get_node("TransitionLayer").Transitions.pixel_swirl)
@@ -152,20 +152,20 @@ func _start_pokemon_fight_scene():
 	yield(get_tree().create_timer(1.15), "timeout")
 	get_tree().get_root().add_child(pokemonScene)
 
-func _set_fill(val:float):
+func _set_fill(val:float) -> void:
 	fill = clamp(val, 0.0, 5.0)
 	sprite.material.set_shader_param("flash_modifier", fill)
 
-func _on_PlayerHitDetection_body_entered(body):
+func _on_PlayerHitDetection_body_entered(body) -> void:
 	if body.is_in_group("Player") and body.hurtbox.disabled == false:
 		body.apply_damage(25)
 		yield(get_tree().create_timer(0.20), "timeout")
 		if body.health > 0:
 			_start_pokemon_fight_scene() 
 
-func pounced(bouncer):
+func pounced(bouncer) -> void:
 	damage(5)
 	bouncer.bounce()
 
-func _on_PatrolTimer_timeout():
+func _on_PatrolTimer_timeout() -> void:
 	patrolling = false

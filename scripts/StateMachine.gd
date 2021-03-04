@@ -13,7 +13,7 @@ onready var parent = get_parent()
 # To set your first state, use call_deferred
 # call_deferred("set_state", states.<state>
 
-func _physics_process(delta):
+func _physics_process(delta : float):
 	if state != null:
 		_state_logic(delta)
 		var transition = _get_transition(delta)
@@ -22,12 +22,12 @@ func _physics_process(delta):
 			set_state(transition)
 
 # Abstract functions that need to be copied over
-func _state_logic(delta):
+func _state_logic(delta : float):
 	pass
 	# Use if statements to check the state, and then execute the logic (methods from the parent) for the state
 	# You can also put general logic that allows to all states (like gravity) in this method
 
-func _get_transition(delta):
+func _get_transition(delta : float):
 	return null
 	# You can use an enum (match state: blah blah blah) to check if the state machine can transition to that state
 	# So if the player is looking away from the enemy, transition to the attack state, if not, then do not transition to the attack state

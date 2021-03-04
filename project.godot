@@ -142,4 +142,4 @@ select={
 
 [rendering]
 
-environment/default_clear_color=Color( 0.0117647, 0.0117647, 0.0117647, 1 )
+environment/default_clear_color=Color( 0, 0, 0, 1 )

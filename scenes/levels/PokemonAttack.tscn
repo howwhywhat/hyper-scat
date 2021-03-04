@@ -19,6 +19,8 @@
 [ext_resource path="res://assets/interface/nine_patch_rect.png" type="Texture" id=17]
 [ext_resource path="res://assets/interface/pokemon_bar_full.png" type="Texture" id=18]
 
+
+
 [sub_resource type="QuadMesh" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]

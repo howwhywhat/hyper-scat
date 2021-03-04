@@ -1,17 +1,16 @@
 extends Area2D
 
-var is_colliding = false
+var is_colliding : bool = false
 
-var vspeed = rand_range(-5,5)
-var hspeed = rand_range(-3,3)
+var vspeed : float = rand_range(-5,5)
+var hspeed : float = rand_range(-3,3)
 
-var blood_acc = rand_range(0.05,0.1)
+var blood_acc : float = rand_range(0.05,0.1)
 
+var do_wobble : bool = false
 
-var do_wobble = false
-
-var max_count = rand_range(5,50)
-var count  = 0
+var max_count : float = rand_range(5,50)
+var count : int = 0
 
 onready var draw_surface : Paint = $"/root/Surface"# get_node("/root/blood_scene/surface")
 
@@ -54,10 +53,10 @@ func _physics_process(delta: float) -> void:
 	if(position.y > 1000):
 		queue_free()
 
-func _on_Blood_body_entered(body):
+func _on_Blood_body_entered(body) -> void:
 	is_colliding = true
 	pass # Replace with function body.
 
-func _on_Blood_body_exited(body):
+func _on_Blood_body_exited(body) -> void:
 	is_colliding = false
 	pass # Replace with function body.

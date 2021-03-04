@@ -1,10 +1,10 @@
 extends StateMachine
 
-onready var dust_particles = preload("res://scenes/particles/DustParticleEffect.tscn")
+const dust_particles := preload("res://scenes/particles/DustParticleEffect.tscn")
 
 var state_logic_enabled = true
 
-func _ready():
+func _ready() -> void:
 	add_state("idle")
 	add_state("walk")
 	add_state("wall_slide")
@@ -17,7 +17,7 @@ func _ready():
 	add_state("block")
 	call_deferred("set_state", states.idle)
 
-func _state_logic(delta):
+func _state_logic(delta : float) -> void:
 	parent.apply_gravity(delta)
 	parent.start_movement()
 	if state_logic_enabled == true:
@@ -33,7 +33,7 @@ func _state_logic(delta):
 	else:
 		parent.motion.x = lerp(parent.motion.x, 0, 0.25)
 
-func _get_transition(delta):
+func _get_transition(delta : float):
 	match state:
 		states.idle:
 			parent.state.text = "idle"
@@ -166,7 +166,7 @@ func _get_transition(delta):
 				return states.shoot
 	return null
 
-func _enter_state(new_state, old_state):
+func _enter_state(new_state, old_state) -> void:
 	match new_state:
 		states.idle:
 			parent.shield.animation.play("remove")
@@ -258,5 +258,5 @@ func _enter_state(new_state, old_state):
 			parent.shieldHurtbox.disabled = false
 			parent.animation.play("block")
 
-func _exit_state(old_state, new_state):
+func _exit_state(old_state, new_state) -> void:
 	pass

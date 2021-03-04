@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/textures/entities/ass_man/spritesheet.png" type="Texture" id=1]
+[ext_resource path="res://scripts/player/PlayerLookalike.gd" type="Script" id=2]
+[ext_resource path="res://assets/shaders/outline/Outline.tres" type="Material" id=3]
+
+[node name="PlayerLookalike" type="RigidBody2D"]
+z_index = 20
+collision_layer = 0
+collision_mask = 0
+mode = 2
+gravity_scale = 2.75
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+material = ExtResource( 3 )
+texture = ExtResource( 1 )
+hframes = 55
+frame = 15

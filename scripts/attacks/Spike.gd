@@ -1,19 +1,19 @@
 extends Sprite
 
 export (int) var damage = 0
-onready var animation = $Animation
-onready var flashAnimation = $BlinkAnimation
+onready var animation : AnimationPlayer = $Animation
+onready var flashAnimation : AnimationPlayer = $BlinkAnimation
 
-func _on_Animation_animation_finished(anim_name):
+func _on_Animation_animation_finished(anim_name : String) -> void:
 	if anim_name == "start":
 		animation.play("static")
 	elif anim_name == "lower":
 		queue_free()
 
-func _on_Timer_timeout():
+func _on_Timer_timeout() -> void:
 	animation.play("lower")
 
-func _on_PlayerDetection_body_entered(body):
+func _on_PlayerDetection_body_entered(body) -> void:
 	if body.is_in_group("Player"):
 		body.lastHitEntity = self
 		if body.stateMachine.state == body.stateMachine.states.fall:

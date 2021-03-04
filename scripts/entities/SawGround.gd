@@ -1,16 +1,21 @@
 extends Area2D
 
-const SEVERED_BODY = preload("res://scenes/entities/AssManSeveredBody.tscn")
-onready var flashAnimation = $BlinkAnimation
-onready var hitbox = $Hitbox
+const SEVERED_BODY := preload("res://scenes/entities/AssManSeveredBody.tscn")
+onready var flashAnimation : AnimationPlayer = $BlinkAnimation
+onready var hitbox : CollisionShape2D = $Hitbox
 
-func _on_SawGround_body_entered(body):
+export (NodePath) var TRAJECTORY_PATH : NodePath
+
+func _on_SawGround_body_entered(body) -> void:
 	if body.is_in_group("Player") and !body.wentThroughSaw:
 		body.wentThroughSaw = true
 		body.apply_damage(100)
 		body.visible = false
 		body.environmentHitbox.disabled = true
 		hitbox.disabled = true
+
+		var trajectory := get_node(TRAJECTORY_PATH)
+		trajectory.enabled = false
 
 		var severed = SEVERED_BODY.instance()
 		severed.global_position = global_position

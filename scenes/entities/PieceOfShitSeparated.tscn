@@ -4,6 +4,8 @@
 [ext_resource path="res://assets/textures/entities/piece_of_shit_enemy/normal_map_separated.png" type="Texture" id=2]
 [ext_resource path="res://assets/textures/entities/piece_of_shit_enemy/separated.png" type="Texture" id=3]
 
+
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 5.48334, 1.52477 )
 

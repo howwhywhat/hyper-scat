@@ -1,9 +1,9 @@
 extends StateMachine
 
-var state_enabled = true
-var state_logic_enabled = true
-var chase = true
-var patrol = false
+var state_enabled : bool = true
+var state_logic_enabled : bool = true
+var chase : bool = true
+var patrol : bool = false
 
 func _ready():
 	add_state("idle")
@@ -20,7 +20,7 @@ func _ready():
 	add_state("fall")
 	call_deferred("set_state", states.asleep)
 
-func _state_logic(delta):
+func _state_logic(delta) -> void:
 	if state_logic_enabled == true:
 		parent._apply_gravity(delta)
 		parent.move()
@@ -182,7 +182,7 @@ func _get_transition(delta):
 				return states.death
 	return null
 
-func _enter_state(new_state, old_state):
+func _enter_state(new_state, old_state) -> void:
 	match new_state:
 		states.asleep:
 			parent.can_flip_h = false

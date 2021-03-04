@@ -3,6 +3,8 @@
 [ext_resource path="res://assets/textures/entities/ant/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/UpsideDownAnt.gd" type="Script" id=2]
 
+
+
 [sub_resource type="Animation" id=1]
 resource_name = "autoload"
 length = 0.3

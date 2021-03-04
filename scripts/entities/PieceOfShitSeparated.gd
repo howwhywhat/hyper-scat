@@ -1,16 +1,16 @@
 extends RigidBody2D
 
-onready var sprite = $Texture
+onready var sprite : Sprite = $Texture
 
 export (int) var projectile_speed
 
-func _ready():
+func _ready() -> void:
 	apply_impulse(Vector2(), Vector2(projectile_speed, 0).rotated(rotation))
 	yield(get_tree().create_timer(5), "timeout")
 	queue_free()
 
-func _on_IfVisible_screen_exited():
+func _on_IfVisible_screen_exited() -> void:
 	queue_free()
 
-func _on_PieceOfShitSeparated_body_entered(body):
+func _on_PieceOfShitSeparated_body_entered(body) -> void:
 	get_tree().current_scene.get_node("Player").get_node("Camera").add_trauma(0.05)

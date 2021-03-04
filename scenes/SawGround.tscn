@@ -35,7 +35,7 @@ tracks/1/keys = {
 }
 
 [sub_resource type="CircleShape2D" id=2]
-radius = 9.0
+radius = 8.0
 
 [sub_resource type="Animation" id=3]
 resource_name = "damager"

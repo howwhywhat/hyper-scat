@@ -3,54 +3,54 @@ extends KinematicBody2D
 class_name Enemy
 
 export (NodePath) var PLAYER_SCENE
-onready var player = get_node(PLAYER_SCENE)
+onready var player := get_node(PLAYER_SCENE)
 
 # scenes
-const EXPLOSION_SCENE = preload("res://scenes/particles/ExplosionSprite.tscn")
-const BLOOD_SCENE = preload("res://scenes/particles/BloodShitParticles.tscn")
-const ENEMY_DROPS_SCENE = preload("res://scenes/EnemyItemDrop.tscn")
-const ALERT_SCENE = preload("res://scenes/AlarmScene.tscn")
+const EXPLOSION_SCENE := preload("res://scenes/particles/ExplosionSprite.tscn")
+const BLOOD_SCENE := preload("res://scenes/particles/BloodShitParticles.tscn")
+const ENEMY_DROPS_SCENE := preload("res://scenes/EnemyItemDrop.tscn")
+const ALERT_SCENE := preload("res://scenes/AlarmScene.tscn")
 
 export (int) var JUMP = 240
 export (int) var MAX_SPEED = 15
 export (int) var HEALTH = 100
-var motion = Vector2.ZERO
+var motion : Vector2 = Vector2.ZERO
 
 # abstract method
-func damage(value):
+func damage(value : float):
 	pass
 
-func move():
+func move() -> void:
 	motion = move_and_slide(motion, Vector2.UP)
 
-func _apply_gravity(delta):
+func _apply_gravity(delta : float) -> void:
 	motion.y += GlobalConstants.GRAVITY * delta
 	motion.y += GlobalConstants.GRAVITY * delta
 
-func jump():
+func jump() -> void:
 	motion.y -= JUMP
 
-func spawn_drops(amount : int):
+func spawn_drops(amount : int) -> void:
 	for number in amount:
-		var drop = ENEMY_DROPS_SCENE.instance()
+		var drop := ENEMY_DROPS_SCENE.instance()
 		drop.global_position = global_position
 		drop.player = player
 		get_tree().current_scene.add_child(drop)
 
-func instance_explosion_scene():
-	var explosion = EXPLOSION_SCENE.instance()
+func instance_explosion_scene() -> void:
+	var explosion := EXPLOSION_SCENE.instance()
 	explosion.global_position = global_position
 	get_tree().current_scene.add_child(explosion)
 
-func instance_alert_scene():
-	var alertScene = ALERT_SCENE.instance()
+func instance_alert_scene() -> void:
+	var alertScene := ALERT_SCENE.instance()
 	alertScene.global_position = global_position
 	get_tree().current_scene.add_child(alertScene)
 
-func stop_movement():
+func stop_movement() -> void:
 	motion = move_and_slide(Vector2.ZERO, Vector2.UP)
 
-func instance_blood_particles():
-	var blood = BLOOD_SCENE.instance()
+func instance_blood_particles() -> void:
+	var blood := BLOOD_SCENE.instance()
 	blood.global_position = global_position
 	get_tree().current_scene.add_child(blood)

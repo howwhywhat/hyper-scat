@@ -99,6 +99,7 @@ tracks/0/keys = {
 "ForeignEnemyAttack",
 ]]
 modulate = Color( 0, 0.576471, 1, 1 )
+light_mask = 3
 material = ExtResource( 4 )
 texture = ExtResource( 2 )
 hframes = 14

@@ -1,7 +1,7 @@
 extends CPUParticles2D
 
-export (float) var time
+export (float) var time : float
 
-func _ready():
+func _ready() -> void:
 	yield(get_tree().create_timer(time), "timeout")
 	queue_free()

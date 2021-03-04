@@ -2,6 +2,8 @@
 
 [ext_resource path="res://scripts/attacks/Bullet.gd" type="Script" id=1]
 
+
+
 [node name="Bullet" type="RigidBody2D"]
 continuous_cd = 2
 contacts_reported = 9999

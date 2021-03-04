@@ -1,5 +1,5 @@
 extends Sprite
 
-func _ready():
+func _ready() -> void:
 	randomize()
 	modulate = Color(randf(), randf(), randf(), 1)

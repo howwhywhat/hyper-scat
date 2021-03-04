@@ -1,17 +1,17 @@
 extends Camera2D
 
-export (OpenSimplexNoise) var noise
-export (float, 0, 1) var trauma = 0.0
+export (OpenSimplexNoise) var noise : OpenSimplexNoise
+export (float, 0, 1) var trauma : float = 0.0
 
-export var max_x = 150
-export var max_y = 150
-export var max_r = 45
+export var max_x : int = 150
+export var max_y : int = 150
+export var max_r : int = 45
 
 export var time_scale = 100
 
-export(float, 0, 1) var decay = 0.6
+export(float, 0, 1) var decay : float = 0.6
 
-var time = 0
+var time : float = 0
 
 func add_trauma(trauma_in):
 	trauma = clamp(trauma + trauma_in, 0.0, 1)

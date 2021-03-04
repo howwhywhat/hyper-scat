@@ -1,104 +1,106 @@
 extends KinematicBody2D
 
 # general
-var health = 100
-var laxatives = 0
-var stunned = false
-onready var DEATH_ID_SCENE = preload("res://scenes/interface/DeathUI.tscn")
-onready var SHOOTING_PARTICLES = preload("res://scenes/particles/ShootingParticles.tscn")
-var enemyOrigin = Vector2.ZERO
+var health : float = 100
+var laxatives : int = 0
+var stunned : bool = false
+const DEATH_ID_SCENE := preload("res://scenes/interface/DeathUI.tscn")
+const SHOOTING_PARTICLES := preload("res://scenes/particles/ShootingParticles.tscn")
+var enemyOrigin : Vector2 = Vector2.ZERO
 var lastHitEntity
-var wentThroughSaw = false
+var wentThroughSaw : bool = false
+var enableBlood : bool = true
+var unlocking : bool = false
 
 export (PackedScene) var BLOOD_SCENE : PackedScene
 
 # bullet type/weaponry
-export (PackedScene) var bullet_type
-var can_fire_bullet = true
+export (PackedScene) var bullet_type : PackedScene
+var can_fire_bullet : bool = true
 
 # signals
 signal player_damaged(damage)
 
 # camera control
-export (NodePath) var camera_in_level
+export (NodePath) var camera_in_level : NodePath
 
 # movement
 const ACCELERATION = 512
-var MAX_SPEED = 64
-var FRICTION = 0.25
+var MAX_SPEED : int = 96
+var FRICTION : float = 0.25
 const AIR_RESISTANCE = 0.02
 const JUMP_FORCE = 128
 
-var motion = Vector2.ZERO
+var motion : Vector2 = Vector2.ZERO
 var x_input = 0
 
 # attacks
-var power_value = 0
-var can_fire = true
-onready var shit_wave = preload("res://scenes/attacks/ShitWave.tscn")
+var power_value : int = 0
+var can_fire : bool = true
+const shit_wave := preload("res://scenes/attacks/ShitWave.tscn")
 
 # variables
-onready var shieldTimer = $BlockedTimer
-onready var shield = $PlayerShield
-onready var shieldHurtbox = $PlayerShield/Hurtbox
+onready var shieldTimer : Timer = $BlockedTimer
+onready var shield := $PlayerShield
+onready var shieldHurtbox : CollisionShape2D = $PlayerShield/Hurtbox
 
-onready var specialAttackPositionL = $SpecialAttackPositionL
-onready var specialAttackPositionR = $SpecialAttackPositionR
+onready var specialAttackPositionL := $SpecialAttackPositionL
+onready var specialAttackPositionR := $SpecialAttackPositionR
 
-onready var environmentHitbox = $EnvironmentHitbox
-onready var stunnedTimer = $StunnedTimer
-onready var animation = $Animation
-onready var flashAnimation = $BlinkAnimation
-onready var state = $State
-onready var stateMachine = $StateMachine
-onready var halfAss = $HalfAss
-onready var sprite = $CharacterSprite
-onready var camera = $Camera
-onready var ifVisible = $IfVisible
-onready var bulletPosition = $BulletPosition
-onready var shootParticlesPos = $ShootingParticlesPosition
-onready var bounceRaycasts = $BounceRaycasts
-onready var hurtbox = $BulletDetection/BulletHitbox
+onready var environmentHitbox : CollisionShape2D = $EnvironmentHitbox
+onready var stunnedTimer := $StunnedTimer
+onready var animation : AnimationPlayer = $Animation
+onready var flashAnimation : AnimationPlayer = $BlinkAnimation
+onready var state : Label = $State
+onready var stateMachine : StateMachine = $StateMachine
+onready var halfAss : Sprite = $HalfAss
+onready var sprite : Sprite = $CharacterSprite
+onready var camera : Camera2D = $Camera
+onready var ifVisible : VisibilityNotifier2D = $IfVisible
+onready var bulletPosition : Position2D = $BulletPosition
+onready var shootParticlesPos : Position2D = $ShootingParticlesPosition
+onready var bounceRaycasts : Node2D = $BounceRaycasts
+onready var hurtbox : CollisionShape2D = $BulletDetection/BulletHitbox
 
-export (NodePath) var UI_NODE
-onready var ui = get_node(UI_NODE)
-onready var uiHearts = ui.get_node("Hearts")
-onready var uiLaxatives = ui.get_node("Laxatives").get_node("Label")
+export (NodePath) var UI_NODE : NodePath
+onready var ui := get_node(UI_NODE)
+onready var uiHearts := ui.get_node("Hearts")
+onready var uiLaxatives := ui.get_node("Laxatives").get_node("Label")
 
 # dashing
-var tappedRight = 0
-var tappedLeft = 0
-var dash = false
-onready var dragTimer = $DragTimer
-var drag = false
-var able_to_dash = false
-var GHOST_SPRITE_SCENE = preload("res://scenes/entities/PlayerGhost.tscn")
+var tappedRight : int = 0
+var tappedLeft : int = 0
+var dash : bool = false
+onready var dragTimer : Timer = $DragTimer
+var drag : bool = false
+var able_to_dash : bool = false
+const GHOST_SPRITE_SCENE := preload("res://scenes/entities/PlayerGhost.tscn")
 
 # jump handling
-onready var coyoteTimer = $CoyoteTime
-onready var jumpBuffer = $JumpBuffer
-var was_on_floor
-var yCoordinateBeforeJump = global_position.y
-export (int) var WALL_SLIDE_SPEED = 48
-export (int) var MAX_WALL_SLIDE_SPEED = 128
+onready var coyoteTimer : Timer = $CoyoteTime
+onready var jumpBuffer : Timer = $JumpBuffer
+var was_on_floor : bool
+var yCoordinateBeforeJump : float = global_position.y
+export (int) var WALL_SLIDE_SPEED : int = 48
+export (int) var MAX_WALL_SLIDE_SPEED : int = 128
 
 # sprite textures
-var left_arm_attached = true
-var right_arm_attached = true
-onready var leftArmPosition = $LeftArmPosition
-onready var rightArmPosition = $RightArmPosition
-var LIMB_SCENE = preload("res://scenes/entities/AssManLimb.tscn")
-var BLOOD_PARTICLES = preload("res://scenes/particles/ArmBloodParticles.tscn")
+var left_arm_attached : bool = true
+var right_arm_attached : bool = true
+onready var leftArmPosition : Position2D = $LeftArmPosition
+onready var rightArmPosition : Position2D = $RightArmPosition
+const LIMB_SCENE := preload("res://scenes/entities/AssManLimb.tscn")
+const BLOOD_PARTICLES := preload("res://scenes/particles/ArmBloodParticles.tscn")
 var bloodParticlesLeft = null
 var bloodParticlesRight = null
-var damaged_1 = preload("res://assets/textures/entities/ass_man/spritesheet_no_left_arm.png")
-var damaged_2 = preload("res://assets/textures/entities/ass_man/spritesheet_no_right_arm.png")
+const damaged_1 := preload("res://assets/textures/entities/ass_man/spritesheet_no_left_arm.png")
+const damaged_2 := preload("res://assets/textures/entities/ass_man/spritesheet_no_right_arm.png")
 
-func _ready():
+func _ready() -> void:
 	uiHearts.initialize(100, 100)
 	connect("player_damaged", uiHearts, "_on_Player_damage")
 
-func _physics_process(_delta):
+func _physics_process(_delta) -> void:
 	if !stateMachine.state_logic_enabled:
 		able_to_dash = false
 
@@ -108,7 +110,7 @@ func _physics_process(_delta):
 			dragTimer.start()
 		else:
 			drag = false
-		var ghostSprite = GHOST_SPRITE_SCENE.instance()
+		var ghostSprite := GHOST_SPRITE_SCENE.instance()
 		ghostSprite.global_position = global_position
 		ghostSprite.frame = sprite.frame
 		ghostSprite.flip_h = sprite.flip_h
@@ -143,7 +145,7 @@ func _physics_process(_delta):
 			dash = false
 			MAX_SPEED /= 3
 
-func _process(delta):
+func _process(delta : float) -> void:
 	uiLaxatives.text = str(laxatives)
 	if sprite.flip_h == false:
 		bulletPosition.position.x = -5
@@ -172,7 +174,7 @@ func _process(delta):
 		if not bloodParticlesRight == null:
 			bloodParticlesRight.position = rightArmPosition.position
 
-func apply_damage_texture():
+func apply_damage_texture() -> void:
 	if health <= 50 and left_arm_attached == true:
 		left_arm_attached = false
 		bloodParticlesLeft = BLOOD_PARTICLES.instance()
@@ -198,18 +200,18 @@ func apply_damage_texture():
 		MAX_SPEED /= 2
 		animation.playback_speed /= 2
 
-		var limb = LIMB_SCENE.instance()
+		var limb := LIMB_SCENE.instance()
 		limb.global_position = rightArmPosition.global_position
 		limb.rotation = rightArmPosition.rotation
 		get_tree().current_scene.add_child(limb)
 		sprite.texture = damaged_2
 
-func apply_gravity(delta):
+func apply_gravity(delta : float) -> void:
 	if coyoteTimer.is_stopped():
 		motion.y += GlobalConstants.GRAVITY * delta
 		motion.y += GlobalConstants.GRAVITY * delta
 
-func execute_special_attack():
+func execute_special_attack() -> void:
 	var shitWave = shit_wave.instance()
 	get_tree().current_scene.add_child(shitWave)
 
@@ -220,10 +222,10 @@ func execute_special_attack():
 		shitWave.global_position = specialAttackPositionR.global_position
 		shitWave.scale.x = 0.45
 
-func apply_knockback(amount : Vector2):
+func apply_knockback(amount : Vector2) -> void:
 	motion = amount.normalized() * ACCELERATION / 2
 
-func apply_special_attack_controls():
+func apply_special_attack_controls() -> void:
 	if x_input == 0:
 		if Input.is_action_pressed("special_attack"):
 			print(power_value)
@@ -241,7 +243,7 @@ func apply_special_attack_controls():
 			yield(get_tree().create_timer(15), "timeout")
 			can_fire = true
 
-func apply_jumping():
+func apply_jumping() -> void:
 	if is_on_floor() || !coyoteTimer.is_stopped():
 		if x_input == 0:
 			motion.x = lerp(motion.x, 0, FRICTION)
@@ -259,7 +261,7 @@ func apply_jumping():
 		if x_input == 0:
 			motion.x = lerp(motion.x, 0, AIR_RESISTANCE)
 
-func apply_movement(delta):
+func apply_movement(delta : float) -> void:
 	x_input = Input.get_action_strength("d") - Input.get_action_strength("a")
 	if x_input != 0:
 		motion.x += x_input * ACCELERATION * delta
@@ -268,7 +270,7 @@ func apply_movement(delta):
 		halfAss.flip_h = x_input < 0
 	_check_bounce(delta)
 
-func start_movement():
+func start_movement() -> void:
 	was_on_floor = is_on_floor()
 	motion = move_and_slide(motion, Vector2.UP)
 
@@ -282,7 +284,7 @@ func start_movement():
 #				apply_damage(body.damage)
 #				enemyOrigin = body.transform.origin
 
-func stunned():
+func stunned() -> void:
 	hurtbox.disabled = true
 	stateMachine.state_logic_enabled = false
 	stunned = true
@@ -290,12 +292,13 @@ func stunned():
 		stunnedTimer.wait_time = 1.25
 		stunnedTimer.start()
 
-func apply_damage(damage):
+func apply_damage(damage : float) -> void:
 	apply_damage_texture()
-	for i in range(55):
-		var blood_instance : Area2D = BLOOD_SCENE.instance()
-		blood_instance.global_position = global_position
-		get_tree().current_scene.call_deferred("add_child", blood_instance)
+	if enableBlood:
+		for i in range(55):
+			var blood_instance : Area2D = BLOOD_SCENE.instance()
+			blood_instance.global_position = global_position
+			get_tree().current_scene.call_deferred("add_child", blood_instance)
 	if health <= 0:
 		animation.playback_speed = 1
 		return
@@ -304,7 +307,7 @@ func apply_damage(damage):
 	camera.add_trauma(0.5)
 	emit_signal("player_damaged", health)
 
-func shoot():
+func shoot() -> void:
 	if can_fire_bullet == true:
 		var shootingParticles = SHOOTING_PARTICLES.instance()
 		shootingParticles.global_position = shootParticlesPos.global_position
@@ -312,12 +315,12 @@ func shoot():
 		get_tree().current_scene.add_child(shootingParticles)
 		
 		can_fire_bullet = false
-		var bulletType = bullet_type.instance()
+		var bulletType := bullet_type.instance()
 		bulletType.global_position = bulletPosition.global_position
 		bulletType.rotation = bulletPosition.rotation
 		
 		#juice
-		var knockdir = Vector2.ZERO
+		var knockdir : Vector2 = Vector2.ZERO
 		
 		if sprite.flip_h:
 			knockdir = Vector2(bulletType.recoil, 0)
@@ -331,65 +334,65 @@ func shoot():
 		yield(get_tree().create_timer(bulletType.rate_of_fire), "timeout")
 		can_fire_bullet = true
 
-func _check_bounce(delta):
+func _check_bounce(delta : float) -> void:
 	if motion.y > 0:
 		for raycast in bounceRaycasts.get_children():
 			if raycast.is_colliding() and raycast.get_collision_normal() == Vector2.UP:
 				raycast.get_collider().call_deferred("pounced", self)
 				break
 
-func get_wall_axis():
-	var is_right_wall = test_move(transform, Vector2.RIGHT)
-	var is_left_wall = test_move(transform, Vector2.LEFT)
+func get_wall_axis() -> int:
+	var is_right_wall := test_move(transform, Vector2.RIGHT)
+	var is_left_wall := test_move(transform, Vector2.LEFT)
 	return int(is_left_wall) - int(is_right_wall)
 
-func apply_wall_slide_jump(wall_axis):
+func apply_wall_slide_jump(wall_axis) -> void:
 	if Input.is_action_just_pressed("w"):
 		motion.x = wall_axis * 154
 		motion.y = -JUMP_FORCE * 1.5
 
-func wall_slide_drop_check(delta):
+func wall_slide_drop_check(delta : float) -> void:
 	if Input.is_action_pressed("d"):
 		motion.x = ACCELERATION * delta
 	
 	if Input.is_action_pressed("a"):
 		motion.x = -ACCELERATION * delta
 
-func wall_slide_fast_slide_check(delta):
-	var max_slide_speed = WALL_SLIDE_SPEED
+func wall_slide_fast_slide_check(delta : float) -> void:
+	var max_slide_speed := WALL_SLIDE_SPEED
 	if Input.is_action_pressed("s"):
 		max_slide_speed = MAX_WALL_SLIDE_SPEED
 	motion.y = min(motion.y + GlobalConstants.GRAVITY * delta, max_slide_speed)
 
-func _on_IfVisible_screen_entered():
-	var oldCamera = get_node(camera_in_level)
+func _on_IfVisible_screen_entered() -> void:
+	var oldCamera := get_node(camera_in_level)
 	oldCamera.current = false
 	camera.current = true
 	oldCamera.queue_free()
 	ifVisible.queue_free()
 	get_tree().current_scene.get_node("SewerBlock").get_node("Collider").disabled = false
 
-func bounce():
+func bounce() -> void:
 	motion.y = -100
 
-func _on_PickUpDrops_body_entered(body):
+func _on_PickUpDrops_body_entered(body) -> void:
 	if body.is_in_group("ItemDrop"):
 		body.pick_up_item()
 
-func _on_DropMoveToRadius_body_entered(body):
+func _on_DropMoveToRadius_body_entered(body) -> void:
 	if body.is_in_group("ItemDrop"):
 		body.set_process(true)
 
-func _on_DropMoveToRadius_body_exited(body):
+func _on_DropMoveToRadius_body_exited(body) -> void:
 	if body.is_in_group("ItemDrop"):
 		body.set_process(false)
 
-func _on_Animation_animation_finished(anim_name):
+func _on_Animation_animation_finished(anim_name : String) -> void:
 	if anim_name == "death":
-		var deathId = DEATH_ID_SCENE.instance()
+		var deathId := DEATH_ID_SCENE.instance()
 		get_tree().current_scene.add_child(deathId)
 
-func _on_StunnedTimer_timeout():
+func _on_StunnedTimer_timeout() -> void:
 	stunnedTimer.stop()
 	stunnedTimer.wait_time = 1.25
 	hurtbox.disabled = false
@@ -397,9 +400,13 @@ func _on_StunnedTimer_timeout():
 	if health > 0:
 		stateMachine.state_logic_enabled = true
 
-func _on_BlockedTimer_timeout():
+func _on_BlockedTimer_timeout() -> void:
 	shieldTimer.stop()
 	shieldTimer.wait_time = 5
 
-func _on_DragTimer_timeout():
+func _on_DragTimer_timeout() -> void:
 	drag = true
+
+func _on_Animation_animation_changed(old_name, new_name):
+	if unlocking:
+		animation.play("fall")

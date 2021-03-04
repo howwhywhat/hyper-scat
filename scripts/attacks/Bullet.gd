@@ -9,5 +9,5 @@ export (float) var amount_of_screen_shake
 export (float) var rate_of_fire = 0.6
 export (int, 0, 1500) var projectile_speed = 1500
 
-func _ready():
+func _ready() -> void:
 	apply_impulse(Vector2(), Vector2(projectile_speed, 0).rotated(rotation))

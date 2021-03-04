@@ -3,6 +3,8 @@
 [ext_resource path="res://assets/textures/attacks/top_spike/spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://scripts/attacks/TopSpike.gd" type="Script" id=3]
 
+
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6.543, 1.552 )
 

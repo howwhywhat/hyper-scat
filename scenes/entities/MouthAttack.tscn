@@ -4,6 +4,8 @@
 [ext_resource path="res://assets/textures/entities/piece_of_shit_enemy/mouth/spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://scripts/entities/MouthAttack.gd" type="Script" id=3]
 
+
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 19.361, 2.542 )
 

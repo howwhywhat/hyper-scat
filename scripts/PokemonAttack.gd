@@ -1,22 +1,22 @@
 extends Spatial
 
 # ui variables
-onready var ui = $PokemonUI
-onready var playerChoice = $PokemonUI/BaseMenu/PlayerChoiceButtons
-onready var playerAttack = $PokemonUI/BaseMenu/PlayerAttackChoices
-onready var text = $PokemonUI/BaseMenu/Options/GeneralText
-onready var textTween = $PokemonUI/ShowText
+onready var ui := $PokemonUI
+onready var playerChoice := $PokemonUI/BaseMenu/PlayerChoiceButtons
+onready var playerAttack := $PokemonUI/BaseMenu/PlayerAttackChoices
+onready var text := $PokemonUI/BaseMenu/Options/GeneralText
+onready var textTween := $PokemonUI/ShowText
 
-onready var transitionLayer = $TransitionLayer
+onready var transitionLayer := $TransitionLayer
 
 # damage indicator
-onready var light = $Light
-onready var damageIndicatorTween = $DamageIndicatorTween
+onready var light := $Light
+onready var damageIndicatorTween := $DamageIndicatorTween
 
 # animations
-onready var attackAnimation = $AttackAnimation
-onready var playerAnimation = $PlayerAnimation
-onready var enemyAnimation = $EnemyAnimation
+onready var attackAnimation := $AttackAnimation
+onready var playerAnimation := $PlayerAnimation
+onready var enemyAnimation := $EnemyAnimation
 
 var garbageEntity
 var player
@@ -24,44 +24,44 @@ var attack
 var scene
 
 # entity handling
-var fightingEnabled = true
-var fightTurn = "PLAYER"
-var playerHealth = 25
-var enemyHealth = 25
+var fightingEnabled : bool = true
+var fightTurn : String = "PLAYER"
+var playerHealth : int = 25
+var enemyHealth : int = 25
 
 # health
-onready var playerHPBar = $PokemonUI/BaseMenu/AssManHealthUI/Health
-onready var playerHPText = $PokemonUI/BaseMenu/AssManHealthUI/HP
-onready var enemyHPBar = $PokemonUI/BaseMenu/EnemyHealthUI/Health
-onready var enemyHPText = $PokemonUI/BaseMenu/EnemyHealthUI/HP
+onready var playerHPBar := $PokemonUI/BaseMenu/AssManHealthUI/Health
+onready var playerHPText := $PokemonUI/BaseMenu/AssManHealthUI/HP
+onready var enemyHPBar := $PokemonUI/BaseMenu/EnemyHealthUI/Health
+onready var enemyHPText := $PokemonUI/BaseMenu/EnemyHealthUI/HP
 
-onready var playerHPTween = $PokemonUI/PlayerHealthTween
-onready var enemyHPTween = $PokemonUI/EnemyHealthTween
+onready var playerHPTween := $PokemonUI/PlayerHealthTween
+onready var enemyHPTween := $PokemonUI/EnemyHealthTween
 
 # attack information
-onready var attackInformation = $PokemonUI/BaseMenu/AttackInformation
-onready var attackName = $PokemonUI/BaseMenu/AttackInformation/AttackName
-onready var attackDescription = $PokemonUI/BaseMenu/AttackInformation/AttackDescription
-onready var attackUses = $PokemonUI/BaseMenu/AttackInformation/AttackUses
-onready var attackMenuAnimation = $PokemonUI/MenuAnimation
+onready var attackInformation := $PokemonUI/BaseMenu/AttackInformation
+onready var attackName := $PokemonUI/BaseMenu/AttackInformation/AttackName
+onready var attackDescription := $PokemonUI/BaseMenu/AttackInformation/AttackDescription
+onready var attackUses := $PokemonUI/BaseMenu/AttackInformation/AttackUses
+onready var attackMenuAnimation := $PokemonUI/MenuAnimation
 
-onready var attackNameTween = $PokemonUI/AttackNameTween
-onready var attackDescTween = $PokemonUI/AttackDescTween
-onready var attackUsesTween = $PokemonUI/AttackUsesTween
+onready var attackNameTween := $PokemonUI/AttackNameTween
+onready var attackDescTween := $PokemonUI/AttackDescTween
+onready var attackUsesTween := $PokemonUI/AttackUsesTween
 
 # attack uses
-var assClenchUses = 3
-var rapidShitUses = 2
+var assClenchUses : int = 3
+var rapidShitUses : int = 2
 
 # enemy attacks
-var enemyAttacks = ["SCAT", "REBUTTAL"]
+var enemyAttacks := ["SCAT", "REBUTTAL"]
 
 # player handling
-onready var player3D = $PlayerSprite
-var damaged_1 = preload("res://assets/interface/player/spritesheet_no_left_arm.png")
-var damaged_2 = preload("res://assets/interface/player/spritesheet_no_right_arm.png")
+onready var player3D := $PlayerSprite
+const  damaged_1 := preload("res://assets/interface/player/spritesheet_no_left_arm.png")
+const damaged_2 := preload("res://assets/interface/player/spritesheet_no_right_arm.png")
 
-func _ready():
+func _ready() -> void:
 	scene = get_tree().current_scene
 	get_tree().get_root().remove_child(scene)
 	transitionLayer.shaderLayer.show_screen()
@@ -70,7 +70,7 @@ func _ready():
 	if player.right_arm_attached == false:
 		player3D.texture = damaged_2
 
-func _process(_delta):
+func _process(_delta) -> void:
 	damage_indicator()
 	
 	if playerHPBar != null and enemyHPBar != null and playerHPText != null and enemyHPText != null:
@@ -86,12 +86,12 @@ func _process(_delta):
 		else:
 			enemyHPText.text = str(round(enemyHealth)) + "/25"
 
-func set_attack_information(attack_name : String, attack_description : String, attack_uses : int):
+func set_attack_information(attack_name : String, attack_description : String, attack_uses : int) -> void:
 	attackName.bbcode_text = attack_name
 	attackDescription.bbcode_text = attack_description
 	attackUses.bbcode_text = "Uses: [shake]" + str(attack_uses) + "[/shake]"
 
-func damage(value : int, body : String):
+func damage(value : int, body : String) -> void:
 	if body == "player":
 		if not playerHPTween.is_active():
 			playerHPTween.interpolate_property(self, "playerHealth", playerHealth, playerHealth - value, 0.25, Tween.TRANS_SINE, Tween.EASE_OUT)
@@ -101,7 +101,7 @@ func damage(value : int, body : String):
 			enemyHPTween.interpolate_property(self, "enemyHealth", enemyHealth, enemyHealth - value, 0.25, Tween.TRANS_SINE, Tween.EASE_OUT)
 			enemyHPTween.start()
 
-func finish_turn():
+func finish_turn() -> void:
 	if fightingEnabled:
 		if fightTurn == "PLAYER":
 			print("Player attack over")
@@ -137,12 +137,12 @@ func finish_turn():
 		else:
 			print("Unexpected error")
 
-func show_text():
+func show_text() -> void:
 	if not textTween.is_active():
 		textTween.interpolate_property(text, "percent_visible", 0.0, 1.0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 		textTween.start()
 
-func show_attack_info():
+func show_attack_info() -> void:
 	print("show attack info called")
 	attackNameTween.interpolate_property(attackName, "percent_visible", 0.0, 1.0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	attackNameTween.start()
@@ -151,7 +151,7 @@ func show_attack_info():
 	attackUsesTween.interpolate_property(attackUses, "percent_visible", 0.0, 1.0, 1, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	attackUsesTween.start()
 
-func _on_FightButton_pressed():
+func _on_FightButton_pressed() -> void:
 	for node in playerChoice.get_children():
 		node.disabled = true
 	playerChoice.visible = false
@@ -159,7 +159,7 @@ func _on_FightButton_pressed():
 		node.disabled = false
 	playerAttack.visible = true
 
-func _on_AssClenchAttack_pressed():
+func _on_AssClenchAttack_pressed() -> void:
 	attackInformation.visible = false
 	if assClenchUses > 0:
 		assClenchUses -= 1
@@ -189,7 +189,7 @@ func _on_AssClenchAttack_pressed():
 			node.disabled = true
 		playerAttack.visible = false
 
-func _on_FuckinRunButton_pressed():
+func _on_FuckinRunButton_pressed() -> void:
 	for node in playerChoice.get_children():
 		node.disabled = true
 	playerChoice.visible = false
@@ -202,7 +202,7 @@ func _on_FuckinRunButton_pressed():
 	playerChoice.visible = true
 	text.visible = false
 
-func _on_AssMenButton_pressed():
+func _on_AssMenButton_pressed() -> void:
 	for node in playerChoice.get_children():
 		node.disabled = true
 	playerChoice.visible = false
@@ -215,7 +215,7 @@ func _on_AssMenButton_pressed():
 	playerChoice.visible = true
 	text.visible = false
 
-func _on_AttackAnimation_animation_finished(anim_name):
+func _on_AttackAnimation_animation_finished(anim_name : String) -> void:
 	if anim_name == "player_attack":
 		if enemyHealth <= 0:
 			fightingEnabled = false
@@ -229,7 +229,7 @@ func _on_AttackAnimation_animation_finished(anim_name):
 	else:
 		print("Error")
 
-func _on_EnemyAnimation_animation_finished(anim_name):
+func _on_EnemyAnimation_animation_finished(anim_name : String) -> void:
 	if anim_name == "death":
 		text.bbcode_text = "You won!"
 		show_text()
@@ -244,7 +244,7 @@ func _on_EnemyAnimation_animation_finished(anim_name):
 		get_tree().get_root().remove_child(self)
 		queue_free()
 
-func _on_PlayerAnimation_animation_finished(anim_name):
+func _on_PlayerAnimation_animation_finished(anim_name : String) -> void:
 	if anim_name == "death":
 		text.bbcode_text = "Garbage won! You lost."
 		show_text()
@@ -259,22 +259,22 @@ func _on_PlayerAnimation_animation_finished(anim_name):
 		get_tree().get_root().remove_child(self)
 		queue_free()
 
-func damage_indicator():
+func damage_indicator() -> void:
 	if playerHealth < 12:
 		if not damageIndicatorTween.is_active():
 			damageIndicatorTween.interpolate_property(light, "light_color", light.light_color, Color(0.75, 0, 0), 2.0, Tween.TRANS_SINE, Tween.EASE_IN_OUT)
 			damageIndicatorTween.start()
 
-func _on_AssClenchAttack_mouse_entered():
+func _on_AssClenchAttack_mouse_entered() -> void:
 	print("mouse entered")
 	set_attack_information("ASS CLENCH", "Clench your ass on your enemy's face.\nDMG: [shake]4[/shake]", assClenchUses)
 	attackInformation.visible = true
 	show_attack_info()
 
-func _on_AssClenchAttack_mouse_exited():
+func _on_AssClenchAttack_mouse_exited() -> void:
 	attackInformation.visible = false
 
-func _on_RapidShitAttack_pressed():
+func _on_RapidShitAttack_pressed() -> void:
 	attackInformation.visible = false
 	if rapidShitUses > 0:
 		rapidShitUses -= 1
@@ -304,10 +304,10 @@ func _on_RapidShitAttack_pressed():
 			node.disabled = true
 		playerAttack.visible = false
 
-func _on_RapidShitAttack_mouse_entered():
+func _on_RapidShitAttack_mouse_entered() -> void:
 	set_attack_information("RAPID SHIT", "Rapidly shit on your enemies.\nDMG: [shake]9[/shake]", rapidShitUses)
 	attackInformation.visible = true
 	show_attack_info()
 
-func _on_RapidShitAttack_mouse_exited():
+func _on_RapidShitAttack_mouse_exited() -> void:
 	attackInformation.visible = false

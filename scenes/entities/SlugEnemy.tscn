@@ -7,6 +7,8 @@
 [ext_resource path="res://assets/textures/entities/slug_enemy/normal_map_spritesheet.png" type="Texture" id=5]
 [ext_resource path="res://scenes/particles/SleepingParticles.tscn" type="PackedScene" id=7]
 
+
+
 [sub_resource type="CapsuleShape2D" id=1]
 height = 2.134
 

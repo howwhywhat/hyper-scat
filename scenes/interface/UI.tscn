@@ -6,6 +6,8 @@
 [ext_resource path="res://scripts/ui/Hearts.gd" type="Script" id=4]
 [ext_resource path="res://assets/textures/drops/pill_icon.png" type="Texture" id=5]
 
+
+
 [sub_resource type="DynamicFont" id=1]
 size = 6
 outline_size = 1

@@ -4,6 +4,8 @@
 [ext_resource path="res://assets/textures/walls/variation_1/platforms/spritesheet.png" type="Texture" id=2]
 [ext_resource path="res://scripts/Platform.gd" type="Script" id=3]
 
+
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 18, 2.063 )
 
