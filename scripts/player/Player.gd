@@ -61,6 +61,7 @@ onready var bulletPosition : Position2D = $BulletPosition
 onready var shootParticlesPos : Position2D = $ShootingParticlesPosition
 onready var bounceRaycasts : Node2D = $BounceRaycasts
 onready var hurtbox : CollisionShape2D = $BulletDetection/BulletHitbox
+onready var light : Light2D = $LightingEffects
 
 export (NodePath) var UI_NODE : NodePath
 onready var ui := get_node(UI_NODE)
@@ -71,6 +72,8 @@ onready var uiLaxatives := ui.get_node("Laxatives").get_node("Label")
 var tappedRight : int = 0
 var tappedLeft : int = 0
 var dash : bool = false
+var dashingRight : bool = false
+var dashingLeft : bool = false
 onready var dragTimer : Timer = $DragTimer
 var drag : bool = false
 var able_to_dash : bool = false
@@ -91,6 +94,7 @@ onready var leftArmPosition : Position2D = $LeftArmPosition
 onready var rightArmPosition : Position2D = $RightArmPosition
 const LIMB_SCENE := preload("res://scenes/entities/AssManLimb.tscn")
 const BLOOD_PARTICLES := preload("res://scenes/particles/ArmBloodParticles.tscn")
+const EXPLOSION_SCENE := preload("res://scenes/particles/ExplosionSprite.tscn")
 var bloodParticlesLeft = null
 var bloodParticlesRight = null
 const damaged_1 := preload("res://assets/textures/entities/ass_man/spritesheet_no_left_arm.png")
@@ -105,6 +109,17 @@ func _physics_process(_delta) -> void:
 		able_to_dash = false
 
 	if dash == true:
+		if Input.is_action_pressed("d") and dashingLeft:
+			dash = false
+			hurtbox.disabled = false
+			dashingLeft = false
+			MAX_SPEED /= 3
+		elif Input.is_action_pressed("a") and dashingRight:
+			dash = false
+			hurtbox.disabled = false
+			dashingRight = false
+			MAX_SPEED /= 3
+
 		if !Input.is_action_pressed("w") and !drag:
 			motion.y = 0
 			dragTimer.start()
@@ -125,12 +140,15 @@ func _physics_process(_delta) -> void:
 		if Input.is_action_pressed("d") and dash == false and tappedRight == 2:
 			hurtbox.disabled = true
 			dash = true
+			dashingRight = true
 			MAX_SPEED *= 3
 			motion.x += 500
 			yield(get_tree().create_timer(.3), "timeout")
-			hurtbox.disabled = false
-			dash = false
-			MAX_SPEED /= 3
+			if dashingRight:
+				hurtbox.disabled = false
+				dash = false
+				dashingRight = false
+				MAX_SPEED /= 3
 		if Input.is_action_just_pressed("a") and dash == false:
 			tappedLeft += 1
 			yield(get_tree().create_timer(.2), "timeout")
@@ -138,12 +156,15 @@ func _physics_process(_delta) -> void:
 		if Input.is_action_pressed("a") and dash == false and tappedLeft == 2:
 			hurtbox.disabled = true
 			dash = true
+			dashingLeft = true
 			MAX_SPEED *= 3
 			motion.x -= 500
 			yield(get_tree().create_timer(.5), "timeout")
-			hurtbox.disabled = false
-			dash = false
-			MAX_SPEED /= 3
+			if dashingLeft:
+				hurtbox.disabled = false
+				dash = false
+				dashingLeft = false
+				MAX_SPEED /= 3
 
 func _process(delta : float) -> void:
 	uiLaxatives.text = str(laxatives)
@@ -375,20 +396,22 @@ func _on_IfVisible_screen_entered() -> void:
 func bounce() -> void:
 	motion.y = -100
 
+func instance_explosion_scene() -> void:
+	if !wentThroughSaw:
+		var explosion := EXPLOSION_SCENE.instance()
+		explosion.global_position = global_position
+		get_tree().current_scene.add_child(explosion)
+
 func _on_PickUpDrops_body_entered(body) -> void:
 	if body.is_in_group("ItemDrop"):
 		body.pick_up_item()
 
-func _on_DropMoveToRadius_body_entered(body) -> void:
-	if body.is_in_group("ItemDrop"):
-		body.set_process(true)
-
-func _on_DropMoveToRadius_body_exited(body) -> void:
-	if body.is_in_group("ItemDrop"):
-		body.set_process(false)
-
 func _on_Animation_animation_finished(anim_name : String) -> void:
 	if anim_name == "death":
+		var deathId := DEATH_ID_SCENE.instance()
+		get_tree().current_scene.add_child(deathId)
+	elif anim_name == "death_2":
+		visible = false
 		var deathId := DEATH_ID_SCENE.instance()
 		get_tree().current_scene.add_child(deathId)
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=61 format=2]
 
 [ext_resource path="res://assets/tile_sets/GeneralTileSet.tres" type="TileSet" id=1]
 [ext_resource path="res://assets/textures/decor/foreground_decor/vines.png" type="Texture" id=2]
@@ -53,6 +53,8 @@
 [ext_resource path="res://assets/textures/decor/signs_spritesheet_normal_map.png" type="Texture" id=51]
 [ext_resource path="res://scenes/Lamp.tscn" type="PackedScene" id=52]
 [ext_resource path="res://scenes/SawOnWall.tscn" type="PackedScene" id=53]
+[ext_resource path="res://assets/textures/decor/stop_go_spritesheet.png" type="Texture" id=54]
+[ext_resource path="res://assets/textures/decor/normal_map_stop_go_spritesheet.png" type="Texture" id=55]
 
 [sub_resource type="Environment" id=1]
 background_mode = 4
@@ -79,6 +81,31 @@ extents = Vector2( 31, 89 )
 
 [sub_resource type="RectangleShape2D" id=4]
 extents = Vector2( 31, 10 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "move"
+length = 3.5
+loop = true
+tracks/0/type = "bezier"
+tracks/0/path = NodePath("SawGround:position:x")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"points": PoolRealArray( -21, -0.25, 0, 0.0815636, 29, 21, -0.00482774, 1, 0.25, 0, -21, -0.25, 0, 0.25, 0 ),
+"times": PoolRealArray( 0, 2, 3 )
+}
+tracks/1/type = "bezier"
+tracks/1/path = NodePath("SawGround:position:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"points": PoolRealArray(  ),
+"times": PoolRealArray(  )
+}
 
 [node name="Level1" type="Node2D"]
 script = ExtResource( 37 )
@@ -139,7 +166,7 @@ position = Vector2( 0, 1 )
 tile_set = ExtResource( 1 )
 collision_layer = 1024
 format = 1
-tile_data = PoolIntArray( 327677, 1073741828, 0, 327678, 1073741828, 0, 327679, 1073741828, 0, 262144, 1073741828, 0, 262145, 1073741828, 0, 262146, 1073741828, 0, 262147, 1073741828, 0, 262148, 1073741828, 0, 262149, 1073741828, 0, 262150, 1073741828, 0, 262151, 1073741828, 0 )
+tile_data = PoolIntArray( 196617, 4, 0, 327677, 1073741828, 0, 327678, 1073741828, 0, 327679, 1073741828, 0, 262144, 1073741828, 0, 262145, 1073741828, 0, 262146, 1073741828, 0, 262147, 1073741828, 0, 262148, 1073741828, 0, 262149, 1073741828, 0, 262150, 1073741828, 0, 262151, 1073741828, 0, 262153, 4, 0 )
 
 [node name="SpecificallyForSpikes" type="TileMap" parent="."]
 light_mask = 0
@@ -155,23 +182,29 @@ tile_data = PoolIntArray( 327677, 1073741828, 0, 327678, 1073741828, 0, 327679, 
 [node name="CrumblingFloor" parent="Floor" instance=ExtResource( 41 )]
 position = Vector2( 544, 416 )
 trajectory_path = NodePath("../../Trajectory")
-time = 1.0
+wall_half_path = NodePath("../../Walls/wallBottom6")
 
 [node name="CrumblingFloor2" parent="Floor" instance=ExtResource( 41 )]
 position = Vector2( 608, 416 )
 trajectory_path = NodePath("../../Trajectory")
+wall_half_path = NodePath("../../Walls/wallBottom7")
 
 [node name="CrumblingFloor3" parent="Floor" instance=ExtResource( 41 )]
 position = Vector2( 672, 416 )
 trajectory_path = NodePath("../../Trajectory")
+time = 1.0
+wall_half_path = NodePath("../../Walls/wallBottom8")
 
 [node name="CrumblingFloor4" parent="Floor" instance=ExtResource( 41 )]
 position = Vector2( 736, 416 )
 trajectory_path = NodePath("../../Trajectory")
+time = 1.0
+wall_half_path = NodePath("../../Walls/wallBottom9")
 
 [node name="CrumblingFloor5" parent="Floor" instance=ExtResource( 41 )]
 position = Vector2( 800, 416 )
 trajectory_path = NodePath("../../Trajectory")
+wall_half_path = NodePath("../../Walls/wallBottom10")
 
 [node name="Walls" type="Node2D" parent="."]
 __meta__ = {
@@ -182,7 +215,7 @@ __meta__ = {
 position = Vector2( 544, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 1
 __meta__ = {
 "_edit_lock_": true
@@ -192,7 +225,7 @@ __meta__ = {
 position = Vector2( 32, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 9
 __meta__ = {
 "_edit_lock_": true
@@ -202,7 +235,7 @@ __meta__ = {
 position = Vector2( 32, 160 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 8
 __meta__ = {
 "_edit_lock_": true
@@ -212,7 +245,7 @@ __meta__ = {
 position = Vector2( 32, 96 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 7
 __meta__ = {
 "_edit_lock_": true
@@ -222,7 +255,7 @@ __meta__ = {
 position = Vector2( 160, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -232,7 +265,7 @@ __meta__ = {
 position = Vector2( 224, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 6
 __meta__ = {
 "_edit_lock_": true
@@ -242,7 +275,7 @@ __meta__ = {
 position = Vector2( 288, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -252,7 +285,7 @@ __meta__ = {
 position = Vector2( 416, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 6
 __meta__ = {
 "_edit_lock_": true
@@ -262,7 +295,7 @@ __meta__ = {
 position = Vector2( 352, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 3
 __meta__ = {
 "_edit_lock_": true
@@ -272,7 +305,7 @@ __meta__ = {
 position = Vector2( 480, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 5
 __meta__ = {
 "_edit_lock_": true
@@ -282,7 +315,7 @@ __meta__ = {
 position = Vector2( 96, 224 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 4
 __meta__ = {
 "_edit_lock_": true
@@ -292,7 +325,7 @@ __meta__ = {
 position = Vector2( 544, 288 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 10
 __meta__ = {
 "_edit_lock_": true
@@ -302,7 +335,7 @@ __meta__ = {
 position = Vector2( 544, 352 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 11
 __meta__ = {
 "_edit_lock_": true
@@ -312,29 +345,99 @@ __meta__ = {
 position = Vector2( 608, 352 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 12
 
 [node name="wallBottom3" type="Sprite" parent="Walls"]
 position = Vector2( 672, 352 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 13
 
 [node name="wallBottom4" type="Sprite" parent="Walls"]
 position = Vector2( 736, 352 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 14
 
 [node name="wallBottom5" type="Sprite" parent="Walls"]
 position = Vector2( 800, 352 )
 texture = ExtResource( 16 )
 normal_map = ExtResource( 15 )
-hframes = 16
+hframes = 19
 frame = 15
+
+[node name="wallBottom6" type="Sprite" parent="Walls"]
+modulate = Color( 1, 1, 1, 0 )
+light_mask = -2147483645
+position = Vector2( 544, 416 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 19
+frame = 16
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Tween" type="Tween" parent="Walls/wallBottom6"]
+
+[node name="wallBottom7" type="Sprite" parent="Walls"]
+modulate = Color( 1, 1, 1, 0 )
+light_mask = -2147483645
+position = Vector2( 608, 416 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 19
+frame = 17
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Tween" type="Tween" parent="Walls/wallBottom7"]
+
+[node name="wallBottom8" type="Sprite" parent="Walls"]
+modulate = Color( 1, 1, 1, 0 )
+light_mask = -2147483645
+position = Vector2( 672, 416 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 19
+frame = 17
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Tween" type="Tween" parent="Walls/wallBottom8"]
+
+[node name="wallBottom9" type="Sprite" parent="Walls"]
+modulate = Color( 1, 1, 1, 0 )
+light_mask = -2147483645
+position = Vector2( 736, 416 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 19
+frame = 17
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Tween" type="Tween" parent="Walls/wallBottom9"]
+
+[node name="wallBottom10" type="Sprite" parent="Walls"]
+modulate = Color( 1, 1, 1, 0 )
+light_mask = -2147483645
+position = Vector2( 800, 416 )
+texture = ExtResource( 16 )
+normal_map = ExtResource( 15 )
+hframes = 19
+frame = 17
+__meta__ = {
+"_editor_description_": ""
+}
+
+[node name="Tween" type="Tween" parent="Walls/wallBottom10"]
 
 [node name="SewerPipes" type="Node2D" parent="."]
 __meta__ = {
@@ -393,6 +496,12 @@ modulate = Color( 1, 1, 1, 0.686275 )
 
 [node name="Red1" type="Sprite" parent="WallDecor/WallStain"]
 position = Vector2( 409, 232 )
+scale = Vector2( 0.75, 0.75 )
+texture = ExtResource( 26 )
+normal_map = ExtResource( 28 )
+
+[node name="Red2" type="Sprite" parent="WallDecor/WallStain"]
+position = Vector2( 698, 360 )
 scale = Vector2( 0.75, 0.75 )
 texture = ExtResource( 26 )
 normal_map = ExtResource( 28 )
@@ -705,10 +814,46 @@ texture = ExtResource( 50 )
 normal_map = ExtResource( 51 )
 hframes = 2
 
+[node name="StopSign2" type="Sprite" parent="WallDecor/Signs"]
+modulate = Color( 0, 0, 0, 0.239216 )
+position = Vector2( 699, 355 )
+rotation = 0.13439
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 54 )
+normal_map = ExtResource( 55 )
+hframes = 2
+frame = 1
+
+[node name="StopSign" type="Sprite" parent="WallDecor/Signs"]
+position = Vector2( 700, 353 )
+rotation = 0.13439
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 54 )
+normal_map = ExtResource( 55 )
+hframes = 2
+frame = 1
+
+[node name="GoSign" type="Sprite" parent="WallDecor/Signs"]
+modulate = Color( 0, 0, 0, 0.239216 )
+position = Vector2( 790.223, 353.223 )
+rotation = -0.132645
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 54 )
+normal_map = ExtResource( 55 )
+hframes = 2
+
+[node name="GoSign2" type="Sprite" parent="WallDecor/Signs"]
+position = Vector2( 791.223, 351.223 )
+rotation = -0.132645
+scale = Vector2( 1.5, 1.5 )
+texture = ExtResource( 54 )
+normal_map = ExtResource( 55 )
+hframes = 2
+
 [node name="Lamp" type="Node2D" parent="WallDecor"]
 
 [node name="LampJoint" parent="WallDecor/Lamp" instance=ExtResource( 52 )]
-position = Vector2( 554, 194 )
+position = Vector2( 549, 193 )
 
 [node name="AntEntities" type="Node2D" parent="."]
 __meta__ = {
@@ -1018,7 +1163,7 @@ position = Vector2( 447, 205 )
 position = Vector2( 469, 205 )
 
 [node name="TopSpike3" parent="TopSpikes" instance=ExtResource( 42 )]
-position = Vector2( 537, 205 )
+position = Vector2( 491, 205 )
 
 [node name="WaterParticles" type="Node2D" parent="."]
 
@@ -1032,18 +1177,13 @@ position = Vector2( 670, 384 )
 emission_shape = 2
 emission_rect_extents = Vector2( 555, 1 )
 
-[node name="Player" parent="." instance=ExtResource( 12 )]
-position = Vector2( 33, 94 )
-collision_mask = 2
-camera_in_level = NodePath("../IniitalCamera")
-UI_NODE = NodePath("../UI")
-
-[node name="Vignette" parent="." instance=ExtResource( 49 )]
-
 [node name="BarSprite" type="Node2D" parent="."]
 light_mask = 0
 position = Vector2( 0, -4 )
-z_index = 10
+z_index = 35
+__meta__ = {
+"_edit_lock_": true
+}
 
 [node name="Sprite" type="Sprite" parent="BarSprite"]
 light_mask = 0
@@ -1171,6 +1311,14 @@ position = Vector2( 452, 361 )
 scale = Vector2( 5, 2.5 )
 texture = ExtResource( 43 )
 
+[node name="Player" parent="." instance=ExtResource( 12 )]
+position = Vector2( 33, 94 )
+collision_mask = 2
+camera_in_level = NodePath("../IniitalCamera")
+UI_NODE = NodePath("../UI")
+
+[node name="Vignette" parent="." instance=ExtResource( 49 )]
+
 [node name="WaterPositions" type="Node" parent="."]
 
 [node name="Position1" type="Position2D" parent="WaterPositions" groups=[
@@ -1278,7 +1426,7 @@ price_amount = 10
 modulate = Color( 0.411765, 0.411765, 0.411765, 1 )
 
 [node name="SawOnWall" parent="SawsOnWall" instance=ExtResource( 53 )]
-position = Vector2( 649, 374 )
+position = Vector2( 649, 375 )
 
 [node name="SawGround" parent="SawsOnWall/SawOnWall" index="0"]
 TRAJECTORY_PATH = NodePath("../../../Trajectory")
@@ -1287,6 +1435,27 @@ TRAJECTORY_PATH = NodePath("../../../Trajectory")
 position = Vector2( 649, 330 )
 
 [node name="SawGround" parent="SawsOnWall/SawOnWall2" index="0"]
+TRAJECTORY_PATH = NodePath("../../../Trajectory")
+
+[node name="SawOnWall3" parent="SawsOnWall" instance=ExtResource( 53 )]
+position = Vector2( 727, 353 )
+rotation = 1.5708
+
+[node name="SawGround" parent="SawsOnWall/SawOnWall3" index="0"]
+position = Vector2( -21, 0.491089 )
+scale = Vector2( 0.7, 0.7 )
+TRAJECTORY_PATH = NodePath("../../../Trajectory")
+
+[node name="AnimationPlayer" parent="SawsOnWall/SawOnWall3" index="1"]
+anims/move = SubResource( 5 )
+
+[node name="SawOnWall4" parent="SawsOnWall" instance=ExtResource( 53 )]
+position = Vector2( 749, 353 )
+rotation = -1.5708
+
+[node name="SawGround" parent="SawsOnWall/SawOnWall4" index="0"]
+position = Vector2( -21, 0.433044 )
+scale = Vector2( 0.7, 0.7 )
 TRAJECTORY_PATH = NodePath("../../../Trajectory")
 [connection signal="screen_entered" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_entered"]
 [connection signal="screen_exited" from="SewerPipes/SewerPipe/IfVisible" to="FloorTiles" method="_on_IfVisible_screen_exited"]
@@ -1297,3 +1466,9 @@ TRAJECTORY_PATH = NodePath("../../../Trajectory")
 [editable path="SawsOnWall/SawOnWall"]
 
 [editable path="SawsOnWall/SawOnWall2"]
+
+[editable path="SawsOnWall/SawOnWall3"]
+
+[editable path="SawsOnWall/SawOnWall3/SawGround"]
+
+[editable path="SawsOnWall/SawOnWall4"]

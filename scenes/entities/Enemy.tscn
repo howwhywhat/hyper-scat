@@ -2,8 +2,6 @@
 
 [ext_resource path="res://scripts/entities/Enemy.gd" type="Script" id=1]
 
-
-
 [node name="Enemy" type="KinematicBody2D"]
 script = ExtResource( 1 )
 

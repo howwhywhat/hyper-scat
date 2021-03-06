@@ -83,6 +83,10 @@ color = Color( 1, 0.678431, 0, 1 )
 energy = 1.5
 range_z_min = -12
 range_z_max = 12
+shadow_enabled = true
+shadow_color = Color( 0, 0, 0, 1 )
+shadow_filter = 2
+shadow_filter_smooth = 5.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 autoplay = "autoload"

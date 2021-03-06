@@ -5,8 +5,6 @@
 [ext_resource path="res://assets/textures/attacks/deathball/normal_map.png" type="Texture" id=3]
 [ext_resource path="res://assets/textures/attacks/deathball/sprite.png" type="Texture" id=4]
 
-
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 4.0
 
@@ -75,7 +73,7 @@ collision_mask = 35
 sleeping = true
 script = ExtResource( 2 )
 projectile_speed = 145
-damage = 6
+damage = 15
 
 [node name="Texture" parent="." index="0"]
 modulate = Color( 100, 100, 100, 1 )

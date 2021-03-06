@@ -107,6 +107,18 @@ tracks/0/keys = {
 "points": PoolRealArray( 0, -0.25, 0, 0.25, 0, -90, -0.99185, -7.59792, 0.25, 0, -90, -0.25, 0, 0.25, 0, 0, -0.801885, -14.6424, 0.25, 0 ),
 "times": PoolRealArray( 0, 1, 1.2, 2 )
 }
+tracks/1/type = "value"
+tracks/1/path = NodePath("NoPastPoint/Collider:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.9, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 1,
+"values": [ true, true, false ]
+}
 
 [sub_resource type="RectangleShape2D" id=7]
 extents = Vector2( 32, 78 )
@@ -175,12 +187,13 @@ anims/show_text = SubResource( 5 )
 anims/open = SubResource( 6 )
 
 [node name="NoPastPoint" type="StaticBody2D" parent="."]
-visible = false
 position = Vector2( -29, -80 )
+collision_layer = 2
+collision_mask = 285
 
 [node name="Collider" type="CollisionShape2D" parent="NoPastPoint"]
 shape = SubResource( 7 )
 disabled = true
 [connection signal="body_entered" from="DetectPlayer" to="." method="_on_DetectPlayer_body_entered"]
 [connection signal="body_exited" from="DetectPlayer" to="." method="_on_DetectPlayer_body_exited"]
-[connection signal="animation_finished" from="PlatformMove" to="." method="_on_PlatformMove_animation_finished"]
+[connection signal="animation_started" from="PlatformMove" to="." method="_on_PlatformMove_animation_started"]

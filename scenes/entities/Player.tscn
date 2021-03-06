@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://assets/textures/entities/ass_man/spritesheet.png" type="Texture" id=1]
 [ext_resource path="res://scripts/player/Player.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/attacks/ShitBall.tscn" type="PackedScene" id=8]
 [ext_resource path="res://assets/textures/entities/ass_man/half_ass_spritesheet.png" type="Texture" id=9]
 [ext_resource path="res://scenes/particles/Blood.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/shaders/outline/Outline.tres" type="Material" id=12]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -39,54 +40,19 @@ void fragment()
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
-shader_param/width = 1.0
-shader_param/outline_color = Color( 0, 0, 0, 1 )
-
-[sub_resource type="Shader" id=3]
-code = "shader_type canvas_item;
-render_mode unshaded;
- 
-uniform float width : hint_range(0.0, 16.0);
-uniform vec4 outline_color : hint_color;
- 
-void fragment()
-{
-    vec2 size = vec2(width) / vec2(textureSize(TEXTURE, 0));
-   
-    vec4 sprite_color = texture(TEXTURE, UV);
-   
-    float alpha = sprite_color.a;
-    alpha += texture(TEXTURE, UV + vec2(0.0, -size.y)).a;
-    alpha += texture(TEXTURE, UV + vec2(size.x, -size.y)).a;
-    alpha += texture(TEXTURE, UV + vec2(size.x, 0.0)).a;
-    alpha += texture(TEXTURE, UV + vec2(size.x, size.y)).a;
-    alpha += texture(TEXTURE, UV + vec2(0.0, size.y)).a;
-    alpha += texture(TEXTURE, UV + vec2(-size.x, size.y)).a;
-    alpha += texture(TEXTURE, UV + vec2(-size.x, 0.0)).a;
-    alpha += texture(TEXTURE, UV + vec2(-size.x, -size.y)).a;
-   
-    vec3 final_color = mix(outline_color.rgb, sprite_color.rgb, sprite_color.a);
-    COLOR = vec4(final_color, clamp(alpha, 0.0, 1.0));
-}"
-
-[sub_resource type="ShaderMaterial" id=4]
 render_priority = 1
-shader = SubResource( 3 )
+shader = SubResource( 1 )
 shader_param/width = 0.0
 shader_param/outline_color = Color( 0, 0, 0, 1 )
 
-[sub_resource type="CapsuleShape2D" id=5]
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 5.2141
 height = 9.76912
 
-[sub_resource type="CircleShape2D" id=6]
-radius = 6.0
+[sub_resource type="CircleShape2D" id=4]
+radius = 16.0
 
-[sub_resource type="CircleShape2D" id=7]
-radius = 40.0125
-
-[sub_resource type="Animation" id=8]
+[sub_resource type="Animation" id=5]
 resource_name = "block"
 loop = true
 tracks/0/type = "value"
@@ -114,7 +80,7 @@ tracks/1/keys = {
 "values": [ 8, 8 ]
 }
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=6]
 length = 0.8
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -141,7 +107,49 @@ tracks/1/keys = {
 "values": [ 8, 8 ]
 }
 
-[sub_resource type="Animation" id=10]
+[sub_resource type="Animation" id=7]
+resource_name = "death_2"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("CharacterSprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 56, 56, 57, 57 ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("HalfAss:frame")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.2, 0.3, 0.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 52, 52, 53, 53 ]
+}
+tracks/2/type = "method"
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0.4 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "instance_explosion_scene"
+} ]
+}
+
+[sub_resource type="Animation" id=8]
 length = 0.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -168,7 +176,7 @@ tracks/1/keys = {
 "values": [ 14, 14, 15, 15 ]
 }
 
-[sub_resource type="Animation" id=11]
+[sub_resource type="Animation" id=9]
 length = 2.0
 loop = true
 tracks/0/type = "value"
@@ -196,7 +204,7 @@ tracks/1/keys = {
 "values": [ 40, 40, 0, 0 ]
 }
 
-[sub_resource type="Animation" id=12]
+[sub_resource type="Animation" id=10]
 length = 0.4
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -223,7 +231,7 @@ tracks/1/keys = {
 "values": [ 10, 11, 12, 13 ]
 }
 
-[sub_resource type="Animation" id=13]
+[sub_resource type="Animation" id=11]
 length = 2.0
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -250,7 +258,7 @@ tracks/1/keys = {
 "values": [ 18, 18 ]
 }
 
-[sub_resource type="Animation" id=14]
+[sub_resource type="Animation" id=12]
 length = 0.3
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
@@ -306,7 +314,7 @@ tracks/3/keys = {
 "values": [ 8, 8 ]
 }
 
-[sub_resource type="Animation" id=15]
+[sub_resource type="Animation" id=13]
 tracks/0/type = "value"
 tracks/0/path = NodePath("CharacterSprite:frame")
 tracks/0/interp = 1
@@ -332,7 +340,7 @@ tracks/1/keys = {
 "values": [ 8, 8 ]
 }
 
-[sub_resource type="Animation" id=16]
+[sub_resource type="Animation" id=14]
 length = 0.7
 loop = true
 tracks/0/type = "value"
@@ -360,7 +368,7 @@ tracks/1/keys = {
 "values": [ 1, 2, 3, 4, 3, 6, 7 ]
 }
 
-[sub_resource type="Animation" id=17]
+[sub_resource type="Animation" id=15]
 tracks/0/type = "value"
 tracks/0/path = NodePath("HalfAss:frame")
 tracks/0/interp = 1
@@ -386,7 +394,7 @@ tracks/1/keys = {
 "values": [ 52, 52 ]
 }
 
-[sub_resource type="Animation" id=18]
+[sub_resource type="Animation" id=16]
 length = 0.5
 tracks/0/type = "bezier"
 tracks/0/path = NodePath("CharacterSprite:modulate:r")
@@ -429,7 +437,7 @@ tracks/3/keys = {
 "times": PoolRealArray( 0, 0.5 )
 }
 
-[sub_resource type="OpenSimplexNoise" id=19]
+[sub_resource type="OpenSimplexNoise" id=17]
 
 [node name="Player" type="KinematicBody2D" groups=[
 "Player",
@@ -444,23 +452,23 @@ bullet_type = ExtResource( 8 )
 script = ExtResource( 3 )
 
 [node name="CharacterSprite" type="Sprite" parent="."]
-material = SubResource( 2 )
+material = ExtResource( 12 )
 texture = ExtResource( 1 )
-hframes = 55
-frame = 54
+hframes = 58
+frame = 56
 
 [node name="HalfAss" type="Sprite" parent="."]
 light_mask = -2147483647
-material = SubResource( 4 )
+material = SubResource( 2 )
 z_index = 1
 texture = ExtResource( 9 )
-hframes = 51
-frame = 8
+hframes = 54
+frame = 52
 
 [node name="EnvironmentHitbox" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2( 0, 1.025 )
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 
 [node name="BulletDetection" type="Area2D" parent="."]
 visible = false
@@ -468,36 +476,29 @@ collision_mask = 8
 
 [node name="BulletHitbox" type="CollisionShape2D" parent="BulletDetection"]
 position = Vector2( 0, 1.025 )
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 
 [node name="PickUpDrops" type="Area2D" parent="."]
-visible = false
 collision_mask = 256
 
 [node name="Collider" type="CollisionShape2D" parent="PickUpDrops"]
-shape = SubResource( 6 )
-
-[node name="DropMoveToRadius" type="Area2D" parent="."]
-visible = false
-collision_mask = 256
-
-[node name="Collider" type="CollisionShape2D" parent="DropMoveToRadius"]
-shape = SubResource( 7 )
+shape = SubResource( 4 )
 
 [node name="Animation" type="AnimationPlayer" parent="."]
-anims/block = SubResource( 8 )
-anims/death = SubResource( 9 )
-anims/fall = SubResource( 10 )
-anims/idle = SubResource( 11 )
-anims/jump = SubResource( 12 )
-anims/recoil = SubResource( 13 )
-anims/special_attack = SubResource( 14 )
-anims/stunned = SubResource( 15 )
-anims/walk = SubResource( 16 )
-anims/wall_slide = SubResource( 17 )
+anims/block = SubResource( 5 )
+anims/death = SubResource( 6 )
+anims/death_2 = SubResource( 7 )
+anims/fall = SubResource( 8 )
+anims/idle = SubResource( 9 )
+anims/jump = SubResource( 10 )
+anims/recoil = SubResource( 11 )
+anims/special_attack = SubResource( 12 )
+anims/stunned = SubResource( 13 )
+anims/walk = SubResource( 14 )
+anims/wall_slide = SubResource( 15 )
 
 [node name="BlinkAnimation" type="AnimationPlayer" parent="."]
-anims/flash = SubResource( 18 )
+anims/flash = SubResource( 16 )
 
 [node name="State" type="Label" parent="."]
 visible = false
@@ -515,7 +516,7 @@ rotating = true
 zoom = Vector2( 0.5, 0.5 )
 smoothing_enabled = true
 script = ExtResource( 7 )
-noise = SubResource( 19 )
+noise = SubResource( 17 )
 max_y = 60
 max_r = 15
 
@@ -614,8 +615,6 @@ z_index = 1
 [node name="DragTimer" type="Timer" parent="."]
 wait_time = 0.333
 [connection signal="body_entered" from="PickUpDrops" to="." method="_on_PickUpDrops_body_entered"]
-[connection signal="body_entered" from="DropMoveToRadius" to="." method="_on_DropMoveToRadius_body_entered"]
-[connection signal="body_exited" from="DropMoveToRadius" to="." method="_on_DropMoveToRadius_body_exited"]
 [connection signal="animation_changed" from="Animation" to="." method="_on_Animation_animation_changed"]
 [connection signal="animation_finished" from="Animation" to="." method="_on_Animation_animation_finished"]
 [connection signal="screen_entered" from="IfVisible" to="." method="_on_IfVisible_screen_entered"]

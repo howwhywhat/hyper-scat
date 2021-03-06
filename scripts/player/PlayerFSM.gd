@@ -3,6 +3,7 @@ extends StateMachine
 const dust_particles := preload("res://scenes/particles/DustParticleEffect.tscn")
 
 var state_logic_enabled = true
+var movement_enabled = true
 
 func _ready() -> void:
 	add_state("idle")
@@ -18,8 +19,9 @@ func _ready() -> void:
 	call_deferred("set_state", states.idle)
 
 func _state_logic(delta : float) -> void:
-	parent.apply_gravity(delta)
-	parent.start_movement()
+	if movement_enabled:
+		parent.apply_gravity(delta)
+		parent.start_movement()
 	if state_logic_enabled == true:
 		parent.apply_movement(delta)
 		parent.apply_special_attack_controls()
@@ -214,7 +216,13 @@ func _enter_state(new_state, old_state) -> void:
 				parent.bloodParticlesRight.emitting = false
 			parent.power_value = 0
 			parent.animation.stop()
-			parent.animation.play("death")
+			parent.animation.playback_speed = 1
+			
+			var deathList = ["death", "death_2"]
+			randomize()
+			var choice = deathList[randi() % deathList.size()]
+			
+			parent.animation.play(choice)
 		states.stunned:
 			parent.shield.animation.play("remove")
 			parent.able_to_dash = false

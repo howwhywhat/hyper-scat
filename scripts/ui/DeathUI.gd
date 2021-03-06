@@ -11,7 +11,7 @@ func _on_Retry_pressed() -> void:
 	get_tree().current_scene.transitionLayer._set_fill(0.0)
 	get_tree().current_scene.transitionLayer.shaderLayer.hide_screen()
 	yield(get_tree().create_timer(1), "timeout")
-	get_tree().reload_current_scene()
+	get_tree().change_scene(get_tree().current_scene.filename)
 
 func _on_Exit_pressed() -> void:
 	layer -= 2

@@ -1,6 +1,6 @@
 extends RigidBody2D
 
-export (int) var damage = 15
+export (int) var damage = 25
 
 const PARTICLES_SCENE := preload("res://scenes/particles/TopSpikeParticle.tscn")
 var particles

@@ -7,8 +7,6 @@
 [ext_resource path="res://scripts/entities/PieceOfShitFSM.gd" type="Script" id=5]
 [ext_resource path="res://scenes/particles/SleepingParticles.tscn" type="PackedScene" id=6]
 
-
-
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 6, 7.945 )
 

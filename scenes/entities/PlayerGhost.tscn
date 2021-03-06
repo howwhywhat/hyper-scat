@@ -6,7 +6,7 @@
 [node name="PlayerGhost" type="Sprite"]
 modulate = Color( 100, 100, 100, 1 )
 texture = ExtResource( 1 )
-hframes = 55
+hframes = 58
 script = ExtResource( 2 )
 
 [node name="Tween" type="Tween" parent="."]

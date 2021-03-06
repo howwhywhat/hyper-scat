@@ -4,7 +4,7 @@ onready var sprite : Sprite = $Sprite
 onready var animation : AnimationPlayer = $Animation
 var attack_completed : bool = false
 
-export (int) var damage = 10.0
+export (int) var damage = 25.0
 
 func _process(_delta) -> void:
 	if get_parent().sprite.flip_h == true:

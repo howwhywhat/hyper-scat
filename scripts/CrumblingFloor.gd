@@ -5,6 +5,8 @@ const PLAYER_LOOKALIKE := preload("res://scenes/entities/PlayerLookalike.tscn")
 export (NodePath) var trajectory_path : NodePath
 export (float) var time : float = 0.6
 
+export (NodePath) var wall_half_path : NodePath
+
 onready var playerDetection : CollisionShape2D = $PlayerDetection/Collider
 onready var animation : AnimationPlayer = $Animation
 onready var timer : Timer = $Timer
@@ -21,6 +23,12 @@ func _on_PlayerDetection_body_entered(body) -> void:
 func _on_Timer_timeout() -> void:
 	animation.play("crumbling")
 
+func wall_half_turn_visible() -> void:
+	var wall_half := get_node(wall_half_path)
+	var tween : Tween = wall_half.get_node("Tween")
+	tween.interpolate_property(wall_half, "modulate", Color(1, 1, 1, 0), Color(1, 1, 1, 1), 0.5, Tween.TRANS_LINEAR)
+	tween.start()
+
 func _on_PlayerTurnoff_body_entered(body):
 	if body.is_in_group("Player") and !body.wentThroughSaw:
 		var lookalike := PLAYER_LOOKALIKE.instance()
@@ -34,5 +42,6 @@ func _on_PlayerTurnoff_body_entered(body):
 		var trajectory = get_node(trajectory_path)
 		trajectory.enabled = false
 		body.visible = false
+		body.stateMachine.movement_enabled = false
 		body.enableBlood = false
 		body.apply_damage(1000)
